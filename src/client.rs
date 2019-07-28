@@ -1,4 +1,7 @@
 use reqwest;
+use reqwest::header::HeaderMap;
+
+pub const BASE_URL: &str = "https://api.guildwars2.com";
 
 /// All available localisations that are supported by the official Guild Wars 2 API.
 #[derive(Debug, PartialEq)]
@@ -44,6 +47,19 @@ impl Client {
             lang,
             client: reqwest::Client::new()
         }
+    }
+
+    /// Make a request to the Guild Wars 2 API with the given url (which has to include version)
+    /// as endpoint.
+    pub fn request(&self, url: &str) -> reqwest::Result<reqwest::Response> {
+        let full_url = format!("{base_url}/{url}", base_url=BASE_URL, url=url);
+
+        // Defaults to English if no language is specified
+        let lang = self.lang().unwrap_or(&Localisation::English).to_string();
+
+        let mut headers = HeaderMap::new();
+        headers.insert(reqwest::header::ACCEPT_LANGUAGE, lang.parse().unwrap());
+        self.client.get(&full_url).headers(headers).send()
     }
 
     /// Returns an `Option` containing a string slice of the Guild Wars 2 API key for the
