@@ -1,6 +1,7 @@
 use reqwest;
 
 /// All available localisations that are supported by the official Guild Wars 2 API.
+#[derive(Debug, PartialEq)]
 pub enum Localisation {
     English,
     Spanish,
@@ -36,7 +37,8 @@ pub struct Client {
 impl Client {
     /// Creates a new API client with an optional language defined and/or an optional valid
     /// Guild Wars 2 API key
-    pub fn new(lang: Option<Localisation>, api_key: Option<String>) -> Client {
+    // XXX: Might be more suitable using the Builder design pattern: https://doc.rust-lang.org/cargo/reference/manifest.html
+    pub fn new(api_key: Option<String>, lang: Option<Localisation>) -> Client {
         Client {
             api_key,
             lang,
@@ -76,4 +78,19 @@ mod tests {
     fn create_client() {
         Client::new(None, None);
     }
+
+    #[test]
+    fn create_client_with_localisation() {
+        let client = Client::new(None, Some(Localisation::French));
+        assert_eq!(&Localisation::French, client.lang().unwrap());
+    }
+
+    #[test]
+    fn create_client_with_api_key() {
+        let api_key = "ABCDEFGH-1324-5678-9012-IJKLMNOPQRSTUVXYZABC-1234-5678-9012-ABCDEFGHIJKL"
+            .to_string();
+        let client = Client::new(Some(api_key.clone()), None);
+        assert_eq!(&api_key, client.api_key().unwrap());
+    }
+
 }
