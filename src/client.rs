@@ -14,7 +14,7 @@ pub enum Localisation {
 }
 
 impl ToString for Localisation {
-    /// Converts the `Localisation` to a valid localisation suffix `String` for the Guild Wars 2 API
+    /// Converts the `Localisation` to a valid localisation suffix `String` for the Guild Wars 2 API.
     fn to_string(&self) -> String {
         match self {
             Localisation::English => "en".to_string(),
@@ -28,25 +28,35 @@ impl ToString for Localisation {
 
 /// Client that performs requests to the API
 pub struct Client {
-    /// The API Key used for endpoints that require authentication
+    /// The API key used for endpoints that require authentication.
     api_key: Option<String>,
     /// The language that the response will be in. Defaults to English if left empty as per the
-    /// offical Guild Wars 2 API behvaiour.
+    /// official Guild Wars 2 API behvaiour.
     lang: Option<Localisation>,
-    /// Reqwest client that actually handles any request.
+    /// The reqwest client that actually handles any request.
     client: reqwest::Client,
 }
 
 impl Client {
-    /// Creates a new API client with an optional language defined and/or an optional valid
-    /// Guild Wars 2 API key
-    // XXX: Might be more suitable using the Builder design pattern: https://doc.rust-lang.org/cargo/reference/manifest.html
-    pub fn new(api_key: Option<String>, lang: Option<Localisation>) -> Client {
+    /// Creates a new `Client` to interface with the Guild Wars 2 API.
+    pub fn new() -> Client {
         Client {
-            api_key,
-            lang,
-            client: reqwest::Client::new()
+            api_key: None,
+            lang: None,
+            client: reqwest::Client::new(),
         }
+    }
+
+    /// Sets the API key of the client with a valid Guild Wars 2 API key.
+    pub fn set_api_key(mut self, api_key: String) -> Client {
+        self.api_key = Some(api_key);
+        self
+    }
+
+    /// Sets the language to be used in responses, applies to item names and what not.
+        pub fn set_lang(mut self, lang: Localisation) -> Client {
+        self.lang = Some(lang);
+        self
     }
 
     /// Make a request to the Guild Wars 2 API with the given url (which has to include version)
@@ -105,7 +115,7 @@ impl Client {
         }
     }
 
-    /// Returns a reference to the underlying Reqwest client
+    /// Returns a reference to the underlying reqwest client.
     pub fn client(&self) -> &reqwest::Client {
         &self.client
     }
@@ -117,21 +127,10 @@ mod tests {
 
     #[test]
     fn create_client() {
-        Client::new(None, None);
-    }
-
-    #[test]
-    fn create_client_with_localisation() {
-        let client = Client::new(None, Some(Localisation::French));
-        assert_eq!(&Localisation::French, client.lang().unwrap());
-    }
-
-    #[test]
-    fn create_client_with_api_key() {
         let api_key = "ABCDEFGH-1324-5678-9012-IJKLMNOPQRSTUVXYZABC-1234-5678-9012-ABCDEFGHIJKL"
             .to_string();
-        let client = Client::new(Some(api_key.clone()), None);
+        let client = Client::new().set_api_key(api_key.clone()).set_lang(Localisation::French);
         assert_eq!(&api_key, client.api_key().unwrap());
+        assert_eq!(&Localisation::French, client.lang().unwrap());
     }
-
 }
