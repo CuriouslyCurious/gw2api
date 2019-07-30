@@ -26,6 +26,6 @@ mod tests {
     #[test]
     fn get_build() {
         let client = Client::new(None, None);
-        assert_eq!(Build::get_build(&client).id(), 97999)
+        assert_ne!(Build::get_build(&client).id(), 0)
     }
 }
