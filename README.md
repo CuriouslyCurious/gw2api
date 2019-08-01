@@ -12,51 +12,52 @@
             * [ ] Characters (Auth)
             * [ ] Shared Inventory (Auth)
         * [ ] Achievements
-          * [ ] Achievements
-          * [ ] Achievements Daily
-          * [ ] Achievement Groups
-          * [ ] Achievement Categories
+            * [ ] Achievements
+            * [ ] Achievements Daily
+            * [ ] Achievement Groups
+            * [ ] Achievement Categories
         * [ ] Commerce
-          * [ ] Listings
-          * [ ] Echange
-          * [ ] Prices
-          * [ ] Transactions (Auth)
+            * [ ] Listings
+            * [ ] Echange
+            * [ ] Prices
+            * [ ] Transactions (Auth)
         * [ ] Guilds
-          * [ ] Guild Upgrades
-          * [ ] Guild Permissions
-          * [ ] Guild Members (Auth Guild Leader)
-          * [ ] Guild Ranks (Auth Guild Leader)
-          * [ ] Guild Stash (Auth Guild Leader)
-          * [ ] Guild Treasury (Auth Guild Leader)
-          * [ ] Log (Auth Guild Leader)
-          * [ ] Emblems
-          *  [ ] Teams
+            * [ ] Guild Upgrades
+            * [ ] Guild Permissions
+            * [ ] Guild Members (Auth Guild Leader)
+            * [ ] Guild Ranks (Auth Guild Leader)
+            * [ ] Guild Stash (Auth Guild Leader)
+            * [ ] Guild Treasury (Auth Guild Leader)
+            * [ ] Log (Auth Guild Leader)
+            * [ ] Emblems
+            * [ ] Teams
         * [ ] PvP
-          * [ ] Stats (Auth)
-          * [ ] Games (Auth)
-          * [ ] Standings (Auth)
-          * [ ] Season
+            * [ ] Stats (Auth)
+            * [ ] Games (Auth)
+            * [ ] Standings (Auth)
+            * [ ] Season
         * [ ] Items
-          * [ ] Recipes
-            * [ ] Search
-          * [ ] Items
-          * [ ] Skins
+            * [ ] Recipes
+                * [ ] Search
+            * [ ] Items
+            * [ ] Skins
         * [ ] World vs World
-          * [ ] Matches
-          * [ ] Objectives
+            * [ ] Matches
+            * [ ] Objectives
         * [ ] Game Mechanics
-          * [ ] Traits
-          * [ ] Specializations
+            * [ ] Traits
+            * [ ] Specializations
         * [ ] Map Information
-          * [ ] Continents
-          * [ ] Maps
+            * [ ] Continents
+            * [ ] Maps
         * [ ] Misc
-          * [ ] Build
-          * [ ] Colors
-          * [ ] Currencies
-          * [ ] Quaggans
-          * [ ] Worlds
-          * [ ] Minis
+            * [x] Build
+            * [ ] Colors
+            * [ ] Currencies
+            * [ ] Quaggans
+            * [ ] Worlds
+            * [ ] Minis
+            * [x] Tokeninfo
     * [ ] V1
         * [ ] Build
         * [ ] Colors
