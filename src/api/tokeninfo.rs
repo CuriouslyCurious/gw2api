@@ -21,7 +21,7 @@ impl TokenInfo {
 }
 
 /// Permissions a Guild Wars 2 API key can have.
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct Permissions {
     account: bool,
     builds: bool,
@@ -76,7 +76,7 @@ impl<'de> Deserialize<'de> for Permissions {
 #[cfg(test)]
 mod tests {
     use crate::client::Client;
-    use crate::api::tokeninfo::TokenInfo;
+    use crate::api::tokeninfo::{TokenInfo, Permissions};
     use std::env;
 
     #[test]
