@@ -1,4 +1,9 @@
+
 # **WIP** gw2api
+[![Build Status](https://travis-ci.org/CuriouslyCurious/gw2api.svg?branch=master)](https://travis-ci.org/CuriouslyCurious/gw2api)
+[![License:MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![License:Apache-2.0](https://img.shields.io/badge/License-APACHE-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+
 `gw2api` is a **WIP** wrapper over the official Guild Wars 2 API written in **Rust** using
 [reqwest](https://github.com/seanmonstar/reqwest) as the underlying request maker.
 
@@ -32,6 +37,7 @@
             * [ ] Emblems
             * [ ] Teams
         * [ ] PvP
+            * [ ] Amulet
             * [ ] Stats (Auth)
             * [ ] Games (Auth)
             * [ ] Standings (Auth)
@@ -85,8 +91,8 @@
 ## Q&A
 Q: Y u do dis?!
 
-A: There simply weren't a fully functional API wrapper for the API which I needed.
-It's also a good learning eperience in how to write wrappers, planning out project structure
+A: There simply didn't exist a fully functional API wrapper for the API, which I needed.
+It's also a good learning experience in how to write wrappers, planning out project structure
 and implementing tests. All in all; yay.
 
 ## Shoutouts
