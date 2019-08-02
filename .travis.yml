@@ -11,7 +11,7 @@ before_cache: |
 
 script:
   - cargo clean
-  - cargo build --verbose
+  - RUST_BACKTRACE=1 cargo build
   - cargo test
 
 after_success: |
