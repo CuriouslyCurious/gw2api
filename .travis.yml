@@ -1,0 +1,14 @@
+language: rust
+rust:
+    - stable
+cache: cargo
+
+jobs:
+    include:
+        - stage: "Build"
+          name: "Build the library"
+          script: cargo build --verbose
+
+        - stage: "Test"
+          name: "Run tests"
+          script: cargo test --verbose
