@@ -7,26 +7,14 @@ before_cache: |
   if [[ "$TRAVIS_RUST_VERSION" == stable ]]; then
     rm -rf "$TRAVIS_HOME/.cargo/registry/src"
     bash <(curl https://raw.githubusercontent.com/xd009642/tarpaulin/master/travis-install.sh)
-    #cargo install cargo-tarpaulin -f
   fi
 
-jobs:
-  include:
-    - stage: "Build"
-      name: "Build the library"
-      script: cargo build --verbose
-
-    - stage: "Test"
-      name: "Run tests"
-      script: cargo test --verbose
-
+script:
+  - cargo clean
+  - cargo build --verbose
+  - cargo test
 
 after_success: |
   if [[ "$TRAVIS_RUST_VERSION" == stable ]]; then
-    # Uncomment the following line for coveralls.io
     cargo tarpaulin --ciserver travis-ci --coveralls $TRAVIS_JOB_ID
-
-    # Uncomment the following two lines create and upload a report for codecov.io
-    # cargo tarpaulin --out Xml
-    # bash <(curl -s https://codecov.io/bash)
   fi
