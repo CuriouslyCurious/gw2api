@@ -10,13 +10,29 @@ pub struct TokenInfo {
     /// valid HTML, JavaScript, other code. Handle with care.
     name: String,
     /// Permissions that the API key has.
-    pub permissions: Permissions,
+    permissions: Permissions,
 }
 
 impl TokenInfo {
-    /// Returns the id given, the key's name and what permissions are set for the `Client`'s key.
+    /// Returns a `TokenInfo` struct containing the id given, the key's name and what permissions are
+    /// set for the `Client`'s key.
     pub fn get_tokeninfo(client: &Client) -> TokenInfo {
         client.authenticated_request("/v2/tokeninfo").unwrap().json().unwrap()
+    }
+
+    /// Returns the id of the API key.
+    pub fn id(&self) -> &str {
+        &self.id
+    }
+
+    /// Returns the name given to the API key.
+    pub fn name(&self) -> &str {
+        &self.name
+    }
+
+    /// Returns the permissions that the API key has set.
+    pub fn permissions(&self) -> &Permissions {
+        &self.permissions
     }
 }
 
@@ -69,6 +85,7 @@ impl<'de> Deserialize<'de> for Permissions {
                 &_ => (),
             }
         }
+
         Ok(permissions)
     }
 }
@@ -97,6 +114,6 @@ mod tests {
             wallet: true,
         };
 
-        assert_eq!(permissions, ti.permissions);
+        assert_eq!(&permissions, ti.permissions());
     }
 }
