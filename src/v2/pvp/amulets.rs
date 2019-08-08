@@ -64,7 +64,7 @@ impl Amulet {
 
 #[cfg(test)]
 mod tests {
-    use crate::api::pvp::amulets::Amulet;
+    use crate::v2::pvp::amulets::Amulet;
     use crate::attributes::Attribute;
     use crate::client::Client;
     use std::collections::HashMap;

@@ -93,7 +93,7 @@ impl<'de> Deserialize<'de> for Permissions {
 #[cfg(test)]
 mod tests {
     use crate::client::Client;
-    use crate::api::tokeninfo::{TokenInfo, Permissions};
+    use crate::v2::tokeninfo::{TokenInfo, Permissions};
     use std::env;
 
     #[test]

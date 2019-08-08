@@ -22,7 +22,7 @@ impl Build {
 #[cfg(test)]
 mod tests {
     use crate::client::Client;
-    use crate::api::build::Build;
+    use crate::v2::build::Build;
     #[test]
     fn get_build() {
         let client = Client::new();
