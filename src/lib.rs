@@ -5,3 +5,4 @@ extern crate serde;
 pub mod api;
 pub mod attributes;
 pub mod client;
+pub mod utils;
