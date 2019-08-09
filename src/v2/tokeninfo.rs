@@ -1,4 +1,6 @@
 use crate::client::Client;
+use crate::error::ApiError;
+use crate::utils::parse_response;
 use serde::{Deserialize, Deserializer};
 
 /// Information about a supplied API key.
@@ -16,8 +18,8 @@ pub struct TokenInfo {
 impl TokenInfo {
     /// Returns a `TokenInfo` struct containing the id given, the key's name and what permissions are
     /// set for the `Client`'s key.
-    pub fn get_tokeninfo(client: &Client) -> TokenInfo {
-        client.authenticated_request("/v2/tokeninfo").unwrap().json().unwrap()
+    pub fn get_tokeninfo(client: &Client) -> Result<TokenInfo, ApiError> {
+        parse_response(&mut client.authenticated_request("/v2/tokeninfo")?)
     }
 
     /// Returns the id of the API key.
@@ -53,7 +55,7 @@ pub struct Permissions {
 
 impl<'de> Deserialize<'de> for Permissions {
     /// Custom deserialization, since the API returns an array of Strings that serde cannot
-    /// automatically deserialize.
+    /// automatically deserialize into a bunch of booleans.
     fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
     where D: Deserializer<'de> {
         let mut permissions = Permissions {
@@ -100,7 +102,10 @@ mod tests {
     fn get_tokeninfo() {
         let api_key = env::var("GW2_TEST_KEY").expect("GW2_TEST_KEY environment variable is not set.");
         let client = Client::new().set_api_key(api_key);
-        let ti = TokenInfo::get_tokeninfo(&client);
+        let ti = match TokenInfo::get_tokeninfo(&client) {
+            Ok(ti) => ti,
+            Err(e) => panic!("{:?}", e),
+        };
         let permissions = Permissions {
             account: true,
             builds: true,

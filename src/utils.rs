@@ -13,10 +13,12 @@ pub fn ids_to_string(ids: Vec<u32>) -> String {
 /// deserialization to the new type.
 pub fn parse_response<T>(response: &mut Response) -> Result<T, ApiError>
 where T: DeserializeOwned {
-    if response.status() == StatusCode::OK {
-        Ok(response.json::<T>().unwrap())
-    } else {
-        Err(response.json::<ApiError>().unwrap())
+    match response.status() {
+        // When everything is a-ok.
+        StatusCode::OK => Ok(response.json::<T>().unwrap()),
+        // Occurs when only some of the content requested exists.
+        StatusCode::PARTIAL_CONTENT => Ok(response.json::<T>().unwrap()),
+        _ => Err(response.json::<ApiError>().unwrap()),
     }
 }
 

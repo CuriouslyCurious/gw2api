@@ -1,8 +1,11 @@
 use crate::attributes::Attribute;
 use crate::client::Client;
-use crate::utils::ids_to_string;
+use crate::error::ApiError;
+use crate::utils::{ids_to_string, parse_response};
 
 use std::collections::HashMap;
+
+const ENDPOINT_URL: &str = "/v2/pvp/amulets";
 
 /// Returns information about the PvP amulets.
 #[derive(Debug, Deserialize, PartialEq)]
@@ -20,25 +23,27 @@ pub struct Amulet {
 
 impl Amulet {
     /// Get all ids for the available PvP amulets, returning a `Vec` of ids.
-    pub fn get_ids(client: &Client) -> Vec<u32> {
-        client.request("/v2/pvp/amulets").unwrap().json().unwrap()
+    pub fn get_ids(client: &Client) -> Result<Vec<u32>, ApiError> {
+        parse_response(&mut client.request(ENDPOINT_URL)?)
     }
 
     /// Get an amulet by its id.
-    pub fn get_amulet_by_id(client: &Client, id: u32) -> Amulet {
-        let url = format!("/v2/pvp/amulets?id={}", id);
-        client.request(&url).unwrap().json().unwrap()
+    pub fn get_amulet_by_id(client: &Client, id: u32) -> Result<Amulet, ApiError> {
+        let url = format!("{}?id={}", ENDPOINT_URL, id);
+        parse_response(&mut client.request(&url)?)
     }
 
-    /// Get multiple amulets by their ids.
-    pub fn get_amulets_by_ids(client: &Client, ids: Vec<u32>) -> Vec<Amulet> {
-        let url = format!("/v2/pvp/amulets?ids={}", ids_to_string(ids));
-        client.request(&url).unwrap().json().unwrap()
+    /// Get multiple amulets by their ids, if any of the ids do not exist it will not be in the
+    /// returned `Vec`, if all the ids are invalid the `Vec` will be empty.
+    pub fn get_amulets_by_ids(client: &Client, ids: Vec<u32>) -> Result<Vec<Amulet>, ApiError> {
+        let url = format!("{}?ids={}", ENDPOINT_URL, ids_to_string(ids));
+        parse_response(&mut client.request(&url)?)
     }
 
     /// Get all available amulets, returning a `Vec` of `Amulet` objects.
-    pub fn get_all_amulets(client: &Client) -> Vec<Amulet> {
-        client.request("/v2/pvp/amulets?ids=all").unwrap().json().unwrap()
+    pub fn get_all_amulets(client: &Client) -> Result<Vec<Amulet>, ApiError> {
+        let url = format!("{}?ids=all", ENDPOINT_URL);
+        parse_response(&mut client.request(&url)?)
     }
 
     /// Returns the ID of the `Amulet` object.
@@ -75,7 +80,7 @@ mod tests {
         // Current PvP amulet ids
         let ids: Vec<u32> = vec!(1, 4, 5, 7, 8, 9, 12, 13, 14, 18, 20, 22, 25, 28, 29,
                                  30, 31, 33, 34, 35, 36, 39, 40, 41, 42, 43, 44, 45);
-        assert_eq!(ids, Amulet::get_ids(&client));
+        assert_eq!(ids, Amulet::get_ids(&client).unwrap());
     }
 
     #[test]
@@ -91,7 +96,7 @@ mod tests {
             icon: "https://render.guildwars2.com/file/02E9EFDEF9587130A25F17AC396913FBBE3C716D/455602.png".to_string(),
             attributes,
         };
-        assert_eq!(amulet, Amulet::get_amulet_by_id(&client, amulet.id()));
+        assert_eq!(amulet, Amulet::get_amulet_by_id(&client, amulet.id()).unwrap());
     }
 
     #[test]
@@ -100,7 +105,7 @@ mod tests {
         let mut ids: Vec<u32> = Vec::new();
         ids.push(1);
         ids.push(3); // does not exist
-        let amulets = Amulet::get_amulets_by_ids(&client, ids);
+        let amulets = Amulet::get_amulets_by_ids(&client, ids).unwrap();
         assert!(amulets.len() == 1);
     }
 }
