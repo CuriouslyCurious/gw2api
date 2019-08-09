@@ -1,5 +1,6 @@
-use reqwest;
+use reqwest::{self, Response, StatusCode};
 use reqwest::header::HeaderMap;
+use crate::error::ApiError;
 
 pub const BASE_URL: &str = "https://api.guildwars2.com";
 
@@ -61,11 +62,11 @@ impl Client {
 
     /// Make a request to the Guild Wars 2 API with the given url (which has to include version)
     /// as endpoint.
-    pub fn request(&self, url: &str) -> reqwest::Result<reqwest::Response> {
+    pub fn request(&self, url: &str) -> Result<Response, ApiError> {
         let full_url = format!("{base_url}/{url}", base_url=BASE_URL, url=url);
         let headers = self.create_lang_header();
 
-        self.client.get(&full_url).headers(headers).send()
+        Client::handle_request(self.client.get(&full_url).headers(headers).send())
     }
 
     /// Make an authenticated request to the Guild Wars 2 API with the given url (which has to
@@ -75,7 +76,7 @@ impl Client {
     /// This function may fail depending on what the settings of the API key itself are, since you
     /// can limit what resources a certain key may access. In that case the function will return
     /// an error.
-    pub fn authenticated_request(&self, url: &str) -> reqwest::Result<reqwest::Response> {
+    pub fn authenticated_request(&self, url: &str) -> Result<Response, ApiError> {
         let full_url = format!("{base_url}/{url}", base_url=BASE_URL, url=url);
         let mut headers = self.create_lang_header();
 
@@ -83,19 +84,41 @@ impl Client {
         let api_key = self.api_key().expect("Guild Wars 2 API key is not set").to_owned();
         headers.insert(reqwest::header::AUTHORIZATION, format!("Bearer {}", api_key).parse().unwrap());
 
-        self.client.get(&full_url).headers(headers).send()
+        Client::handle_request(self.client.get(&full_url).headers(headers).send())
     }
 
     /// Creates a language HTTP header from the client's given language, if no language is given it
     /// will default to English.
     fn create_lang_header(&self) -> HeaderMap {
-        // Defaults to English if no language is specified
         let lang = self.lang().unwrap_or(&Localisation::English).to_string();
 
         let mut headers = HeaderMap::new();
         headers.insert(reqwest::header::ACCEPT_LANGUAGE, lang.parse().unwrap());
         headers
     }
+
+    /// Handles the initial response of a request by looking at the status codes or if the request
+    /// timed out. Returns the response or raises an `ApiError` upon a receiving an error,
+    /// respectively.
+    fn handle_request(response: Result<Response, reqwest::Error>) -> Result<Response, ApiError>{
+        if response.is_ok() {
+            let mut response = response.unwrap();
+            match response.status() {
+                StatusCode::NOT_FOUND => Err(ApiError::Text(response.text().unwrap())),
+                StatusCode::FORBIDDEN => Err(ApiError::Text(response.text().unwrap())),
+                _ => Ok(response),
+            }
+        } else {
+            let error = response.unwrap_err();
+            if error.is_timeout() {
+                Err(ApiError::Text("Client timed out. Probably due to your connection not working or the official API being down.".to_string()))
+            } else {
+                Err(ApiError::Text(format!("An error occurred accessing the API. Status code: {},", error.status().unwrap())))
+            }
+
+        }
+    }
+
 
     /// Returns an `Option` containing a string slice of the Guild Wars 2 API key for the
     /// Client object if it exists, otherwise None is returned in the Option.

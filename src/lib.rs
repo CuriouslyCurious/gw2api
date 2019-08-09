@@ -4,5 +4,6 @@ extern crate serde;
 
 pub mod attributes;
 pub mod client;
+pub mod error;
 pub mod utils;
 pub mod v2;
