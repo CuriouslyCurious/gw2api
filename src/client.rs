@@ -111,9 +111,9 @@ impl Client {
         } else {
             let error = response.unwrap_err();
             if error.is_timeout() {
-                Err(ApiError::Text("Client timed out. Probably due to your connection not working or the official API being down.".to_string()))
+                Err(ApiError::Text("Client timed out. Probably due to the official API being down.".to_string()))
             } else {
-                Err(ApiError::Text(format!("An error occurred accessing the API. Status code: {},", error.status().unwrap())))
+                Err(ApiError::Text(format!("An error occurred accessing the API. This might be because your internet connection is down.")))
             }
 
         }
