@@ -1,6 +1,7 @@
 use crate::client::Client;
 use crate::error::ApiError;
 use crate::utils::{ids_to_string, parse_response};
+use std::collections::HashMap;
 
 const ENDPOINT_URL: &str = "/v2/pvp/games";
 
@@ -8,7 +9,7 @@ const ENDPOINT_URL: &str = "/v2/pvp/games";
 #[derive(Debug, Deserialize, PartialEq)]
 pub struct Game {
     /// The game's UUID.
-    id: u32,
+    id: String,
     /// Map id of the map the game was played on.
     map_id: u32,
     /// Timestamp of when the match was started.
@@ -24,7 +25,7 @@ pub struct Game {
     /// Profession that was played during the match by the player.
     profession: Profession,
     /// Scores of both teams during the match.
-    scores: Vec<Score>,
+    scores: HashMap<Team, u32>,
     /// Type of game that was played.
     rating_type: RatingType,
     /// Amount which the given player's rating changed
@@ -34,10 +35,13 @@ pub struct Game {
 }
 
 /// Possible teams used in WvW or SPvP.
-#[derive(Debug, Deserialize, PartialEq)]
+#[derive(Debug, Deserialize, PartialEq, Hash, Eq)]
 pub enum Team {
+    #[serde(alias = "red")]
     Red,
+    #[serde(alias = "green")]
     Green,
+    #[serde(alias = "blue")]
     Blue,
 }
 
@@ -55,13 +59,6 @@ pub enum Profession {
     Elementalist,
 }
 
-/// Score that can be in a WvW match or SPvP game.
-#[derive(Debug, Deserialize, PartialEq)]
-pub struct Score {
-    team: Team,
-    score: u32,
-}
-
 /// Possible types of Structured PvP games.
 #[derive(Debug, Deserialize, PartialEq)]
 pub enum RatingType {
@@ -73,7 +70,7 @@ pub enum RatingType {
 
 impl Game {
     /// Retrieve a game by its id.
-    pub fn get_id(client: &Client, id: u32) -> Result<Game, ApiError> {
+    pub fn get_id(client: &Client, id: String) -> Result<Game, ApiError> {
         let url = format!("{}?id={}", ENDPOINT_URL, id);
         parse_response(&mut client.authenticated_request(&url)?)
     }
@@ -84,14 +81,14 @@ impl Game {
     }
 
     /// Retrive games by their ids.
-    pub fn get_games_by_ids(client: &Client, ids: Vec<u32>) -> Result<Vec<Game>, ApiError> {
+    pub fn get_games_by_ids(client: &Client, ids: Vec<String>) -> Result<Vec<Game>, ApiError> {
         let url = format!("{}?ids={}", ENDPOINT_URL, ids_to_string(ids));
         parse_response(&mut client.authenticated_request(&url)?)
     }
 
     /// Returns the requested id of the game.
-    pub fn id(&self) -> u32 {
-        self.id
+    pub fn id(&self) -> &str {
+        &self.id
     }
 
     /// Returns the map id of the map the game was played on.
@@ -125,7 +122,7 @@ impl Game {
     }
 
     /// Returns the scores of both teams during the match.
-    pub fn scores(&self) -> &Vec<Score> {
+    pub fn scores(&self) -> &HashMap<Team, u32> {
         &self.scores
     }
 
@@ -147,6 +144,58 @@ impl Game {
 
 #[cfg(test)]
 mod tests {
+    use crate::v2::pvp::games::{Game, Team, Profession, RatingType};
+    use crate::client::Client;
+    use std::env;
+    use std::collections::HashMap;
 
+    #[test]
+    fn create_game() {
+        let json_game = r#"
+         {
+            "id": "ABCDE02B-8888-FEBA-1234-DE98765C7DEF",
+            "map_id": 894,
+            "started": "2015-07-08T21:29:50.000Z",
+            "ended": "2015-07-08T21:37:02.000Z",
+            "result": "Defeat",
+            "team": "Red",
+            "profession": "Guardian",
+            "scores": {
+              "red": 165,
+              "blue":507
+            },
+            "rating_type" : "Ranked",
+            "rating_change" : -26,
+            "season" : "49CCE661-9DCC-473B-B106-666FE9942721"
+         }"#;
+
+        let mut scores: HashMap<Team, u32> = HashMap::new();
+        scores.insert(Team::Red, 165);
+        scores.insert(Team::Blue, 507);
+
+        let game = Game {
+            id: "ABCDE02B-8888-FEBA-1234-DE98765C7DEF".to_string(),
+            map_id: 894,
+            start_time: "2015-07-08T21:29:50.000Z".to_string(),
+            end_time: "2015-07-08T21:37:02.000Z".to_string(),
+            result: "Defeat".to_string(),
+            team: Team::Red,
+            profession: Profession::Guardian,
+            scores,
+            rating_type: RatingType::Ranked,
+            rating_change: -26,
+            season: Some("49CCE661-9DCC-473B-B106-666FE9942721".to_string()),
+        };
+
+        assert_eq!(game, serde_json::from_str(json_game).unwrap());
+    }
+
+    //#[test]
+    //fn get_invalid_id() {
+    //    let api_key = env::var("GW2_TEST_KEY").expect("GW2_TEST_KEY environment variable is not set.");
+    //    let client = Client::new().set_api_key(api_key);
+    //    let id = "1".to_string();
+    //    assert_eq!(id, Game::get_id(&client, 1).unwrap().id());
+    //}
 }
 
