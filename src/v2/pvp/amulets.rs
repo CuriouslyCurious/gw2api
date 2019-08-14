@@ -75,6 +75,26 @@ mod tests {
     use std::collections::HashMap;
 
     #[test]
+    fn create_amulet() {
+        let json_amulet = r#"
+        {
+          "id": 4,
+          "name": "Assassin Amulet",
+          "icon": "https://render.guildwars2.com/file/02E9EFDEF9587130A25F17AC396913FBBE3C716D/455602.png",
+          "attributes": {
+            "Precision": 1200,
+            "Power": 900,
+            "CritDamage": 900
+          }
+        }"#;
+
+        match serde_json::from_str::<Amulet>(json_amulet) {
+            Ok(_) => assert!(true),
+            Err(e) => panic!(e.to_string()),
+        }
+    }
+
+    #[test]
     fn get_ids() {
         let client = Client::new();
         // Current PvP amulet ids
