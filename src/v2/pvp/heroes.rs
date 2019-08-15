@@ -60,6 +60,11 @@ impl Hero {
         parse_response(&mut client.request(&url)?)
     }
 
+    /// Retrieve the ids for all available heroes.
+    pub fn get_all_ids(client: &Client) -> Result<Vec<Hero>, ApiError> {
+        parse_response(&mut client.request(&ENDPOINT_URL)?)
+    }
+
     /// Retrieve all heroes that are available.
     pub fn get_all_heroes(client: &Client) -> Result<Vec<Hero>, ApiError> {
         let url = format!("{}?ids=all", ENDPOINT_URL);
@@ -113,15 +118,57 @@ impl Hero {
     }
 }
 
+impl Stats {
+    /// Returns the offense stat of the hero.
+    pub fn offense(&self) -> u32 {
+        self.offense
+    }
+
+    /// Returns the defense stat of the hero.
+    pub fn defense(&self) -> u32 {
+        self.defense
+    }
+
+    /// Returns the speed stat of the hero.
+    pub fn speed(&self) -> u32 {
+        self.speed
+    }
+}
+
+impl Skin {
+    /// Returns the id for the hero skin.
+    pub fn id(&self) -> u32 {
+        self.id
+    }
+
+    /// Returns the name of the skin.
+    pub fn name(&self) -> &str {
+        &self.name
+    }
+
+    /// Returns the url for the skin's icon.
+    pub fn icon_url(&self) -> &str {
+        &self.icon_url
+    }
+
+    /// Returns true if the skin is the default for the hero, false otherwise.
+    pub fn default(&self) -> bool {
+        self.default
+    }
+
+    /// Returns the item ids of items that can unlock the skin.
+    pub fn unlock_items(&self) -> &Vec<u32> {
+        &self.unlock_items
+    }
+}
+
 #[cfg(test)]
 mod tests {
-    use crate::v2::pvp::heroes::{Hero, Stats, Skin};
+    use crate::v2::pvp::heroes::*;
     use crate::client::Client;
     use crate::error::ApiError;
 
-    #[test]
-    fn create_hero() {
-        let json_hero = r#"
+    const JSON_HERO: &str = r#""
         {
             "id": "115C140F-C2F5-40EB-8EA2-C3773F2AE468",
             "name": "Nika",
