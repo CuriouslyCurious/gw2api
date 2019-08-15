@@ -104,21 +104,20 @@ impl Client {
         if response.is_ok() {
             let mut response = response.unwrap();
             match response.status() {
-                StatusCode::NOT_FOUND => Err(ApiError::Text(response.text().unwrap())),
-                StatusCode::FORBIDDEN => Err(ApiError::Text(response.text().unwrap())),
+                StatusCode::NOT_FOUND => Err(ApiError::new(response.text().unwrap())),
+                StatusCode::FORBIDDEN => Err(ApiError::new(response.text().unwrap())),
                 _ => Ok(response),
             }
         } else {
             let error = response.unwrap_err();
             if error.is_timeout() {
-                Err(ApiError::Text("Client timed out. Probably due to the official API being down.".to_string()))
+                Err(ApiError::new("Client timed out. Probably due to the official API being down.".to_string()))
             } else {
-                Err(ApiError::Text(format!("An error occurred accessing the API. This might be because your internet connection is down.")))
+                Err(ApiError::new("An error occurred accessing the API. This might be because your internet connection is down.".to_string()))
             }
 
         }
     }
-
 
     /// Returns an `Option` containing a string slice of the Guild Wars 2 API key for the
     /// Client object if it exists, otherwise None is returned in the Option.
