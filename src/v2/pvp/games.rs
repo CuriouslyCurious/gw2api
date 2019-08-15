@@ -28,8 +28,8 @@ pub struct Game {
     scores: HashMap<Team, u32>,
     /// Type of game that was played.
     rating_type: RatingType,
-    /// Amount which the given player's rating changed
-    rating_change: i32,
+    /// Amount which the given player's rating changed, if it was played during a season.
+    rating_change: Option<i32>,
     /// Season id of the game was played in, if it was played during a season.
     season: Option<String>,
 }
@@ -77,7 +77,8 @@ impl Game {
 
     /// Retrieve all games that have been played, capped at 10 most recent games.
     pub fn get_all_games(client: &Client) -> Result<Vec<Game>, ApiError> {
-        parse_response(&mut client.authenticated_request(ENDPOINT_URL)?)
+        let url = format!("{}?ids=all", ENDPOINT_URL);
+        parse_response(&mut client.authenticated_request(&url)?)
     }
 
     /// Retrive games by their ids.
@@ -117,7 +118,7 @@ impl Game {
     }
 
     /// Returns the profession that was played during the match by the player.
-    pub fn player(&self) -> &Profession {
+    pub fn profession(&self) -> &Profession {
         &self.profession
     }
 
@@ -131,9 +132,10 @@ impl Game {
         &self.rating_type
     }
 
-    /// Returns the amount which the given player's rating changed.
-    pub fn rating_change(&self) -> i32 {
-        self.rating_change
+    /// Returns an `Option` either containing the amount which the given player's rating changed,
+    /// or None.
+    pub fn rating_change(&self) -> &Option<i32> {
+        &self.rating_change
     }
 
     /// Returns an `Option` either containing the season id which the game was played in, or None.
@@ -146,13 +148,11 @@ impl Game {
 mod tests {
     use crate::v2::pvp::games::{Game, Team, Profession, RatingType};
     use crate::client::Client;
+    use crate::error::ApiError;
     use std::env;
     use std::collections::HashMap;
 
-    #[test]
-    fn create_game() {
-        let json_game = r#"
-         {
+    const JSON_GAME: &str = r#"{
             "id": "ABCDE02B-8888-FEBA-1234-DE98765C7DEF",
             "map_id": 894,
             "started": "2015-07-08T21:29:50.000Z",
@@ -169,33 +169,60 @@ mod tests {
             "season" : "49CCE661-9DCC-473B-B106-666FE9942721"
          }"#;
 
-        let mut scores: HashMap<Team, u32> = HashMap::new();
-        scores.insert(Team::Red, 165);
-        scores.insert(Team::Blue, 507);
-
-        let game = Game {
-            id: "ABCDE02B-8888-FEBA-1234-DE98765C7DEF".to_string(),
-            map_id: 894,
-            start_time: "2015-07-08T21:29:50.000Z".to_string(),
-            end_time: "2015-07-08T21:37:02.000Z".to_string(),
-            result: "Defeat".to_string(),
-            team: Team::Red,
-            profession: Profession::Guardian,
-            scores,
-            rating_type: RatingType::Ranked,
-            rating_change: -26,
-            season: Some("49CCE661-9DCC-473B-B106-666FE9942721".to_string()),
-        };
-
-        assert_eq!(game, serde_json::from_str(json_game).unwrap());
+    #[test]
+    fn create_game() {
+        match serde_json::from_str::<Game>(JSON_GAME) {
+            Ok(_) => assert!(true),
+            Err(e) => panic!(e.to_string())
+        }
     }
 
-    //#[test]
-    //fn get_invalid_id() {
-    //    let api_key = env::var("GW2_TEST_KEY").expect("GW2_TEST_KEY environment variable is not set.");
-    //    let client = Client::new().set_api_key(api_key);
-    //    let id = "1".to_string();
-    //    assert_eq!(id, Game::get_id(&client, 1).unwrap().id());
-    //}
-}
+    #[test]
+    fn accessors() {
+        let game = serde_json::from_str::<Game>(JSON_GAME).unwrap();
+        assert_eq!("ABCDE02B-8888-FEBA-1234-DE98765C7DEF", game.id());
+        assert_eq!(894, game.map_id());
+        assert_eq!("2015-07-08T21:29:50.000Z", game.start_time());
+        assert_eq!("2015-07-08T21:37:02.000Z", game.end_time());
+        assert_eq!("Defeat", game.result());
+        assert_eq!(&Team::Red, game.team());
+        assert_eq!(&Profession::Guardian, game.profession());
+        let mut scores = HashMap::new();
+        scores.insert(Team::Red, 165);
+        scores.insert(Team::Blue, 507);
+        assert_eq!(&scores, game.scores());
+        assert_eq!(&RatingType::Ranked, game.rating_type());
+        assert_eq!(&Some(-26), game.rating_change());
+        assert_eq!(&Some("49CCE661-9DCC-473B-B106-666FE9942721".to_string()), game.season());
+    }
 
+    #[test]
+    fn get_all_games() {
+        let api_key = env::var("GW2_TEST_KEY").expect("GW2_TEST_KEY environment variable is not set.");
+        let client = Client::new().set_api_key(api_key);
+        match Game::get_all_games(&client) {
+            Ok(_) => assert!(true),
+            Err(e) => panic!(e.description().to_string()),
+        };
+    }
+
+    // Since, the most recent PvP games are both dependant on the key and who played them, testing
+    // against a particular game in a static unit test would not work, so we instead test the error
+    // state, which means the function is behaving properly on errors at least.
+    #[test]
+    fn get_invalid_id() {
+        let api_key = env::var("GW2_TEST_KEY").expect("GW2_TEST_KEY environment variable is not set.");
+        let client = Client::new().set_api_key(api_key);
+        let id = "1".to_string();
+        assert_eq!(Err(ApiError::new("{\n  \"text\": \"no such id\"\n}".to_string())), Game::get_id(&client, id.clone()));
+    }
+
+    #[test]
+    fn get_invalid_games_by_ids() {
+        let api_key = env::var("GW2_TEST_KEY").expect("GW2_TEST_KEY environment variable is not set.");
+        let ids = vec!("1".to_string(), "2".to_string());
+        let client = Client::new().set_api_key(api_key);
+        assert_eq!(Err(ApiError::new("{\n  \"text\": \"all ids provided are invalid\"\n}".to_string())), Game::get_games_by_ids(&client, ids));
+    }
+
+}
