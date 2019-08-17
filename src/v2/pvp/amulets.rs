@@ -125,7 +125,7 @@ mod tests {
     }
 
     #[test]
-    fn get_amulets_by_ids() {
+    fn get_id() {
         let client = Client::new();
         let mut ids: Vec<u32> = Vec::new();
         ids.push(1);
@@ -139,6 +139,6 @@ mod tests {
         let client = Client::new();
         let num_amulets = 28; // Current number of amulets in the game.
         let amulets = Amulet::get_all_amulets(&client).unwrap();
-        assert!(amulets.len() == 28);
+        assert!(amulets.len() == num_amulets);
     }
 }

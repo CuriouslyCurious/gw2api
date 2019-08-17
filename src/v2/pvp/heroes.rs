@@ -74,7 +74,7 @@ impl Hero {
     /// Retrive heroes by their ids.
     pub fn get_heroes_by_ids(client: &Client, ids: Vec<String>) -> Result<Vec<Hero>, ApiError> {
         let url = format!("{}?ids={}", ENDPOINT_URL, ids_to_string(ids));
-        parse_response(&mut client.authenticated_request(&url)?)
+        parse_response(&mut client.request(&url)?)
     }
 
     /// Returns the requested id of the hero.
@@ -166,35 +166,67 @@ impl Skin {
 mod tests {
     use crate::v2::pvp::heroes::*;
     use crate::client::Client;
-    use crate::error::ApiError;
 
     const JSON_HERO: &str = r#"
     {
-        "id": "115C140F-C2F5-40EB-8EA2-C3773F2AE468",
-        "name": "Nika",
-        "description": "Nika was a proficient assassin schooled in her youth at Shing Jea Monastery. She served Cantha as a member of the Obsidian Flame.",
-        "type": "Specialist Hero",
-        "stats": {
-            "offense": 3,
-            "defense": 2,
-            "speed": 4
+      "id": "115C140F-C2F5-40EB-8EA2-C3773F2AE468",
+      "name": "Nika",
+      "description": "Nika was a proficient assassin schooled in her youth at Shing Jea Monastery. She served Cantha as a member of the Obsidian Flame.",
+      "type": "Specialist Hero",
+      "stats": {
+        "offense": 3,
+        "defense": 2,
+        "speed": 4
+      },
+      "overlay": "https://render.guildwars2.com/file/2CACF4120E370D1997A4C3D69BF592D7CC1870C8/993693.png",
+      "underlay": "https://render.guildwars2.com/file/103108E0D8EDD22C577FA4171618D004A82AD955/993694.png",
+      "skins": [
+        {
+          "id": 1,
+          "name": "Nika",
+          "icon": "https://render.guildwars2.com/file/4602BDC15B73422011AC664425D93750707F04F3/1058576.png",
+          "default": true,
+          "unlock_items": [
+            70076
+          ]
         },
-        "overlay": "https://render.guildwars2.com/file/2CACF4120E370D1997A4C3D69BF592D7CC1870C8/993693.png",
-        "underlay": "https://render.guildwars2.com/file/103108E0D8EDD22C577FA4171618D004A82AD955/993694.png",
-        "skins": [
-            {
-                "id": 1,
-                "name": "Nika",
-                "icon": "https://render.guildwars2.com/file/4602BDC15B73422011AC664425D93750707F04F3/1058576.png",
-                "default": true
-            },
-            {
-                "id": 7,
-                "name": "Shadow Assassin Nika",
-                "icon": "https://render.guildwars2.com/file/01643F1BD1202007BEE8E37F7DA3EA31AEE9536C/1322841.png",
-                "default": false
-            }
-        ]
+        {
+          "id": 7,
+          "name": "Shadow Assassin Nika",
+          "icon": "https://render.guildwars2.com/file/01643F1BD1202007BEE8E37F7DA3EA31AEE9536C/1322841.png",
+          "default": false,
+          "unlock_items": [
+            72077
+          ]
+        },
+        {
+          "id": 15,
+          "name": "Festive Nika",
+          "icon": "https://render.guildwars2.com/file/002248777FC6341B1650040AF1ADBD79A4772CA5/1322839.png",
+          "default": false,
+          "unlock_items": [
+            77642
+          ]
+        },
+        {
+          "id": 11,
+          "name": "Sneakthief Nika",
+          "icon": "https://render.guildwars2.com/file/DB2DCD0AEDDCD0474F4FC2426203384E06D2380D/1322842.png",
+          "default": false,
+          "unlock_items": [
+            73002
+          ]
+        },
+        {
+          "id": 12,
+          "name": "Strider's Nika",
+          "icon": "https://render.guildwars2.com/file/CE35793C96D74CC657736D15FB02C7B64E610208/1322843.png",
+          "default": false,
+          "unlock_items": [
+            76274
+          ]
+        }
+      ]
     }"#;
 
     const JSON_STATS: &str = r#"
@@ -209,7 +241,10 @@ mod tests {
         "id": 1,
         "name": "Nika",
         "icon": "https://render.guildwars2.com/file/4602BDC15B73422011AC664425D93750707F04F3/1058576.png",
-        "default": true
+        "default": true,
+        "unlock_items": [
+          70076
+        ]
     }"#;
 
     #[test]
@@ -237,6 +272,47 @@ mod tests {
     }
 
     #[test]
+    fn get_id() {
+        let client = Client::new();
+        let hero = serde_json::from_str::<Hero>(JSON_HERO).unwrap();
+        assert_eq!(hero, Hero::get_id(&client, hero.id().to_string()).unwrap());
+    }
+
+    #[test]
+    fn get_all_ids() {
+        let client = Client::new();
+        let ids = vec!(
+            "115C140F-C2F5-40EB-8EA2-C3773F2AE468",
+            "B7EA9889-5F16-4636-9705-4FCAF8B39ECD",
+            "BEA79596-CA8B-4D46-9B9C-EA1B606BCF42",
+            "CF977AE5-C605-4586-A802-3E25F0F35772",
+        );
+        assert_eq!(ids, Hero::get_all_ids(&client).unwrap());
+    }
+
+    #[test]
+    fn get_all_heroes() {
+        let client = Client::new();
+        let ids = vec!(
+            "115C140F-C2F5-40EB-8EA2-C3773F2AE468",
+            "B7EA9889-5F16-4636-9705-4FCAF8B39ECD",
+            "BEA79596-CA8B-4D46-9B9C-EA1B606BCF42",
+            "CF977AE5-C605-4586-A802-3E25F0F35772",
+        );
+        assert!(Hero::get_all_heroes(&client).unwrap().len() == ids.len());
+    }
+
+    #[test]
+    fn get_heroes_by_ids() {
+        let client = Client::new();
+        let ids = vec!(
+            "115C140F-C2F5-40EB-8EA2-C3773F2AE468".to_string(),
+            "B7EA9889-5F16-4636-9705-4FCAF8B39ECD".to_string(),
+        );
+        assert!(Hero::get_heroes_by_ids(&client, ids.clone()).unwrap().len() == ids.len());
+    }
+
+    #[test]
     fn accessors() {
         let hero = serde_json::from_str::<Hero>(JSON_HERO).unwrap();
         assert_eq!("115C140F-C2F5-40EB-8EA2-C3773F2AE468", hero.id());
@@ -246,7 +322,6 @@ mod tests {
         // Stats
         let stats = serde_json::from_str::<Stats>(JSON_STATS).unwrap();
         assert_eq!(&stats, hero.stats());
-        println!("{:#?}", hero.stats());
         assert_eq!(3, hero.stats().offense());
         assert_eq!(2, hero.stats().defense());
         assert_eq!(4, hero.stats().speed());
@@ -260,6 +335,7 @@ mod tests {
         assert_eq!("Nika", hero_skin.name());
         assert_eq!("https://render.guildwars2.com/file/4602BDC15B73422011AC664425D93750707F04F3/1058576.png", hero_skin.icon_url());
         assert_eq!(true, hero_skin.default());
+        assert_eq!(&vec!(70076), hero_skin.unlock_items());
     }
 }
 
