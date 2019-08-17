@@ -61,7 +61,7 @@ impl Hero {
     }
 
     /// Retrieve the ids for all available heroes.
-    pub fn get_all_ids(client: &Client) -> Result<Vec<Hero>, ApiError> {
+    pub fn get_all_ids(client: &Client) -> Result<Vec<String>, ApiError> {
         parse_response(&mut client.request(&ENDPOINT_URL)?)
     }
 

@@ -75,6 +75,11 @@ impl Game {
         parse_response(&mut client.authenticated_request(&url)?)
     }
 
+    /// Retrieve ids of all recently played games.
+    pub fn get_all_ids(client: &Client) -> Result<Vec<String>, ApiError> {
+        parse_response(&mut client.authenticated_request(ENDPOINT_URL)?)
+    }
+
     /// Retrieve all games that have been played, capped at 10 most recent games.
     pub fn get_all_games(client: &Client) -> Result<Vec<Game>, ApiError> {
         let url = format!("{}?ids=all", ENDPOINT_URL);

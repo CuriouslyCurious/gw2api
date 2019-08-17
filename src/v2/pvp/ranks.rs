@@ -50,6 +50,12 @@ impl Rank {
         parse_response(&mut client.request(&url)?)
     }
 
+    /// Retrieve all ranks.
+    pub fn get_all_ranks(client: &Client) -> Result<Vec<Rank>, ApiError> {
+        let url = format!("{}?ids=all", ENDPOINT_URL);
+        parse_response(&mut client.request(&url)?)
+    }
+
     /// Retrive ranks' information by their ids.
     pub fn get_ranks_by_ids(client: &Client, ids: Vec<String>) -> Result<Vec<Rank>, ApiError> {
         let url = format!("{}?ids={}", ENDPOINT_URL, ids_to_string(ids));

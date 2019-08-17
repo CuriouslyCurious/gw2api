@@ -22,15 +22,15 @@ pub struct Amulet {
 }
 
 impl Amulet {
-    /// Get all ids for the available PvP amulets, returning a `Vec` of ids.
-    pub fn get_ids(client: &Client) -> Result<Vec<u32>, ApiError> {
-        parse_response(&mut client.request(ENDPOINT_URL)?)
-    }
-
     /// Get an amulet by its id.
-    pub fn get_amulet_by_id(client: &Client, id: u32) -> Result<Amulet, ApiError> {
+    pub fn get_id(client: &Client, id: u32) -> Result<Amulet, ApiError> {
         let url = format!("{}?id={}", ENDPOINT_URL, id);
         parse_response(&mut client.request(&url)?)
+    }
+
+    /// Get all ids for the available PvP amulets, returning a `Vec` of ids.
+    pub fn get_all_ids(client: &Client) -> Result<Vec<u32>, ApiError> {
+        parse_response(&mut client.request(ENDPOINT_URL)?)
     }
 
     /// Get multiple amulets by their ids, if any of the ids do not exist it will not be in the
@@ -95,12 +95,12 @@ mod tests {
     }
 
     #[test]
-    fn get_ids() {
+    fn get_all_ids() {
         let client = Client::new();
         // Current PvP amulet ids
         let ids: Vec<u32> = vec!(1, 4, 5, 7, 8, 9, 12, 13, 14, 18, 20, 22, 25, 28, 29,
                                  30, 31, 33, 34, 35, 36, 39, 40, 41, 42, 43, 44, 45);
-        assert_eq!(ids, Amulet::get_ids(&client).unwrap());
+        assert_eq!(ids, Amulet::get_all_ids(&client).unwrap());
     }
 
     #[test]
@@ -116,7 +116,7 @@ mod tests {
             icon: "https://render.guildwars2.com/file/02E9EFDEF9587130A25F17AC396913FBBE3C716D/455602.png".to_string(),
             attributes,
         };
-        assert_eq!(amulet, Amulet::get_amulet_by_id(&client, amulet.id()).unwrap());
+        assert_eq!(amulet, Amulet::get_id(&client, amulet.id()).unwrap());
     }
 
     #[test]
