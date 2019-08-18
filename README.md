@@ -3,10 +3,14 @@
 [![Build Status](https://travis-ci.org/CuriouslyCurious/gw2api.svg?branch=master)](https://travis-ci.org/CuriouslyCurious/gw2api)
 [![License:MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![License:Apache-2.0](https://img.shields.io/badge/License-APACHE-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-[![Coverage Status](https://coveralls.io/repos/github/CuriouslyCurious/gw2api/badge.svg?branch=master)](https://coveralls.io/github/CuriouslyCurious/gw2api?branch=master)
+[![codecov](https://codecov.io/gh/CuriouslyCurious/gw2api/branch/master/graph/badge.svg)](https://codecov.io/gh/CuriouslyCurious/gw2api)
 
 `gw2api` is a **WIP** wrapper over the official Guild Wars 2 API written in **Rust** using
 [reqwest](https://github.com/seanmonstar/reqwest) as the underlying request maker.
+
+## TODO:
+* Finish up PvP endpoints.
+* Remember to add getters for sub structs.
 
 * [ ] Endpoints
     * [ ] V2
@@ -38,11 +42,13 @@
             * [ ] Emblems
             * [ ] Teams
         * [ ] PvP
-            * [ ] Amulet
+            * [x] Amulets
+            * [x] Heroes
             * [ ] Stats (Auth)
-            * [ ] Games (Auth)
+            * [x] Games (Auth)
+            * [x] Ranks (Auth)
             * [ ] Standings (Auth)
-            * [ ] Season
+            * [x] Seasons
         * [ ] Items
             * [ ] Recipes
                 * [ ] Search
