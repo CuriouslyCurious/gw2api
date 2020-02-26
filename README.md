@@ -72,9 +72,9 @@
             * [ ] Minis
             * [x] Tokeninfo
     * [ ] V1
-        * [ ] Build
-        * [ ] Colors
-        * [ ] Continents
+        * [x] Build
+        * [x] Colors
+        * [x] Continents
         * [ ] Event details
         * [ ] Event names
         * [ ] Events
