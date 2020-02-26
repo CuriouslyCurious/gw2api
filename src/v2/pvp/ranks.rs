@@ -97,7 +97,7 @@ impl Rank {
 
 #[cfg(test)]
 mod tests {
-    use crate::v2::pvp::ranks::{Rank, Levels};
+    use crate::v2::pvp::ranks::Rank;
     use crate::client::Client;
 
     #[test]
