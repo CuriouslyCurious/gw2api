@@ -75,10 +75,10 @@
         * [x] Build
         * [x] Colors
         * [x] Continents
-        * [ ] Event details
-        * [ ] Event names
-        * [ ] Events
-        * [ ] Files
+        * [x] Event details
+        * [ ] Event names (DISABLED)
+        * [ ] Events (DISABLED)
+        * [x] Files
         * [ ] Guild details
         * [ ] Item details
         * [ ] Items
