@@ -4,7 +4,8 @@ use crate::utils::parse_response;
 
 const ENDPOINT_URL: &str = "/v1/items";
 
-/// Contains ids of all player discovered items.
+/// Contains ids of all player discovered items. Details about a particular item can be
+/// obtained from the v1/item_details resource.
 #[derive(Debug, Deserialize, PartialEq)]
 pub struct Items {
     /// List of ids of all discovered items.
