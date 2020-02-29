@@ -1,7 +1,6 @@
 use crate::client::Client;
 use crate::error::ApiError;
 use crate::utils::parse_response;
-use std::collections::HashMap;
 
 const ENDPOINT_URL: &str = "/v1/files";
 
