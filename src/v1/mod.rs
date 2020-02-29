@@ -5,3 +5,5 @@ pub mod event_details;
 pub mod files;
 pub mod guild_details;
 pub mod items;
+pub mod recipes;
+pub mod skins;

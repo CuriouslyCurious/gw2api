@@ -29,7 +29,7 @@ mod tests {
     use crate::v1::recipes::*;
     use crate::client::Client;
 
-    const JSON_ITEMS: &str = r#"
+    const JSON_RECIPES: &str = r#"
     {
       "recipes": [
         1275,
@@ -39,7 +39,7 @@ mod tests {
 
     #[test]
     fn create_recipes() {
-        match serde_json::from_str::<Recipes>(JSON_ITEMS) {
+        match serde_json::from_str::<Recipes>(JSON_RECIPES) {
             Ok(_) => assert!(true),
             Err(e) => panic!(e.to_string()),
         }
