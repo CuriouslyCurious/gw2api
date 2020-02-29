@@ -7,3 +7,4 @@ pub mod guild_details;
 pub mod items;
 pub mod recipes;
 pub mod skins;
+pub mod world_names;
