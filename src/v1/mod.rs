@@ -4,3 +4,4 @@ pub mod continents;
 pub mod event_details;
 pub mod files;
 pub mod guild_details;
+pub mod items;
