@@ -2,6 +2,33 @@ use reqwest::{StatusCode, Response};
 use serde::de::DeserializeOwned;
 use crate::error::ApiError;
 
+/// Possible teams used in WvW or SPvP.
+#[derive(Debug, Deserialize, PartialEq, Hash, Eq)]
+pub enum Team {
+    #[serde(alias = "red")]
+    Red,
+    #[serde(alias = "green")]
+    Green,
+    #[serde(alias = "blue")]
+    Blue,
+    #[serde(alias = "neutral")]
+    Neutral,
+}
+
+/// All the professions currently in the game.
+#[derive(Debug, Deserialize, PartialEq)]
+pub enum Profession {
+    Revenant,
+    Warrior,
+    Guardian,
+    Thief,
+    Ranger,
+    Engineer,
+    Necromancer,
+    Mesmer,
+    Elementalist,
+}
+
 /// Convert a `Vec<T>` to a comma-separated `String`
 pub fn ids_to_string(ids: Vec<impl ToString>) -> String {
     let mut ids: String = ids.iter().map(|id| format!("{},", id.to_string())).collect();

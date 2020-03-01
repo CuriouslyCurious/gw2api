@@ -1,6 +1,6 @@
 use crate::client::Client;
 use crate::error::ApiError;
-use crate::utils::{ids_to_string, parse_response};
+use crate::utils::{ids_to_string, parse_response, Profession, Team};
 use std::collections::HashMap;
 
 const ENDPOINT_URL: &str = "/v2/pvp/games";
@@ -32,31 +32,6 @@ pub struct Game {
     rating_change: Option<i32>,
     /// Season id of the game was played in, if it was played during a season.
     season: Option<String>,
-}
-
-/// Possible teams used in WvW or SPvP.
-#[derive(Debug, Deserialize, PartialEq, Hash, Eq)]
-pub enum Team {
-    #[serde(alias = "red")]
-    Red,
-    #[serde(alias = "green")]
-    Green,
-    #[serde(alias = "blue")]
-    Blue,
-}
-
-/// All the professions currently in the game.
-#[derive(Debug, Deserialize, PartialEq)]
-pub enum Profession {
-    Revenant,
-    Warrior,
-    Guardian,
-    Thief,
-    Ranger,
-    Engineer,
-    Necromancer,
-    Mesmer,
-    Elementalist,
 }
 
 /// Possible types of Structured PvP games.
