@@ -48,7 +48,7 @@ where T: DeserializeOwned {
         // The endpoint might be down or disabled.
         StatusCode::NOT_FOUND => Err(response.json::<ApiError>().unwrap()),
         // Occurs when only some of the content requested exists.
-        //StatusCode::PARTIAL_CONTENT => Ok(response.json::<T>().unwrap()),
+        StatusCode::PARTIAL_CONTENT => Ok(response.json::<T>().unwrap()),
         _ => Err(response.json::<ApiError>().unwrap()),
     }
 }

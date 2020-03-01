@@ -124,11 +124,11 @@ mod tests {
     }
 
     #[test]
-    fn get_id() {
+    fn get_ids() {
         let client = Client::new();
         let mut ids: Vec<u32> = Vec::new();
         ids.push(1);
-        ids.push(3); // does not exist
+        ids.push(90909); // does not exist
         let amulets = Amulet::get_amulets_by_ids(&client, ids).unwrap();
         assert!(amulets.len() == 1);
     }
