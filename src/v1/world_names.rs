@@ -14,7 +14,7 @@ pub struct World {
 }
 
 impl World {
-    /// Retrieve all continents that are in the game.
+    /// Retrieve all world names that are in the game.
     pub fn get_all(client: &Client) -> Result<Vec<World>, ApiError> {
         parse_response(&mut client.request(ENDPOINT_URL)?)
     }
