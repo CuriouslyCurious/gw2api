@@ -76,20 +76,20 @@
         * [x] Colors
         * [x] Continents
         * [x] Event details
-        * [ ] Event names (DISABLED)
+        * [x] Event names (DISABLED)
         * [ ] Events (DISABLED)
         * [x] Files
-        * [ ] Guild details
+        * [x] Guild details
         * [ ] Item details
-        * [ ] Items
+        * [x] Items
         * [ ] Map floor
-        * [ ] Map names
+        * [x] Map names
         * [ ] Maps
         * [ ] Recipe details
-        * [ ] Recipes
+        * [x] Recipes
         * [ ] Skin details
         * [ ] Skins
-        * [ ] World names
+        * [x] World names
         * [ ] WvW (returns 404/503 errors if requested, directly request the sub-endpoints below)
             * [ ] Match details
             * [ ] Matches
