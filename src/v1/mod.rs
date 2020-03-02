@@ -10,3 +10,4 @@ pub mod map_names;
 pub mod recipes;
 pub mod skins;
 pub mod world_names;
+pub mod wvw;
