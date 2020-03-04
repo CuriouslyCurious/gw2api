@@ -91,8 +91,8 @@
         * [ ] Skins
         * [x] World names
         * [ ] WvW (returns 404/503 errors if requested, directly request the sub-endpoints below)
-            * [ ] Match details
-            * [ ] Matches
+            * [x] Match details
+            * [x] Matches
             * [ ] Objective names
 
 ## Q&A
