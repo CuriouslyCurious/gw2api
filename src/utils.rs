@@ -40,6 +40,20 @@ pub enum Race {
     //Tengu when? :(
 }
 
+/// All crafting disciplines currently in the game.
+#[derive(Debug, Deserialize, PartialEq)]
+pub enum Discipline {
+    Artificer,
+    Armorsmith,
+    Chef,
+    Huntsman,
+    Jeweler,
+    Leatherworker,
+    Scribe,
+    Tailor,
+    Weaponsmith,
+}
+
 /// Convert a `Vec<T>` to a comma-separated `String`
 pub fn ids_to_string(ids: Vec<impl ToString>) -> String {
     let mut ids: String = ids.iter().map(|id| format!("{},", id.to_string())).collect();
