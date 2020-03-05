@@ -1,11 +1,10 @@
 use crate::client::Client;
 use crate::error::ApiError;
 use crate::utils::{parse_response, Race};
-use std::collections::HashMap;
 
 const ENDPOINT_URL: &str = "/v1/skin_details";
 
-/// Struct containing a hashmap of all available events in the game.
+/// Struct containing information about a specified skin.
 #[derive(Debug, Deserialize, PartialEq)]
 pub struct Skin {
     /// id of the skin.
