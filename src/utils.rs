@@ -29,6 +29,17 @@ pub enum Profession {
     Elementalist,
 }
 
+/// All possible races currently in the game.
+#[derive(Debug, Deserialize, PartialEq)]
+pub enum Race {
+    Human,
+    Norn,
+    Sylvari,
+    Asura,
+    Charr,
+    //Tengu when? :(
+}
+
 /// Convert a `Vec<T>` to a comma-separated `String`
 pub fn ids_to_string(ids: Vec<impl ToString>) -> String {
     let mut ids: String = ids.iter().map(|id| format!("{},", id.to_string())).collect();

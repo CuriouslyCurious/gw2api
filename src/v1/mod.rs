@@ -8,6 +8,7 @@ pub mod guild_details;
 pub mod items;
 pub mod map_names;
 pub mod recipes;
+pub mod skin_details;
 pub mod skins;
 pub mod world_names;
 pub mod wvw;
