@@ -12,6 +12,22 @@ pub struct Maps {
     maps: HashMap<u32, Map>,
 }
 
+/// Different types of maps.
+#[derive(Debug, Deserialize, PartialEq, Hash)]
+pub enum MapType {
+    Center,
+    Instance,
+    Public,
+    GreenHome,
+    BlueHome,
+    RedHome,
+    Tutorial,
+    Pvp,
+    JumpPuzzle,
+    EdgeOfTheMists,
+    Unknown,
+}
+
 /// Struct containing information about a maps in the game, including information about floor and
 /// translation data on how to translate between world coordinates and map coordinates.
 #[derive(Debug, Deserialize, PartialEq, Hash)]
@@ -20,22 +36,25 @@ pub struct Map {
     #[serde(rename = "map_name")]
     name: String,
     /// Minimum level (height) of the map.
-    min_level: u32,
+    min_level: i32,
     /// Maximum level of the map.
-    max_level: u32,
+    max_level: i32,
     /// Default floor for the map.
-    default_floor: u32,
+    default_floor: i32,
     /// List of available floors.
     #[serde(default)]
-    floors: Vec<u32>,
+    floors: Vec<i32>,
+    /// The type of map.
+    #[serde(default, rename = "type")]
+    map_type: Option<MapType>,
     /// id of the region this map belongs to.
-    region_id: u32,
+    region_id: Option<u32>,
     /// Name of the region this map belongs to.
-    region_name: String,
+    region_name: Option<String>,
     /// id of the continent this map belongs to.
-    continent_id: u32,
+    continent_id: Option<u32>,
     /// Name of the continent this map belongs to.
-    continent_name: String,
+    continent_name: Option<String>,
     /// Dimensions of the map, given as the coordinates of the lower-left (SW) and upper-right (NE)
     /// corners.
     map_rect: Vec<(i32, i32)>,
@@ -69,43 +88,48 @@ impl Map {
     }
 
     /// Returns the minimum level of the map.
-    pub fn min_level(&self) -> u32 {
+    pub fn min_level(&self) -> i32 {
         self.min_level
     }
 
     /// Returns the maximum level of the map.
-    pub fn max_level(&self) -> u32 {
+    pub fn max_level(&self) -> i32 {
         self.max_level
     }
 
     /// Returns the default level of the map.
-    pub fn default_floor(&self) -> u32 {
+    pub fn default_floor(&self) -> i32 {
         self.default_floor
     }
 
     /// Returns the list of available floors.
-    pub fn floors(&self) -> &Vec<u32> {
+    pub fn floors(&self) -> &Vec<i32> {
         &self.floors
     }
 
+    /// Returns the type of the map.
+    pub fn map_type(&self) -> Option<&MapType> {
+        self.map_type.as_ref()
+    }
+
     /// Returns the id of the region this map belongs to.
-    pub fn region_id(&self) -> u32 {
+    pub fn region_id(&self) -> Option<u32> {
         self.region_id
     }
 
     /// Returns the name of the region this map belongs to.
-    pub fn region_name(&self) -> &str {
-        &self.region_name
+    pub fn region_name(&self) -> Option<&String> {
+        self.region_name.as_ref()
     }
 
     /// Returns the id of the continent this map belongs to.
-    pub fn continent_id(&self) -> u32 {
+    pub fn continent_id(&self) -> Option<u32> {
         self.continent_id
     }
 
     /// Returns the name of the continent this map belongs to.
-    pub fn continent_name(&self) -> &str {
-        &self.continent_name
+    pub fn continent_name(&self) -> Option<&String> {
+        self.continent_name.as_ref()
     }
 
     /// Returns the dimensions of the map, given as the coordinates of the lower-left (SW)
@@ -133,6 +157,7 @@ mod tests {
       "max_level": 15,
       "default_floor": 1,
       "floors": [ 1, 3, 2, 0 ],
+      "type": "Public",
       "region_id": 4,
       "region_name": "Kryta",
       "continent_id": 1,
@@ -161,5 +186,11 @@ mod tests {
         let id = 15;
         let map = serde_json::from_str::<Map>(JSON_MAP).unwrap();
         assert_eq!(Maps::get_id(&client, id.to_string()).unwrap().maps()[&id], map)
+    }
+
+    #[test]
+    fn get_all_maps() {
+        let client = Client::new();
+        assert!(Maps::get_all(&client).unwrap().maps().len() >= 50)
     }
 }
