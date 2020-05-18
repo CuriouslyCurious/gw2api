@@ -82,18 +82,18 @@
         * [x] Guild details
         * [ ] Item details
         * [x] Items
-        * [ ] Map floor
+        * [x] Map floor
         * [x] Map names
-        * [ ] Maps
-        * [ ] Recipe details
+        * [x] Maps
+        * [x] Recipe details
         * [x] Recipes
-        * [ ] Skin details
-        * [ ] Skins
+        * [x] Skin details
+        * [x] Skins
         * [x] World names
-        * [ ] WvW (returns 404/503 errors if requested, directly request the sub-endpoints below)
+        * [x] WvW (returns 404/503 errors if requested, directly request the sub-endpoints below)
             * [x] Match details
             * [x] Matches
-            * [ ] Objective names
+            * [x] Objective names
 
 ## Q&A
 Q: Y u do dis?!
