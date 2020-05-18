@@ -111,9 +111,9 @@ mod tests {
     #[test]
     fn get_all_ids() {
         let client = Client::new();
-        // Current PvP amulet ids
-        let num_amulets = 22;
-        assert!(Amulet::get_all_ids(&client).unwrap().len() == num_amulets);
+        // Arbitrary number that the official number of amulets should exceed
+        let num_amulets = 12;
+        assert!(Amulet::get_all_ids(&client).unwrap().len() >= num_amulets);
     }
 
     #[test]
@@ -136,8 +136,9 @@ mod tests {
     #[test]
     fn get_all_amulets() {
         let client = Client::new();
-        let num_amulets = 22; // Current number of amulets in the game.
+        // Arbitrary number that the official number of amulets should exceed
+        let num_amulets = 12;
         let amulets = Amulet::get_all_amulets(&client).unwrap();
-        assert!(amulets.len() == num_amulets);
+        assert!(amulets.len() >= num_amulets);
     }
 }
