@@ -6,6 +6,7 @@ pub mod event_names;
 pub mod files;
 pub mod guild_details;
 pub mod items;
+pub mod map_floor;
 pub mod map_names;
 pub mod maps;
 pub mod recipe_details;
