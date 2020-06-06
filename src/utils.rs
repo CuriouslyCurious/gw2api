@@ -54,6 +54,29 @@ pub enum Discipline {
     Weaponsmith,
 }
 
+/// All item rarities currently in the game.
+#[derive(Debug, Deserialize, PartialEq)]
+pub enum Rarity {
+    Ascended,
+    Basic,
+    Exotic,
+    Fine,
+    Junk,
+    Legendary,
+    Masterwork,
+    Rare,
+}
+
+/// All armor weight class.
+#[derive(Debug, Deserialize, PartialEq)]
+pub enum WeightClass {
+    Clothing,
+    Heavy,
+    Light,
+    Medium,
+}
+
+
 /// Convert a `Vec<T>` to a comma-separated `String`
 pub fn ids_to_string(ids: Vec<impl ToString>) -> String {
     let mut ids: String = ids.iter().map(|id| format!("{},", id.to_string())).collect();
