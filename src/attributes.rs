@@ -1,5 +1,3 @@
-use serde::Deserialize;
-
 /// The available attributes that can be returned by the API.
 #[derive(Debug, PartialEq, Deserialize, Hash, Eq)]
 pub enum Attribute {

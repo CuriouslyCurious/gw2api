@@ -1,8 +1,11 @@
-use reqwest::{self, Response, StatusCode};
-use reqwest::header::HeaderMap;
+use ureq::{Header, Response};
 use crate::error::ApiError;
+use serde::de::DeserializeOwned;
 
+// Base url to the GW2 API.
 pub const BASE_URL: &str = "https://api.guildwars2.com";
+// Wait max 10 seconds for a response from the server.
+pub const TIMEOUT: u64 = 10_000;
 
 /// All available localisations that are supported by the official Guild Wars 2 API.
 #[derive(Debug, PartialEq)]
@@ -34,8 +37,6 @@ pub struct Client {
     /// The language that the response will be in. Defaults to English if left empty as per the
     /// official Guild Wars 2 API behvaiour.
     lang: Option<Localisation>,
-    /// The reqwest client that actually handles any request.
-    client: reqwest::Client,
 }
 
 impl Client {
@@ -44,7 +45,6 @@ impl Client {
         Client {
             api_key: None,
             lang: None,
-            client: reqwest::Client::new(),
         }
     }
 
@@ -60,13 +60,34 @@ impl Client {
         self
     }
 
+    /// Creates a language HTTP header from the client's given language, if no language is given it
+    /// will default to English.
+    fn create_lang_header(&self) -> Header {
+        let lang = self.lang().unwrap_or(&Localisation::English).to_string();
+        let header = Header::new("Accept-Language", &lang);
+        header
+    }
+
+    /// Creates a HTTP authorization header from the client's given API key, if no key is set it
+    /// will panic.
+    fn create_auth_header(&self) -> Header {
+        let api_key = self.api_key().expect("Guild Wars 2 API key is not set").to_owned();
+        let header = Header::new("Authorization", &format!("Bearer {}", api_key));
+        header
+    }
+
     /// Make a request to the Guild Wars 2 API with the given url (which has to include version)
     /// as endpoint.
-    pub fn request(&self, url: &str) -> Result<Response, ApiError> {
+    pub fn request<T>(&self, url: &str) -> Result<T, ApiError>
+    where T: DeserializeOwned {
         let full_url = format!("{base_url}/{url}", base_url=BASE_URL, url=url);
-        let headers = self.create_lang_header();
-
-        Client::handle_request(self.client.get(&full_url).headers(headers).send())
+        let lang_header = self.create_lang_header();
+        let response = ureq::get(&full_url)
+            .set(lang_header.name(), lang_header.value())
+            .timeout_connect(TIMEOUT)
+            .timeout_read(TIMEOUT)
+            .call();
+        Client::handle_response(response)
     }
 
     /// Make an authenticated request to the Guild Wars 2 API with the given url (which has to
@@ -76,46 +97,39 @@ impl Client {
     /// This function may fail depending on what the settings of the API key itself are, since you
     /// can limit what resources a certain key may access. In that case the function will return
     /// an error.
-    pub fn authenticated_request(&self, url: &str) -> Result<Response, ApiError> {
+    pub fn authenticated_request<T>(&self, url: &str) -> Result<T, ApiError>
+    where T: DeserializeOwned {
         let full_url = format!("{base_url}/{url}", base_url=BASE_URL, url=url);
-        let mut headers = self.create_lang_header();
+        let lang_header = self.create_lang_header();
+        let auth_header = self.create_auth_header();
 
-        // Create authorization header
-        let api_key = self.api_key().expect("Guild Wars 2 API key is not set").to_owned();
-        headers.insert(reqwest::header::AUTHORIZATION, format!("Bearer {}", api_key).parse().unwrap());
-
-        Client::handle_request(self.client.get(&full_url).headers(headers).send())
-    }
-
-    /// Creates a language HTTP header from the client's given language, if no language is given it
-    /// will default to English.
-    fn create_lang_header(&self) -> HeaderMap {
-        let lang = self.lang().unwrap_or(&Localisation::English).to_string();
-
-        let mut headers = HeaderMap::new();
-        headers.insert(reqwest::header::ACCEPT_LANGUAGE, lang.parse().unwrap());
-        headers
+        let response = ureq::get(&full_url)
+            .set(lang_header.name(), lang_header.value())
+            .set(auth_header.name(), auth_header.value())
+            .timeout_connect(TIMEOUT)
+            .timeout_read(TIMEOUT)
+            .call();
+        Client::handle_response(response)
     }
 
     /// Handles the initial response of a request by looking at the status codes or if the request
-    /// timed out. Returns the response or raises an `ApiError` upon a receiving an error,
+    /// timed out. Returns the deserialized type or raises an `ApiError` upon a receiving an error,
     /// respectively.
-    fn handle_request(response: Result<Response, reqwest::Error>) -> Result<Response, ApiError>{
-        if response.is_ok() {
-            let mut response = response.unwrap();
-            match response.status() {
-                StatusCode::NOT_FOUND => Err(ApiError::new(response.text().unwrap())),
-                StatusCode::FORBIDDEN => Err(ApiError::new(response.text().unwrap())),
-                _ => Ok(response),
-            }
+    fn handle_response<T>(response: Response) -> Result<T, ApiError>
+    where T: DeserializeOwned {
+        if response.ok() {
+            return Ok(response.into_json_deserialize::<T>().unwrap());
         } else {
-            let error = response.unwrap_err();
-            if error.is_timeout() {
-                Err(ApiError::new("Client timed out. Probably due to the official API being down.".to_string()))
-            } else {
-                Err(ApiError::new("An error occurred accessing the API. This might be because your internet connection is down.".to_string()))
+            match response.status() {
+                // Forbidden
+                403 => Err(ApiError::new(response.into_json().unwrap())),
+                // Not Found
+                404 => Err(ApiError::new(response.into_json().unwrap())),
+                // Timeout
+                408 =>
+                Err(ApiError::new("Client timed out. Probably due to the official API being down.".to_string())),
+                _ => Err(ApiError::new(response.into_json().unwrap())),
             }
-
         }
     }
 
@@ -136,16 +150,15 @@ impl Client {
             None => None,
         }
     }
-
-    /// Returns a reference to the underlying reqwest client.
-    pub fn client(&self) -> &reqwest::Client {
-        &self.client
-    }
 }
 
 #[cfg(test)]
 mod tests {
     use crate::client::*;
+    //TODO: Make tests for:
+    //  * timeout
+    //  * requesting any endpoint
+    //  * errors - parsing and otherwise
 
     #[test]
     fn create_client() {
