@@ -1,6 +1,6 @@
 use crate::client::Client;
 use crate::error::ApiError;
-use crate::utils::parse_response;
+
 use std::collections::BTreeMap;
 
 const ENDPOINT_URL: &str = "/v1/map_floor";
@@ -245,7 +245,7 @@ impl Floor {
     /// Retrieve a map floor by its continent id and floor number.
     pub fn get_map_floor(client: &Client, continent_id: u32, floor: i32) -> Result<Floor, ApiError> {
         let url = format!("{}?continent_id={}&floor={}", ENDPOINT_URL, continent_id, floor);
-        parse_response(&mut client.request(&url)?)
+        client.request(&url)
     }
 
     /// Returns a tuple describing the dimension of the texture for the map floor.

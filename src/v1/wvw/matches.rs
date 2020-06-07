@@ -1,6 +1,6 @@
 use crate::client::Client;
 use crate::error::ApiError;
-use crate::utils::parse_response;
+
 
 const ENDPOINT_URL: &str = "/v1/wvw/matches";
 
@@ -34,7 +34,7 @@ pub struct Match {
 impl Matches {
     /// Retrieve all currently running WvW matches.
     pub fn get_all(client: &Client) -> Result<Matches, ApiError> {
-        parse_response(&mut client.request(ENDPOINT_URL)?)
+        client.request(ENDPOINT_URL)
     }
 
     /// Returns a list of WvW matches.

@@ -1,6 +1,6 @@
 use crate::client::Client;
 use crate::error::ApiError;
-use crate::utils::parse_response;
+
 use std::collections::HashMap;
 
 const ENDPOINT_URL: &str = "/v1/continents";
@@ -32,7 +32,7 @@ pub struct Continent {
 impl Continents {
     /// Retrieve all continents that are in the game.
     pub fn get_all_continents(client: &Client) -> Result<Continents, ApiError> {
-        parse_response(&mut client.request(ENDPOINT_URL)?)
+        client.request(ENDPOINT_URL)
     }
 
     /// Returns the hashmap containing all the continents.

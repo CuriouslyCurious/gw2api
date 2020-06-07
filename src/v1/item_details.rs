@@ -1,7 +1,7 @@
 use crate::client::Client;
 use crate::error::ApiError;
 use crate::attributes::Attribute;
-use crate::utils::{parse_response, Rarity};
+use crate::utils::Rarity;
 
 const ENDPOINT_URL: &str = "/v1/item_details";
 
@@ -541,7 +541,7 @@ impl Item {
     /// Retrieve an item by its id.
     pub fn get_id(client: &Client, id: u32) -> Result<Item, ApiError> {
         let url = format!("{}?item_id={}", ENDPOINT_URL, id);
-        parse_response(&mut client.request(&url)?)
+        client.request(&url)
     }
 
     /// Returns the id of the item.

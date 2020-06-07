@@ -1,6 +1,6 @@
 use crate::client::Client;
 use crate::error::ApiError;
-use crate::utils::{parse_response, Discipline};
+use crate::utils::Discipline;
 
 const ENDPOINT_URL: &str = "/v1/recipe_details";
 
@@ -111,7 +111,7 @@ impl Recipe {
     /// Retrieve a recipe by its id.
     pub fn get_id(client: &Client, id: String) -> Result<Recipe, ApiError> {
         let url = format!("{}?recipe_id={}", ENDPOINT_URL, id);
-        parse_response(&mut client.request(&url)?)
+        client.request(&url)
     }
 
     /// Returns the id of the recipe.

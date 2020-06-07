@@ -1,6 +1,6 @@
 use crate::client::Client;
 use crate::error::ApiError;
-use crate::utils::parse_response;
+
 
 const ENDPOINT_URL: &str = "/v1/world_names";
 
@@ -16,7 +16,7 @@ pub struct World {
 impl World {
     /// Retrieve all world names that are in the game.
     pub fn get_all(client: &Client) -> Result<Vec<World>, ApiError> {
-        parse_response(&mut client.request(ENDPOINT_URL)?)
+        client.request(ENDPOINT_URL)
     }
 
     /// Returns the id of the world.

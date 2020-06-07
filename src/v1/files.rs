@@ -1,6 +1,6 @@
 use crate::client::Client;
 use crate::error::ApiError;
-use crate::utils::parse_response;
+
 
 const ENDPOINT_URL: &str = "/v1/files";
 
@@ -138,7 +138,7 @@ pub struct File {
 impl Files {
     /// Retrieve information about commonly requested in-game assets (icons) that are in the game.
     pub fn get_all_files(client: &Client) -> Result<Files, ApiError> {
-        parse_response(&mut client.request(ENDPOINT_URL)?)
+        client.request(ENDPOINT_URL)
     }
 
     /// Return File object for map_complete

@@ -1,18 +1,20 @@
 use crate::client::Client;
 use crate::error::ApiError;
-use crate::utils::parse_response;
+
+const ENDPOINT_URL: &str = "/v1/build";
 
 /// Contains a Guild Wars 2 build version id
 #[derive(Debug, Deserialize)]
 pub struct Build {
     /// The current build version id
+    #[serde(rename = "build_id")]
     id: u32,
 }
 
 impl Build {
     /// Returns a Build struct containing the current build version within the `id` field.
     pub fn get_build(client: &Client) -> Result<Build, ApiError> {
-        parse_response(&mut client.request("/v2/build")?)
+        client.request(ENDPOINT_URL)
     }
 
     /// Returns the id of the current Guild Wars 2 build version
@@ -24,7 +26,7 @@ impl Build {
 #[cfg(test)]
 mod tests {
     use crate::client::Client;
-    use crate::v2::build::Build;
+    use crate::v1::build::Build;
     #[test]
     fn get_build() {
         let client = Client::new();

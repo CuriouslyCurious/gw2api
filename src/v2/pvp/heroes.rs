@@ -1,6 +1,6 @@
 use crate::client::Client;
 use crate::error::ApiError;
-use crate::utils::{ids_to_string, parse_response};
+use crate::utils::ids_to_string;
 
 const ENDPOINT_URL: &str = "/v2/pvp/heroes";
 
@@ -57,24 +57,24 @@ impl Hero {
     /// Retrieve a hero by its id.
     pub fn get_id(client: &Client, id: String) -> Result<Hero, ApiError> {
         let url = format!("{}?id={}", ENDPOINT_URL, id);
-        parse_response(&mut client.request(&url)?)
+        client.request(&url)
     }
 
     /// Retrieve the ids for all available heroes.
     pub fn get_all_ids(client: &Client) -> Result<Vec<String>, ApiError> {
-        parse_response(&mut client.request(&ENDPOINT_URL)?)
+        client.request(ENDPOINT_URL)
     }
 
     /// Retrieve all heroes that are available.
     pub fn get_all_heroes(client: &Client) -> Result<Vec<Hero>, ApiError> {
         let url = format!("{}?ids=all", ENDPOINT_URL);
-        parse_response(&mut client.request(&url)?)
+        client.request(&url)
     }
 
     /// Retrive heroes by their ids.
     pub fn get_heroes_by_ids(client: &Client, ids: Vec<String>) -> Result<Vec<Hero>, ApiError> {
         let url = format!("{}?ids={}", ENDPOINT_URL, ids_to_string(ids));
-        parse_response(&mut client.request(&url)?)
+        client.request(&url)
     }
 
     /// Returns the requested id of the hero.

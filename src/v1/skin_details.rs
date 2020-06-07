@@ -1,6 +1,6 @@
 use crate::client::Client;
 use crate::error::ApiError;
-use crate::utils::{parse_response, Race};
+use crate::utils::Race;
 
 const ENDPOINT_URL: &str = "/v1/skin_details";
 
@@ -50,7 +50,7 @@ impl Skin {
     /// Retrieve a skin by its id.
     pub fn get_id(client: &Client, id: String) -> Result<Skin, ApiError> {
         let url = format!("{}?skin_id={}", ENDPOINT_URL, id);
-        parse_response(&mut client.request(&url)?)
+        client.request(&url)
     }
 
     /// Returns the id of the skin.

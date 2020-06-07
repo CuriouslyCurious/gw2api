@@ -1,6 +1,6 @@
 use crate::client::Client;
 use crate::error::ApiError;
-use crate::utils::parse_response;
+
 use std::collections::HashMap;
 
 const ENDPOINT_URL: &str = "/v1/event_details";
@@ -78,12 +78,12 @@ impl Events {
     /// Retrieve an event by its id.
     pub fn get_id(client: &Client, id: String) -> Result<Events, ApiError> {
         let url = format!("{}?event_id={}", ENDPOINT_URL, id);
-        parse_response(&mut client.request(&url)?)
+        client.request(&url)
     }
 
     /// Retrieve all continents that are in the game.
     pub fn get_all_events(client: &Client) -> Result<Events, ApiError> {
-        parse_response(&mut client.request(ENDPOINT_URL)?)
+        client.request(ENDPOINT_URL)
     }
 
     /// Returns the hashmap containing all the events.

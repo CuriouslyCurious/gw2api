@@ -1,6 +1,6 @@
 use crate::client::Client;
 use crate::error::ApiError;
-use crate::utils::{parse_response, Team};
+use crate::utils::Team;
 
 const ENDPOINT_URL: &str = "/v1/wvw/match_details";
 
@@ -71,7 +71,7 @@ impl Match {
     /// Retrieve a match by its id.
     pub fn get_by_id(client: &Client, id: String) -> Result<Match, ApiError> {
         let url = format!("{}?match_id={}", ENDPOINT_URL, id);
-        parse_response(&mut client.request(&url)?)
+        client.request(&url)
     }
 
     /// Returns the id of the match.

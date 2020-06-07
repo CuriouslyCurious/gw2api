@@ -1,6 +1,6 @@
 use crate::client::Client;
 use crate::error::ApiError;
-use crate::utils::parse_response;
+
 
 const ENDPOINT_URL: &str = "/v1/guild_details";
 
@@ -50,13 +50,13 @@ impl Guild {
     /// Retrieve a guild by its id.
     pub fn get_by_id(client: &Client, id: String) -> Result<Guild, ApiError> {
         let url = format!("{}?guild_id={}", ENDPOINT_URL, id);
-        parse_response(&mut client.request(&url)?)
+        client.request(&url)
     }
 
     /// Retrieve a guild by its name.
     pub fn get_by_name(client: &Client, name: String) -> Result<Guild, ApiError> {
         let url = format!("{}?guild_name={}", ENDPOINT_URL, name);
-        parse_response(&mut client.request(&url)?)
+        client.request(&url)
     }
 
     /// Returns the id of the guild.

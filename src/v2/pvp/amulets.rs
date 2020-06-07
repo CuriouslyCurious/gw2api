@@ -1,7 +1,7 @@
 use crate::attributes::Attribute;
 use crate::client::Client;
 use crate::error::ApiError;
-use crate::utils::{ids_to_string, parse_response};
+use crate::utils::ids_to_string;
 
 use std::collections::HashMap;
 
@@ -26,25 +26,25 @@ impl Amulet {
     /// Retrieve an amulet by its id.
     pub fn get_id(client: &Client, id: u32) -> Result<Amulet, ApiError> {
         let url = format!("{}?id={}", ENDPOINT_URL, id);
-        parse_response(&mut client.request(&url)?)
+        client.request(&url)
     }
 
     /// Retrieve all ids for the available PvP amulets, returning a `Vec` of ids.
     pub fn get_all_ids(client: &Client) -> Result<Vec<u32>, ApiError> {
-        parse_response(&mut client.request(ENDPOINT_URL)?)
+        client.request(ENDPOINT_URL)
     }
 
     /// Retrieve multiple amulets by their ids, if any of the ids do not exist it will not be in the
     /// returned `Vec`, if all the ids are invalid the `Vec` will be empty.
     pub fn get_amulets_by_ids(client: &Client, ids: Vec<u32>) -> Result<Vec<Amulet>, ApiError> {
         let url = format!("{}?ids={}", ENDPOINT_URL, ids_to_string(ids));
-        parse_response(&mut client.request(&url)?)
+        client.request(&url)
     }
 
     /// Retrieve all available amulets, returning a `Vec` of `Amulet` objects.
     pub fn get_all_amulets(client: &Client) -> Result<Vec<Amulet>, ApiError> {
         let url = format!("{}?ids=all", ENDPOINT_URL);
-        parse_response(&mut client.request(&url)?)
+        client.request(&url)
     }
 
     /// Returns the ID of the `Amulet` object.

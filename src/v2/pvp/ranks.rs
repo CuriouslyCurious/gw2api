@@ -1,6 +1,6 @@
 use crate::client::Client;
 use crate::error::ApiError;
-use crate::utils::{ids_to_string, parse_response};
+use crate::utils::ids_to_string;
 
 const ENDPOINT_URL: &str = "/v2/pvp/ranks";
 
@@ -41,25 +41,25 @@ pub struct Levels {
 impl Rank {
     /// Retrieve all available rank ids.
     pub fn get_all_ids(client: &Client) -> Result<u32, ApiError> {
-        parse_response(&mut client.request(ENDPOINT_URL)?)
+        client.request(ENDPOINT_URL)
     }
 
     /// Retrieve a certain rank's information by its id.
     pub fn get_id(client: &Client, id: u32) -> Result<Rank, ApiError> {
         let url = format!("{}?ids={}", ENDPOINT_URL, id);
-        parse_response(&mut client.request(&url)?)
+        client.request(&url)
     }
 
     /// Retrieve all ranks.
     pub fn get_all_ranks(client: &Client) -> Result<Vec<Rank>, ApiError> {
         let url = format!("{}?ids=all", ENDPOINT_URL);
-        parse_response(&mut client.request(&url)?)
+        client.request(&url)
     }
 
     /// Retrive ranks' information by their ids.
     pub fn get_ranks_by_ids(client: &Client, ids: Vec<String>) -> Result<Vec<Rank>, ApiError> {
         let url = format!("{}?ids={}", ENDPOINT_URL, ids_to_string(ids));
-        parse_response(&mut client.authenticated_request(&url)?)
+        client.request(&url)
     }
 
     /// Returns the requested id of the hero.

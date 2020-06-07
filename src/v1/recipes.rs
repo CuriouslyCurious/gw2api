@@ -1,6 +1,6 @@
 use crate::client::Client;
 use crate::error::ApiError;
-use crate::utils::parse_response;
+
 
 const ENDPOINT_URL: &str = "/v1/recipes";
 
@@ -15,7 +15,7 @@ pub struct Recipes {
 impl Recipes {
     /// Retrieve all discovered recipes' ids.
     pub fn get_all(client: &Client) -> Result<Recipes, ApiError> {
-        parse_response(&mut client.request(ENDPOINT_URL)?)
+        client.request(ENDPOINT_URL)
     }
 
     /// Returns the list of all player discovered recipe ids.

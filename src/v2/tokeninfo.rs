@@ -1,6 +1,5 @@
 use crate::client::Client;
 use crate::error::ApiError;
-use crate::utils::parse_response;
 use serde::{Deserialize, Deserializer};
 
 /// Information about a supplied API key.
@@ -19,7 +18,7 @@ impl TokenInfo {
     /// Returns a `TokenInfo` struct containing the id given, the key's name and what permissions are
     /// set for the `Client`'s key.
     pub fn get_tokeninfo(client: &Client) -> Result<TokenInfo, ApiError> {
-        parse_response(&mut client.authenticated_request("/v2/tokeninfo")?)
+        client.authenticated_request("/v2/tokeninfo")
     }
 
     /// Returns the id of the API key.

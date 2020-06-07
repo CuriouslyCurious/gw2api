@@ -1,6 +1,6 @@
 use crate::client::Client;
 use crate::error::ApiError;
-use crate::utils::parse_response;
+
 
 const ENDPOINT_URL: &str = "/v1/skins";
 
@@ -15,7 +15,7 @@ pub struct Skins {
 impl Skins {
     /// Retrieve all skins' ids.
     pub fn get_all(client: &Client) -> Result<Skins, ApiError> {
-        parse_response(&mut client.request(ENDPOINT_URL)?)
+        client.request(ENDPOINT_URL)
     }
 
     /// Returns the list of all skins' ids.

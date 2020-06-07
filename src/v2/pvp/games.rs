@@ -1,6 +1,6 @@
 use crate::client::Client;
 use crate::error::ApiError;
-use crate::utils::{ids_to_string, parse_response, Profession, Team};
+use crate::utils::{ids_to_string, Profession, Team};
 use std::collections::HashMap;
 
 const ENDPOINT_URL: &str = "/v2/pvp/games";
@@ -47,24 +47,24 @@ impl Game {
     /// Retrieve a game by its id.
     pub fn get_id(client: &Client, id: String) -> Result<Game, ApiError> {
         let url = format!("{}?id={}", ENDPOINT_URL, id);
-        parse_response(&mut client.authenticated_request(&url)?)
+        client.authenticated_request(&url)?
     }
 
     /// Retrieve ids of all recently played games.
     pub fn get_all_ids(client: &Client) -> Result<Vec<String>, ApiError> {
-        parse_response(&mut client.authenticated_request(ENDPOINT_URL)?)
+        client.authenticated_request(ENDPOINT_URL)
     }
 
     /// Retrieve all games that have been played, capped at 10 most recent games.
     pub fn get_all_games(client: &Client) -> Result<Vec<Game>, ApiError> {
         let url = format!("{}?ids=all", ENDPOINT_URL);
-        parse_response(&mut client.authenticated_request(&url)?)
+        client.authenticated_request(&url)
     }
 
     /// Retrive games by their ids.
     pub fn get_games_by_ids(client: &Client, ids: Vec<String>) -> Result<Vec<Game>, ApiError> {
         let url = format!("{}?ids={}", ENDPOINT_URL, ids_to_string(ids));
-        parse_response(&mut client.authenticated_request(&url)?)
+        client.authenticated_request(&url)
     }
 
     /// Returns the requested id of the game.
@@ -194,7 +194,7 @@ mod tests {
         let api_key = env::var("GW2_TEST_KEY").expect("GW2_TEST_KEY environment variable is not set.");
         let client = Client::new().set_api_key(api_key);
         let id = "1".to_string();
-        assert_eq!(Err(ApiError::new("{\n  \"text\": \"no such id\"\n}".to_string())), Game::get_id(&client, id.clone()));
+        assert_eq!(Err(ApiError::new("{\"text\":\"no such id\"}".to_string())), Game::get_id(&client, id.clone()));
     }
 
     #[test]
@@ -202,7 +202,7 @@ mod tests {
         let api_key = env::var("GW2_TEST_KEY").expect("GW2_TEST_KEY environment variable is not set.");
         let ids = vec!("1".to_string(), "2".to_string());
         let client = Client::new().set_api_key(api_key);
-        assert_eq!(Err(ApiError::new("{\n  \"text\": \"all ids provided are invalid\"\n}".to_string())), Game::get_games_by_ids(&client, ids));
+        assert_eq!(Err(ApiError::new("{\"text\":\"all ids provided are invalid\"}".to_string())), Game::get_games_by_ids(&client, ids));
     }
 
 }

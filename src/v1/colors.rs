@@ -1,6 +1,6 @@
 use crate::client::Client;
 use crate::error::ApiError;
-use crate::utils::parse_response;
+
 use std::collections::HashMap;
 
 const ENDPOINT_URL: &str = "/v1/colors";
@@ -58,7 +58,7 @@ pub struct Material {
 impl Colors {
     /// Retrieve all dyes that are in the game.
     pub fn get_all_dyes(client: &Client) -> Result<Colors, ApiError> {
-        parse_response(&mut client.request(ENDPOINT_URL)?)
+        client.request(ENDPOINT_URL)
     }
 
     /// Returns the hashmap containing all the dyes.

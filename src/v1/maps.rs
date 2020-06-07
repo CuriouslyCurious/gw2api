@@ -1,6 +1,6 @@
 use crate::client::Client;
 use crate::error::ApiError;
-use crate::utils::parse_response;
+
 use std::collections::HashMap;
 
 const ENDPOINT_URL: &str = "/v1/maps";
@@ -67,12 +67,12 @@ impl Maps {
     /// Retrieve a map by its id.
     pub fn get_id(client: &Client, id: String) -> Result<Maps, ApiError> {
         let url = format!("{}?map_id={}", ENDPOINT_URL, id);
-        parse_response(&mut client.request(&url)?)
+        client.request(&url)
     }
 
     /// Retrieve a map by its id.
     pub fn get_all(client: &Client) -> Result<Maps, ApiError> {
-        parse_response(&mut client.request(ENDPOINT_URL)?)
+        client.request(ENDPOINT_URL)
     }
 
     /// Returns the map of matched map objects.
