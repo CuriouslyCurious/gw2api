@@ -6,12 +6,18 @@
 [![codecov](https://codecov.io/gh/CuriouslyCurious/gw2api/branch/master/graph/badge.svg)](https://codecov.io/gh/CuriouslyCurious/gw2api)
 
 `gw2api` is a **WIP** wrapper over the official Guild Wars 2 API written in **Rust** using
-[reqwest](https://github.com/seanmonstar/reqwest) as the underlying request maker.
+[ureq](https://github.com/algesten/ureq) as the underlying request maker.
 
-## TODO:
-* Finish up PvP endpoints.
-* Remember to add getters for sub structs.
+ ```rust
+ use gw2api::client::Client;
+ use gw2api::v1::build::Build;
 
+ let client = Client::new();
+ let build = Build::get_build(&client).unwrap();
+ println!("Current build id: {}", build.id());
+ ```
+
+## Currently supported endpoints:
 * [ ] Endpoints
     * [ ] V2
         * [ ] Account
@@ -71,16 +77,16 @@
             * [ ] Worlds
             * [ ] Minis
             * [x] Tokeninfo
-    * [ ] V1
+    * [x] V1
         * [x] Build
         * [x] Colors
         * [x] Continents
         * [x] Event details
         * [x] Event names (DISABLED)
-        * [ ] Events (DISABLED)
+        * [ ] Events (DISABLED) - won't fix
         * [x] Files
         * [x] Guild details
-        * [ ] Item details
+        * [x] Item details
         * [x] Items
         * [x] Map floor
         * [x] Map names
@@ -100,7 +106,7 @@ Q: Y u do dis?!
 
 A: There simply didn't exist a fully functional API wrapper for the API, which I needed.
 It's also a good learning experience in how to write wrappers, planning out project structure
-and implementing tests. All in all; yay.
+and implementing tests. All in all; yay, I spent way too much time on this. (╥\_╥)
 
 ## Shoutouts
 * [tyria-rs](https://github.com/rmed/tyria-rs) - where I stole some of the project structure from.

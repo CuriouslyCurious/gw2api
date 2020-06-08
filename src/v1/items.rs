@@ -1,7 +1,6 @@
 use crate::client::Client;
 use crate::error::ApiError;
 
-
 const ENDPOINT_URL: &str = "/v1/items";
 
 /// Contains ids of all player discovered items. Details about a particular item can be
