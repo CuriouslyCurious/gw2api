@@ -1,6 +1,7 @@
-
 # **WIP** gw2api
 [![Build Status](https://travis-ci.org/CuriouslyCurious/gw2api.svg?branch=master)](https://travis-ci.org/CuriouslyCurious/gw2api)
+[![Crates.io](https://img.shields.io/crates/v/gw2api.svg)](https://crates.io/crates/gw2api)
+[![Documentation](https://docs.rs/gw2api/badge.svg)](https://docs.rs/gw2api)
 [![License:MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![License:Apache-2.0](https://img.shields.io/badge/License-APACHE-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![codecov](https://codecov.io/gh/CuriouslyCurious/gw2api/branch/master/graph/badge.svg)](https://codecov.io/gh/CuriouslyCurious/gw2api)
