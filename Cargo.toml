@@ -1,9 +1,9 @@
 [package]
 name = "gw2api"
-version = "0.1.0"
+version = "0.2.0"
 authors = ["CuriouslyCurious <thecuriouslycurious@protonmail.com>"]
 edition = "2018"
-publish = false
+publish = true
 
 description = "A sort-of well-documented and WIP wrapper over the Guild Wars 2 API"
 readme = "README.md"
