@@ -98,7 +98,7 @@ impl Rank {
 #[cfg(test)]
 mod tests {
     use crate::v2::pvp::ranks::Rank;
-    use crate::client::Client;
+    //use crate::client::Client;
 
     #[test]
     fn create_rank() {

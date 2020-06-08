@@ -1,7 +1,6 @@
 use crate::client::Client;
 use crate::error::ApiError;
 
-
 const ENDPOINT_URL: &str = "/v1/event_names";
 
 /// NOTE: This endpoint is disabled, and will only return errors.
@@ -34,7 +33,7 @@ impl Event {
 #[cfg(test)]
 mod tests {
     use crate::v1::event_names::*;
-    use crate::client::Client;
+    //use crate::client::Client;
 
     const JSON_EVENT: &str = r#"
     {
