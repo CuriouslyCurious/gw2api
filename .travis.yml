@@ -1,44 +1,27 @@
 language: rust
-
-sudo: required
+sudo: false
 
 rust:
     - stable
-#cache: cargo
-
-#before_cache: |
-#    if [[ "$TRAVIS_RUST_VERSION" == stable ]]; then
-#        rm -rf "$TRAVIS_HOME/.cargo/registry/src"
-#    fi
-
-script:
-    - cargo clean
-    - cargo test # builds and creates the test binary needed for kcov
+cache: cargo
 
 addons:
     apt:
         packages:
-            - libcurl4-openssl-dev
-            - libelf-dev
-            - libdw-dev
-            - cmake
-            - gcc
-            - binutils-dev
-            - libiberty-dev
+            - libssl-dev
+
+before_script: |
+    if [[ "$TRAVIS_RUST_VERSION" == stable ]]; then
+        cargo install cargo-tarpaulin
+    fi
+
+script:
+    - cargo clean
+    - cargo build --verbose --all
+    - cargo test --verbose --all # builds and creates the test binary needed for kcov
 
 after_success: |
-    wget https://github.com/SimonKagstrom/kcov/archive/master.tar.gz
-    tar xzf master.tar.gz
-    cd kcov-master
-    mkdir build
-    cd build
-    cmake ..
-    make
-    make install DESTDIR=../../kcov-build
-    cd ../..
-    rm -rf kcov-master
-    for file in target/debug/gw2api-*; do [ -x "${file}" ] || continue; mkdir -p "target/cov/$(basename $file)"; ./kcov-build/usr/local/bin/kcov --exclude-pattern=/.cargo,/usr/lib --verify "target/cov/$(basename $file)" "$file"; done
-    bash <(curl -s https://codecov.io/bash)
-    find target -maxdepth 2 -not -path "target/package/*" -not -path "target/doc/*"
-    echo "Uploaded code coverage"
-
+    if [[ "$TRAVIS_RUST_VERSION" == stable ]]; then
+        cargo tarpaulin --out Xml
+        bash <(curl -s https://codecov.io/bash)
+    fi
