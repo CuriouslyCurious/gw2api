@@ -1,9 +1,16 @@
 language: rust
 sudo: false
 
+cache: cargo
+
 rust:
     - stable
-cache: cargo
+    - beta
+    - nightly
+matrix:
+    allow_failures:
+        - rust: nightly
+    fast_finish: true
 
 addons:
     apt:
@@ -18,10 +25,14 @@ before_script: |
 script:
     - cargo clean
     - cargo build --verbose --all
-    - cargo test --verbose --all # builds and creates the test binary needed for kcov
+    - cargo test --verbose --all
 
 after_success: |
     if [[ "$TRAVIS_RUST_VERSION" == stable ]]; then
         cargo tarpaulin --out Xml
         bash <(curl -s https://codecov.io/bash)
     fi
+
+notifications:
+    email:
+        on_success: never
