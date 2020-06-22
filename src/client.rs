@@ -31,6 +31,7 @@ impl ToString for Localisation {
 }
 
 /// Client that performs requests to the API
+#[derive(Default)]
 pub struct Client {
     /// The API key used for endpoints that require authentication.
     api_key: Option<String>,
@@ -64,16 +65,14 @@ impl Client {
     /// will default to English.
     fn create_lang_header(&self) -> Header {
         let lang = self.lang().unwrap_or(&Localisation::English).to_string();
-        let header = Header::new("Accept-Language", &lang);
-        header
+        Header::new("Accept-Language", &lang)
     }
 
     /// Creates a HTTP authorization header from the client's given API key, if no key is set it
     /// will panic.
     fn create_auth_header(&self) -> Header {
         let api_key = self.api_key().expect("Guild Wars 2 API key is not set").to_owned();
-        let header = Header::new("Authorization", &format!("Bearer {}", api_key));
-        header
+        Header::new("Authorization", &format!("Bearer {}", api_key))
     }
 
     /// Make a request to the Guild Wars 2 API with the given url (which has to include version)
@@ -118,7 +117,7 @@ impl Client {
     fn handle_response<T>(response: Response) -> Result<T, ApiError>
     where T: DeserializeOwned {
         if response.ok() {
-            return Ok(response.into_json_deserialize::<T>().unwrap());
+            Ok(response.into_json_deserialize::<T>().unwrap())
         } else {
             match response.status() {
                 // Forbidden
