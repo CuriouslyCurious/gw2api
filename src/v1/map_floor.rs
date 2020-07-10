@@ -179,6 +179,7 @@ pub enum PointType {
     Tyria,
     Maguuma,
     Desert,
+    Tundra,
     Unknown,
 }
 
