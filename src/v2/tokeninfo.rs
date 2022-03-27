@@ -1,17 +1,18 @@
-use crate::client::Client;
-use crate::error::ApiError;
 use serde::{Deserialize, Deserializer};
 
+use crate::client::Client;
+use crate::error::ApiError;
+
 /// Information about a supplied API key.
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, PartialEq)]
 pub struct TokenInfo {
     /// The API key that was requested.
-    id: String,
+    pub id: String,
     /// Name of the given API key. **Warning**: The value of this field is not escaped and may contain
     /// valid HTML, JavaScript, other code. Handle with care.
-    name: String,
+    pub name: String,
     /// Permissions that the API key has.
-    permissions: Permissions,
+    pub permissions: Permissions,
 }
 
 impl TokenInfo {
@@ -19,21 +20,6 @@ impl TokenInfo {
     /// set for the `Client`'s key.
     pub fn get_tokeninfo(client: &Client) -> Result<TokenInfo, ApiError> {
         client.authenticated_request("/v2/tokeninfo")
-    }
-
-    /// Returns the id of the API key.
-    pub fn id(&self) -> &str {
-        &self.id
-    }
-
-    /// Returns the name given to the API key.
-    pub fn name(&self) -> &str {
-        &self.name
-    }
-
-    /// Returns the permissions that the API key has set.
-    pub fn permissions(&self) -> &Permissions {
-        &self.permissions
     }
 }
 
@@ -101,10 +87,8 @@ mod tests {
     fn get_tokeninfo() {
         let api_key = env::var("GW2_TEST_KEY").expect("GW2_TEST_KEY environment variable is not set.");
         let client = Client::new().set_api_key(api_key);
-        let ti = match TokenInfo::get_tokeninfo(&client) {
-            Ok(ti) => ti,
-            Err(e) => panic!("{:?}", e),
-        };
+        let ti = TokenInfo::get_tokeninfo(&client).unwrap();
+
         let permissions = Permissions {
             account: true,
             builds: true,
@@ -118,6 +102,6 @@ mod tests {
             wallet: true,
         };
 
-        assert_eq!(&permissions, ti.permissions());
+        assert_eq!(permissions, ti.permissions);
     }
 }

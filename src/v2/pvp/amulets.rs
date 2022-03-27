@@ -1,9 +1,11 @@
+use serde::Deserialize;
+
+use std::collections::HashMap;
+
 use crate::attributes::Attribute;
 use crate::client::Client;
 use crate::error::ApiError;
 use crate::utils::ids_to_string;
-
-use std::collections::HashMap;
 
 const ENDPOINT_URL: &str = "/v2/pvp/amulets";
 
@@ -11,15 +13,15 @@ const ENDPOINT_URL: &str = "/v2/pvp/amulets";
 #[derive(Debug, Deserialize, PartialEq)]
 pub struct Amulet {
     /// id of the amulet. NOTE: These are not necessarily in succession in the API.
-    id: u32,
+    pub id: u32,
     /// Name of the amulet.
-    name: String,
+    pub name: String,
     /// A url to an image representing the amulet in-game.
     #[serde(rename = "icon")]
-    icon_url: String,
+    pub icon_url: String,
     /// HashMap containing all the amulets attribute names as keys and the attribute values
     /// as the values.
-    attributes: HashMap<Attribute, i32>,
+    pub attributes: HashMap<Attribute, i32>,
 }
 
 impl Amulet {
@@ -46,34 +48,15 @@ impl Amulet {
         let url = format!("{}?ids=all", ENDPOINT_URL);
         client.request(&url)
     }
-
-    /// Returns the ID of the `Amulet` object.
-    pub fn id(&self) -> u32 {
-        self.id
-    }
-
-    /// Returns a string slice of the name of the `Amulet`.
-    pub fn name(&self) -> &str {
-        &self.name
-    }
-
-    /// Returns a url to the icon for the `Amulet`.
-    pub fn icon_url(&self) -> &str {
-        &self.icon_url
-    }
-
-    /// Returns a `Vec` containing the attributes associated with the `Amulet`.
-    pub fn attributes(&self) -> &HashMap<Attribute, i32> {
-        &self.attributes
-    }
 }
 
 #[cfg(test)]
 mod tests {
+    use std::collections::HashMap;
+
     use crate::v2::pvp::amulets::*;
     use crate::attributes::Attribute;
     use crate::client::Client;
-    use std::collections::HashMap;
 
     const JSON_AMULET: &str = r#"
     {
@@ -89,23 +72,7 @@ mod tests {
 
     #[test]
     fn create_amulet() {
-        match serde_json::from_str::<Amulet>(JSON_AMULET) {
-            Ok(_) => assert!(true),
-            Err(e) => panic!(e.to_string()),
-        }
-    }
-
-    #[test]
-    fn accessors() {
-        let amulet = serde_json::from_str::<Amulet>(JSON_AMULET).unwrap();
-        let mut attributes = HashMap::new();
-        attributes.insert(Attribute::Precision, 1200);
-        attributes.insert(Attribute::Power, 900);
-        attributes.insert(Attribute::CritDamage, 900);
-        assert_eq!(4, amulet.id());
-        assert_eq!("Assassin Amulet", amulet.name());
-        assert_eq!("https://render.guildwars2.com/file/02E9EFDEF9587130A25F17AC396913FBBE3C716D/455602.png", amulet.icon_url());
-        assert_eq!(&attributes, amulet.attributes());
+        serde_json::from_str::<Amulet>(JSON_AMULET).unwrap();
     }
 
     #[test]
@@ -120,7 +87,7 @@ mod tests {
     fn get_amulet_by_id() {
         let client = Client::new();
         let amulet = serde_json::from_str::<Amulet>(JSON_AMULET).unwrap();
-        assert_eq!(amulet, Amulet::get_id(&client, amulet.id()).unwrap());
+        assert_eq!(amulet, Amulet::get_id(&client, amulet.id).unwrap());
     }
 
     #[test]

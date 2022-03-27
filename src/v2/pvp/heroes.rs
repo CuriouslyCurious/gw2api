@@ -1,3 +1,5 @@
+use serde::Deserialize;
+
 use crate::client::Client;
 use crate::error::ApiError;
 use crate::utils::ids_to_string;
@@ -8,49 +10,49 @@ const ENDPOINT_URL: &str = "/v2/pvp/heroes";
 #[derive(Debug, Deserialize, PartialEq)]
 pub struct Hero {
     /// id of the hero.
-    id: String,
+    pub id: String,
     /// Name of the hero.
-    name: String,
+    pub name: String,
     /// Flavor text describing the lore behind the hero.
-    description: String,
+    pub description: String,
     /// Flavor type describing the hero.
     #[serde(rename = "type")]
-    flavor_type: String,
+    pub flavor_type: String,
     /// A struct containing the champion's stats: offense, defense and speed.
-    stats: Stats,
+    pub stats: Stats,
     /// Url to the overlay art for the champion.
     #[serde(rename = "overlay")]
-    overlay_url: String,
+    pub overlay_url: String,
     /// Url to the underlay art for the champion.
     #[serde(rename = "underlay")]
-    underlay_url: String,
+    pub underlay_url: String,
     /// A `Vec` of the skins available to the given hero.
-    skins: Vec<Skin>,
+    pub skins: Vec<Skin>,
 }
 
 /// Struct that contains the offense, defense and speed stats for a given hero.
 #[derive(Debug, Deserialize, PartialEq)]
 pub struct Stats {
-    offense: u32,
-    defense: u32,
-    speed: u32,
+    pub offense: u32,
+    pub defense: u32,
+    pub speed: u32,
 }
 
 /// Cosmetic skin information of a hero.
 #[derive(Debug, Deserialize, PartialEq)]
 pub struct Skin {
     /// Skin id
-    id: u32,
+    pub id: u32,
     /// Name of the skin
-    name: String,
+    pub name: String,
     /// Url to the icon
     #[serde(rename = "icon")]
-    icon_url: String,
+    pub icon_url: String,
     /// Whether the skin is the default for that hero or not.
-    default: bool,
+    pub default: bool,
     /// Item ids which unlock the skin.
     #[serde(default)]
-    unlock_items: Vec<u32>,
+    pub unlock_items: Vec<u32>,
 }
 
 impl Hero {
@@ -76,91 +78,11 @@ impl Hero {
         let url = format!("{}?ids={}", ENDPOINT_URL, ids_to_string(ids));
         client.request(&url)
     }
-
-    /// Returns the requested id of the hero.
-    pub fn id(&self) -> &str {
-        &self.id
-    }
-
-    /// Returns the name of the hero.
-    pub fn name(&self) -> &str {
-        &self.name
-    }
-
-    /// Returns the flavor description.
-    pub fn description(&self) -> &str {
-        &self.description
-    }
-
-    /// Returns the flavor type, e.g "Specialist Hero".
-    pub fn flavor_type(&self) -> &str {
-        &self.flavor_type
-    }
-
-    /// Returns the stats of the given hero.
-    pub fn stats(&self) -> &Stats {
-        &self.stats
-    }
-
-    /// Returns the url to the overlay art for the hero.
-    pub fn overlay_url(&self) -> &str {
-        &self.overlay_url
-    }
-
-    /// Returns the url to the underlay art for the hero.
-    pub fn underlay_url(&self) -> &str {
-        &self.underlay_url
-    }
-
-    /// Returns a `Vec` containing the available skins for the given hero.
-    pub fn skins(&self) -> &Vec<Skin> {
-        &self.skins
-    }
 }
 
-impl Stats {
-    /// Returns the offense stat of the hero.
-    pub fn offense(&self) -> u32 {
-        self.offense
-    }
+impl Stats {}
 
-    /// Returns the defense stat of the hero.
-    pub fn defense(&self) -> u32 {
-        self.defense
-    }
-
-    /// Returns the speed stat of the hero.
-    pub fn speed(&self) -> u32 {
-        self.speed
-    }
-}
-
-impl Skin {
-    /// Returns the id for the hero skin.
-    pub fn id(&self) -> u32 {
-        self.id
-    }
-
-    /// Returns the name of the skin.
-    pub fn name(&self) -> &str {
-        &self.name
-    }
-
-    /// Returns the url for the skin's icon.
-    pub fn icon_url(&self) -> &str {
-        &self.icon_url
-    }
-
-    /// Returns true if the skin is the default for the hero, false otherwise.
-    pub fn default(&self) -> bool {
-        self.default
-    }
-
-    /// Returns the item ids of items that can unlock the skin.
-    pub fn unlock_items(&self) -> &Vec<u32> {
-        &self.unlock_items
-    }
-}
+impl Skin {}
 
 #[cfg(test)]
 mod tests {
@@ -249,33 +171,24 @@ mod tests {
 
     #[test]
     fn create_hero() {
-        match serde_json::from_str::<Hero>(JSON_HERO) {
-            Ok(_) => assert!(true),
-            Err(e) => panic!(e.to_string()),
-        }
+        serde_json::from_str::<Hero>(JSON_HERO).unwrap();
     }
 
     #[test]
     fn create_stats() {
-        match serde_json::from_str::<Stats>(JSON_STATS) {
-            Ok(_) => assert!(true),
-            Err(e) => panic!(e.to_string()),
-        }
+        serde_json::from_str::<Stats>(JSON_STATS).unwrap();
     }
 
     #[test]
     fn create_skin() {
-        match serde_json::from_str::<Skin>(JSON_SKIN) {
-            Ok(_) => assert!(true),
-            Err(e) => panic!(e.to_string()),
-        }
+        serde_json::from_str::<Skin>(JSON_SKIN).unwrap();
     }
 
     #[test]
     fn get_id() {
         let client = Client::new();
         let hero = serde_json::from_str::<Hero>(JSON_HERO).unwrap();
-        assert_eq!(hero, Hero::get_id(&client, hero.id().to_string()).unwrap());
+        assert_eq!(hero, Hero::get_id(&client, hero.id.to_string()).unwrap());
     }
 
     #[test]
@@ -310,32 +223,6 @@ mod tests {
             "B7EA9889-5F16-4636-9705-4FCAF8B39ECD".to_string(),
         );
         assert!(Hero::get_heroes_by_ids(&client, ids.clone()).unwrap().len() == ids.len());
-    }
-
-    #[test]
-    fn accessors() {
-        let hero = serde_json::from_str::<Hero>(JSON_HERO).unwrap();
-        assert_eq!("115C140F-C2F5-40EB-8EA2-C3773F2AE468", hero.id());
-        assert_eq!("Nika", hero.name());
-        assert_eq!("Nika was a proficient assassin schooled in her youth at Shing Jea Monastery. She served Cantha as a member of the Obsidian Flame.", hero.description());
-        assert_eq!("Specialist Hero", hero.flavor_type());
-        // Stats
-        let stats = serde_json::from_str::<Stats>(JSON_STATS).unwrap();
-        assert_eq!(&stats, hero.stats());
-        assert_eq!(3, hero.stats().offense());
-        assert_eq!(2, hero.stats().defense());
-        assert_eq!(4, hero.stats().speed());
-        assert_eq!("https://render.guildwars2.com/file/2CACF4120E370D1997A4C3D69BF592D7CC1870C8/993693.png", hero.overlay_url());
-        assert_eq!("https://render.guildwars2.com/file/103108E0D8EDD22C577FA4171618D004A82AD955/993694.png", hero.underlay_url());
-        // Skins
-        let skin = serde_json::from_str::<Skin>(JSON_SKIN).unwrap();
-        let hero_skin = hero.skins().first().unwrap();
-        assert_eq!(&skin, hero_skin);
-        assert_eq!(1, hero_skin.id());
-        assert_eq!("Nika", hero_skin.name());
-        assert_eq!("https://render.guildwars2.com/file/4602BDC15B73422011AC664425D93750707F04F3/1058576.png", hero_skin.icon_url());
-        assert_eq!(true, hero_skin.default());
-        assert_eq!(&vec!(70076), hero_skin.unlock_items());
     }
 }
 

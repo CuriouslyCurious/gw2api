@@ -11,9 +11,7 @@
 //! ```
 //!
 
-extern crate ureq;
-extern crate serde;
-#[macro_use] extern crate serde_derive;
+pub use serde::{Deserialize, Serialize};
 
 // Client
 pub mod client;

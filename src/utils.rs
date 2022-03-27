@@ -1,3 +1,5 @@
+use serde::Deserialize;
+
 /// Possible teams used in WvW or SPvP.
 #[derive(Debug, Deserialize, PartialEq, Hash, Eq)]
 pub enum Team {

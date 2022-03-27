@@ -1,3 +1,5 @@
+use serde::Deserialize;
+
 use crate::client::Client;
 use crate::error::ApiError;
 use crate::utils::ids_to_string;
@@ -8,22 +10,23 @@ const ENDPOINT_URL: &str = "/v2/pvp/ranks";
 #[derive(Debug, Deserialize, PartialEq)]
 pub struct Rank {
     /// id of the PvP rank.
-    id: u32,
+    pub id: u32,
     /// id of the unlocked finisher corresponding to the rank.
-    finisher_id: u32,
+    pub finisher_id: u32,
     /// Given name of the PvP rank.
-    name: String,
+    pub name: String,
     /// Icon url for the PvP rank.
     #[serde(rename = "icon")]
-    icon_url: String,
+    pub icon_url: String,
     /// The minimum PvP level required to be this rank.
-    min_rank: u32,
+    pub min_rank: u32,
     /// The maximum PvP level required to be this rank.
-    max_rank: u32,
+    pub max_rank: u32,
     /// Span of levels which the rank covers, also contains the PvP experience points needed to go
     /// from the minimum rank to the maximum rank.
     /// TODO: Make this not be an unnecessary Vec.
-    levels: Vec<Levels>,
+    #[serde(flatten)]
+    pub levels: Levels,
 }
 
 /// Contains the span of PvP levels a certain rank covers, as well as the required amount of PvP
@@ -61,38 +64,6 @@ impl Rank {
         let url = format!("{}?ids={}", ENDPOINT_URL, ids_to_string(ids));
         client.request(&url)
     }
-
-    /// Returns the requested id of the hero.
-    pub fn id(&self) -> u32 {
-        self.id
-    }
-
-    /// Returns the name of the hero.
-    pub fn name(&self) -> &str {
-        &self.name
-    }
-
-    /// Returns the url for the icon of the rank.
-    pub fn icon_url(&self) -> &str {
-        &self.icon_url
-    }
-
-    /// Returns the minimum PvP level required to be the rank.
-    pub fn min_rank(&self) -> u32 {
-        self.min_rank
-    }
-
-    /// Returns the maximum PvP level required to be the rank.
-    pub fn max_rank(&self) -> u32 {
-        self.max_rank
-    }
-
-    /// Returns a struct containing the minimum and maximum PvP level required to be the rank,
-    /// also contains the amount experience points needed to go from the minimum to the maximum
-    /// level.
-    pub fn levels(&self) -> &Vec<Levels> {
-        &self.levels
-    }
 }
 
 #[cfg(test)]
@@ -119,10 +90,7 @@ mod tests {
             ]
         }"#;
 
-        match serde_json::from_str::<Rank>(json_rank) {
-            Ok(_) => assert!(true),
-            Err(e) => panic!(e.to_string()),
-        }
+        serde_json::from_str::<Rank>(json_rank).unwrap();
     }
 }
 
