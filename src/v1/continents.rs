@@ -1,14 +1,16 @@
-use crate::client::Client;
-use crate::error::ApiError;
+use serde::Deserialize;
 
 use std::collections::HashMap;
+
+use crate::client::Client;
+use crate::error::ApiError;
 
 const ENDPOINT_URL: &str = "/v1/continents";
 
 /// Struct containing a hashmap of all continents in the game.
 #[derive(Debug, Deserialize, PartialEq)]
 pub struct Continents {
-    continents: HashMap<u32, Continent>,
+    pub continents: HashMap<u32, Continent>,
 }
 
 /// Contains information about a continent, including the localised name, dimensions, minimum and
@@ -17,16 +19,16 @@ pub struct Continents {
 #[derive(Debug, Deserialize, PartialEq)]
 pub struct Continent {
     /// Name of the continent.
-    name: String,
+    pub name: String,
     /// Dimensions of the continent.
     #[serde(rename = "continent_dims")]
-    dimensions: Vec<u32>,
+    pub dimensions: Vec<u32>,
     /// Minimum zoom level.
-    min_zoom: u8,
+    pub min_zoom: u8,
     /// Maximum zoom level.
-    max_zoom: u8,
+    pub max_zoom: u8,
     /// A list of floors available.
-    floors: Vec<i8>
+    pub floors: Vec<i8>
 }
 
 impl Continents {
@@ -34,39 +36,9 @@ impl Continents {
     pub fn get_all_continents(client: &Client) -> Result<Continents, ApiError> {
         client.request(ENDPOINT_URL)
     }
-
-    /// Returns the hashmap containing all the continents.
-    pub fn continents(&self) -> &HashMap<u32, Continent> {
-        &self.continents
-    }
 }
 
-impl Continent {
-    /// Returns the name of the continent.
-    pub fn name(&self) -> &str {
-        &self.name
-    }
-
-    /// Returns the dimensions of the continent.
-    pub fn dimensions(&self) -> &Vec<u32> {
-        &self.dimensions
-    }
-
-    /// Returns the minimum zoom level.
-    pub fn min_zoom(&self) -> u8 {
-        self.min_zoom
-    }
-
-    /// Returns the maximum zoom level.
-    pub fn max_zoom(&self) -> u8 {
-        self.max_zoom
-    }
-
-    /// Returns a list of the floors of the continent.
-    pub fn metal(&self) -> &Vec<i8> {
-        &self.floors
-    }
-}
+impl Continent {}
 
 #[cfg(test)]
 mod tests {
@@ -86,16 +58,13 @@ mod tests {
 
     #[test]
     fn create_continent() {
-        match serde_json::from_str::<Continent>(JSON_CONTINENT) {
-            Ok(_) => assert!(true),
-            Err(e) => panic!(e.to_string()),
-        }
+        serde_json::from_str::<Continent>(JSON_CONTINENT).unwrap();
     }
 
     #[test]
     fn get_all_continents() {
         let client = Client::new();
         // Currently only 2 continents in the game
-        assert!(Continents::get_all_continents(&client).unwrap().continents().len() >= 2)
+        assert!(Continents::get_all_continents(&client).unwrap().continents.len() >= 2)
     }
 }

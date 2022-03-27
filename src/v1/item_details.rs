@@ -1,3 +1,5 @@
+use serde::Deserialize;
+
 use crate::client::Client;
 use crate::error::ApiError;
 use crate::attributes::Attribute;
@@ -7,71 +9,71 @@ const ENDPOINT_URL: &str = "/v1/item_details";
 
 /// This endpoint is quite silly, since all numerical values are encoded as strings, meaning when
 /// a number is the expected result it will be a string instead, with the exception of
-/// infix_upgrade for some reason ¯\_(ツ)_/¯.
+/// infix_upgrade for some reason which is only used by backpieces afaik ¯\_(ツ)_/¯.
 
 /// Struct containing detailed localized information about a requested item.
 #[derive(Debug, Deserialize, PartialEq)]
 pub struct Item {
     /// id of the item.
     #[serde(rename = "item_id")]
-    id: String,
+    pub id: String,
     /// Name of the item.
-    name: String,
+    pub name: String,
     /// Description of the item.
-    description: Option<String>,
+    pub description: Option<String>,
     /// Type of the item.
     #[serde(rename = "type")]
-    item_type: ItemType,
+    pub item_type: ItemType,
     /// Required level for the item.
-    level: String,
+    pub level: String,
     /// Rarity of the item.
-    rarity: Rarity,
+    pub rarity: Rarity,
     /// Value in coins when selling to a vendor.
-    vendor_value: String,
+    pub vendor_value: String,
     /// File id to be used with the render service.
-    icon_file_id: String,
+    pub icon_file_id: String,
     /// File signature to be used with the render service.
-    icon_file_signature: String,
+    pub icon_file_signature: String,
     /// Skin id to be used with the skin_details endpoint to get more information. Only present
     /// for item types: Armor, Back and Weapon.
-    default_skin: Option<String>,
+    pub default_skin: Option<String>,
     // TODO: Find an example.
     /// List of upgrade recipes, whatever they are.
-    upgrade_recipes: Vec<String>,
+    pub upgrade_recipes: Vec<String>,
     /// Game types where the item is usable.
-    game_types: Vec<GameType>,
+    pub game_types: Vec<GameType>,
     /// Additional item flags.
-    flags: Vec<ItemFlag>,
+    pub flags: Vec<ItemFlag>,
     /// Item usage restrictions based on race or profession.
-    restrictions: Vec<Restrictions>,
+    pub restrictions: Vec<Restrictions>,
     /// If the item is a piece of armor, this will be Some().
-    armor: Option<Armor>,
+    pub armor: Option<Armor>,
     /// If the item is a piece of back, this will be Some().
-    back: Option<Back>,
+    pub back: Option<Back>,
     /// If the item is a bag, this will be Some().
-    bag: Option<Bag>,
+    pub bag: Option<Bag>,
     /// If the item is a consumable, this will be Some().
-    consumable: Option<Consumable>,
+    pub consumable: Option<Consumable>,
     /// If the item is a container, this will be Some().
-    container: Option<Container>,
+    pub container: Option<Container>,
     /// If the item is a crafting material, this will be Some(), containing an empty object.
-    crafting_material: Option<CraftingMaterial>,
+    pub crafting_material: Option<CraftingMaterial>,
     /// If the item is a gathering, this will be Some().
-    gathering: Option<Gathering>,
+    pub gathering: Option<Gathering>,
     /// If the item is a gizmo, this will be Some().
-    gizmo: Option<Gizmo>,
+    pub gizmo: Option<Gizmo>,
     /// If the item is a mini pet, this will be Some(), containing an empty object.
-    mini_pet: Option<MiniPet>,
+    pub mini_pet: Option<MiniPet>,
     /// If the item is a tool, this will be Some().
-    tool: Option<Tool>,
+    pub tool: Option<Tool>,
     /// If the item is a trinket, this will be Some().
-    trinket: Option<Trinket>,
+    pub trinket: Option<Trinket>,
     /// If the item is a trophy, this will be Some(), containing an empty object.
-    trophy: Option<Trophy>,
+    pub trophy: Option<Trophy>,
     /// If the item is a upgrade component, this will be Some().
-    upgrade_component: Option<UpgradeComponent>,
+    pub upgrade_component: Option<UpgradeComponent>,
     /// If the item is a weapon, this will be Some().
-    weapon: Option<Weapon>,
+    pub weapon: Option<Weapon>,
 }
 
 /// All item restrictions (races and professions).
@@ -171,22 +173,22 @@ pub enum WeightClass {
 pub struct Armor {
     /// Armor piece type.
     #[serde(rename = "type")]
-    armor_type: ArmorType,
+    pub armor_type: ArmorType,
     /// The armor's weight class.
-    weight_class: WeightClass,
+    pub weight_class: WeightClass,
     /// Defense value.
-    defense: String,
+    pub defense: String,
     /// Number and type of infusion slots.
-    infusion_slots: Vec<InfusionSlot>,
+    pub infusion_slots: Vec<InfusionSlot>,
     /// Potential bonus given by the object. Optional property.
-    infix_upgrade: Option<InfixUpgrade>,
+    pub infix_upgrade: Option<InfixUpgrade>,
     /// Item id of an already applied upgrade component. Can be empty.
-    suffix_item_id: Option<String>,
+    pub suffix_item_id: Option<String>,
     /// Potential secondary upgrade component. Always empty.
-    secondary_suffix_item_id: Option<String>,
+    pub secondary_suffix_item_id: Option<String>,
     /// List of ids of stat choices that can be made with the item.
     #[serde(default)]
-    stat_choices: Vec<u32>,
+    pub stat_choices: Vec<u32>,
 }
 
 /// All infusion types.
@@ -204,29 +206,29 @@ pub struct InfusionSlot {
     /// id of the infusion slot, only used by Back, the only known value is 49428 (+5
     /// Agony_Infusion).
     #[serde(rename = "item_id")]
-    id: Option<String>,
+    pub id: Option<String>,
     /// Types of infusions allowed in this slot.
-    flags: Vec<InfusionType>,
+    pub flags: Vec<InfusionType>,
 }
 
 /// Struct containing information about an upgrade for a bonus given by a piece armor.
 #[derive(Debug, Deserialize, PartialEq)]
 pub struct InfixUpgrade {
     /// id of the infix upgrade.
-    id: u32,
+    pub id: u32,
     /// Buff applied by the item. Seemingly only exists a Boon Duration buff.
-    buff: Option<Buff>,
+    pub buff: Option<Buff>,
     /// Map of stat bonuses given by the item.
-    attributes: Vec<Stat>,
+    pub attributes: Vec<Stat>,
 }
 
 /// Struct containing information about a stat on an item.
 #[derive(Debug, Deserialize, PartialEq)]
 pub struct Stat {
     /// Attribute type.
-    attribute: Attribute,
+    pub attribute: Attribute,
     /// How much the attribute is modified by.
-    modifier: u32,
+    pub modifier: u32,
 }
 
 /// Struct containing information about a buff applied by an item. The buff seems to only be bonus
@@ -234,34 +236,35 @@ pub struct Stat {
 #[derive(Debug, Deserialize, PartialEq)]
 pub struct Buff {
     /// id of the skill applied by the item. Only known values are: "16517" and "10521".
-    skill_id: String,
+    pub skill_id: String,
     /// Description of the effect of the skill. Only known description is "+1% Boon Duration".
-    description: String,
+    pub description: String,
 }
 
 /// Struct containing information about a back piece.
 #[derive(Debug, Deserialize, PartialEq)]
 pub struct Back {
     /// List of infusion slot types.
-    infusion_slots: Vec<InfusionSlot>,
+    /// Only used by Back, the only known value is 49428 (+5 Agony_Infusion).
+    pub infusion_slots: Vec<InfusionSlot>,
     /// Potential bonus given by the object. Optional property.
-    infix_upgrade: Option<InfixUpgrade>,
+    pub infix_upgrade: Option<InfixUpgrade>,
     /// Item id of an already applied upgrade component. Can be empty.
-    suffix_item_id: Option<String>,
+    pub suffix_item_id: Option<String>,
     /// Potential secondary upgrade component. Always empty.
-    secondary_suffix_item_id: Option<String>,
+    pub secondary_suffix_item_id: Option<String>,
     /// List of ids of stat choices that can be made with the item.
     #[serde(default)]
-    stat_choices: Vec<u32>,
+    pub stat_choices: Vec<u32>,
 }
 
 /// Struct containing information about a bag.
 #[derive(Debug, Deserialize, PartialEq)]
 pub struct Bag {
     /// Whether or not the bag is a special one.
-    no_sell_or_sort: Option<String>,
+    pub no_sell_or_sort: Option<String>,
     /// Size of the bag.
-    size: Option<String>,
+    pub size: Option<String>,
 }
 
 /// All unlock types for consumables.
@@ -298,19 +301,19 @@ pub enum ConsumableType {
 pub struct Consumable {
     /// Consumable type
     #[serde(rename = "type")]
-    consumable_type: ConsumableType,
+    pub consumable_type: ConsumableType,
     /// Effect duration in milliseconds (may exist if consumable type is "Generic", "Food" or
     /// "Utility").
-    duration_ms: Option<String>,
+    pub duration_ms: Option<String>,
     /// Description of the effect (may exist if consumable type is "Generic", "Food" or
     /// "Utility").
-    description: Option<String>,
+    pub description: Option<String>,
     /// The type of unlock (if consumable type is "Unlock").
-    unlock_type: Option<UnlockType>,
+    pub unlock_type: Option<UnlockType>,
     /// id of the recipe unlocked by the consumable (if unlock type is "CraftingRecipe").
-    recipe_id: Option<String>,
+    pub recipe_id: Option<String>,
     /// id of the dye unlocked by the consumable (if unlock type is "Dye").
-    color_id: Option<String>,
+    pub color_id: Option<String>,
 }
 
 /// Possible container types.
@@ -326,7 +329,7 @@ pub enum ContainerType {
 pub struct Container {
     /// Container type.
     #[serde(rename = "type")]
-    container_type: ContainerType,
+    pub container_type: ContainerType,
 }
 
 /// Struct describing a CraftingMaterial, will always be empty.
@@ -346,7 +349,7 @@ pub enum GatheringType {
 pub struct Gathering {
     /// Gathering type.
     #[serde(rename = "type")]
-    gathering_type: GatheringType,
+    pub gathering_type: GatheringType,
 }
 
 /// Possible gizmo types.
@@ -363,7 +366,7 @@ pub enum GizmoType {
 pub struct Gizmo {
     /// Gizmo type.
     #[serde(rename = "type")]
-    gizmo_type: GizmoType,
+    pub gizmo_type: GizmoType,
 }
 
 /// Struct describing a MiniPet, will always be empty.
@@ -381,9 +384,9 @@ pub enum ToolType {
 pub struct Tool {
     /// Tool type.
     #[serde(rename = "type")]
-    tool_type: ToolType,
+    pub tool_type: ToolType,
     /// Number of charges of the tool.
-    charges: i32,
+    pub charges: i32,
 }
 
 /// Possible trinket types.
@@ -399,18 +402,18 @@ pub enum TrinketType {
 pub struct Trinket {
     /// Trinket type.
     #[serde(rename = "type")]
-    trinket_type: TrinketType,
+    pub trinket_type: TrinketType,
     /// List of infusion slot types.
-    infusion_slots: Vec<InfusionSlot>,
+    pub infusion_slots: Vec<InfusionSlot>,
     /// Potential bonus given by the object. Optional property.
-    infix_upgrade: Option<InfixUpgrade>,
+    pub infix_upgrade: Option<InfixUpgrade>,
     /// Item id of an already applied upgrade component. Can be empty.
-    suffix_item_id: Option<String>,
+    pub suffix_item_id: Option<String>,
     /// Potential secondary upgrade component. Always empty.
-    secondary_suffix_item_id: Option<String>,
+    pub secondary_suffix_item_id: Option<String>,
     /// List of ids of stat choices that can be made with the item.
     #[serde(default)]
-    stat_choices: Vec<u32>,
+    pub stat_choices: Vec<u32>,
 }
 
 /// Struct describing a trophy, will always be empty.
@@ -461,17 +464,17 @@ pub enum UpgradeFlag {
 pub struct UpgradeComponent {
     /// Upgrade component type.
     #[serde(rename = "type")]
-    upgrade_type: UpgradeType,
+    pub upgrade_type: UpgradeType,
     /// List of items which the upgrade component can be applied to.
-    flags: Vec<UpgradeFlag>,
+    pub flags: Vec<UpgradeFlag>,
     /// List of infusion slots the upgrade component can be applied to.
-    infusion_upgrade_flags: Vec<InfusionType>,
+    pub infusion_upgrade_flags: Vec<InfusionType>,
     /// List of rune bonuses, only exits for the upgrade type "Rune">
-    bonuses: Option<UpgradeType>,
+    pub bonuses: Option<UpgradeType>,
     /// Potential bonus given by the object. Optional property.
-    infix_upgrade: Option<InfixUpgrade>,
+    pub infix_upgrade: Option<InfixUpgrade>,
     /// Suffix added to the item when it is applied.
-    suffix: String,
+    pub suffix: String,
 }
 
 /// Possible damage types.
@@ -517,23 +520,23 @@ pub enum WeaponType {
 pub struct Weapon {
     /// Weapon type.
     #[serde(rename = "type")]
-    weapon_type: WeaponType,
+    pub weapon_type: WeaponType,
     /// Damage type.
-    damage_type: DamageType,
+    pub damage_type: DamageType,
     /// Weapon's minimal power rating.
-    min_power: String,
+    pub min_power: String,
     /// Weapon's maximum power rating.
-    max_power: String,
+    pub max_power: String,
     /// The weapon's defense rating.
-    defense: String,
+    pub defense: String,
     /// List of infusion slots the upgrade component can be applied to.
-    infusion_slots: Vec<InfusionSlot>,
+    pub infusion_slots: Vec<InfusionSlot>,
     /// Potential bonus given by the object. Optional property.
-    infix_upgrade: Option<InfixUpgrade>,
+    pub infix_upgrade: Option<InfixUpgrade>,
     /// Item id of an already applied upgrade component. Can be empty.
-    suffix_item_id: Option<String>,
+    pub suffix_item_id: Option<String>,
     /// Potential secondary upgrade component. Always empty.
-    secondary_suffix_item_id: Option<String>,
+    pub secondary_suffix_item_id: Option<String>,
 }
 
 
@@ -543,468 +546,43 @@ impl Item {
         let url = format!("{}?item_id={}", ENDPOINT_URL, id);
         client.request(&url)
     }
-
-    /// Returns the id of the item.
-    pub fn id(&self) -> &str {
-        &self.id
-    }
-
-    /// Returns the name of the item.
-    pub fn name(&self) -> &str {
-        &self.name
-    }
-
-    /// Returns the description of the item.
-    pub fn description(&self) -> Option<&String> {
-        self.description.as_ref()
-    }
-
-    /// Returns the type of the item.
-    pub fn item_type(&self) -> &ItemType {
-        &self.item_type
-    }
-
-    /// Returns the required level for the item.
-    pub fn level(&self) -> &str {
-        &self.level
-    }
-
-    /// Returns the rarity of the item.
-    pub fn rarity(&self) -> &Rarity {
-        &self.rarity
-    }
-
-    /// Returns the value in coins when selling to a vendor.
-    pub fn vendor_value(&self) -> &str {
-        &self.vendor_value
-    }
-
-    /// Returns the file id to be used with the render service.
-    pub fn icon_file_id(&self) -> &str {
-        &self.icon_file_id
-    }
-
-    /// Returns the file signature to be used with the render service.
-    pub fn icon_file_signature(&self) -> &str {
-        &self.icon_file_signature
-    }
-
-    /// Returns the skin id to be used with the skin_details endpoint to get more information.
-    /// Only present for item types: Armor, Back and Weapon.
-    pub fn default_skin(&self) -> Option<&String> {
-        self.default_skin.as_ref()
-    }
-
-    // TODO: Find an example.
-    /// Returns the list of upgrade recipes, whatever they are.
-    pub fn upgrade_recipes(&self) -> &Vec<String> {
-        &self.upgrade_recipes
-    }
-
-    /// Returns the game types where the item is usable.
-    pub fn game_types(&self) -> &Vec<GameType> {
-        &self.game_types
-    }
-
-    /// Returns the additional item flags.
-    pub fn flags(&self) -> &Vec<ItemFlag> {
-        &self.flags
-    }
-
-    /// Returns the item usage restrictions based on race or profession.
-    pub fn restrictions(&self) -> &Vec<Restrictions> {
-        &self.restrictions
-    }
-
-    /// Returns Some(&Armor) if the item is a piece of armor, None otherwise.
-    pub fn armor(&self) -> Option<&Armor> {
-        self.armor.as_ref()
-    }
-
-    /// Returns Some(&Back) if the item is a back piece, None otherwise.
-    pub fn back(&self) -> Option<&Back> {
-        self.back.as_ref()
-    }
-
-    /// Returns Some(&Bag) if the item is a bag, None otherwise.
-    pub fn bag(&self) -> Option<&Bag> {
-        self.bag.as_ref()
-    }
-
-    /// Returns Some(&Consumable) if the item is a consumable, None otherwise.
-    pub fn consumable(&self) -> Option<&Consumable> {
-        self.consumable.as_ref()
-    }
-
-    /// Returns Some(&Container) if the item is a container, None otherwise.
-    pub fn container(&self) -> Option<&Container> {
-        self.container.as_ref()
-    }
-
-    /// Returns Some(&CraftingMaterial) if the item is a crafting material, None otherwise.
-    pub fn crafting_material(&self) -> Option<&CraftingMaterial> {
-        self.crafting_material.as_ref()
-    }
-
-    /// Returns Some(&Gathering) if the item is a gathering tool, None otherwise.
-    pub fn gathering(&self) -> Option<&Gathering> {
-        self.gathering.as_ref()
-    }
-
-    /// Returns Some(&Gizmo) if the item is a gizmo, None otherwise.
-    pub fn gizmo(&self) -> Option<&Gizmo> {
-        self.gizmo.as_ref()
-    }
-
-    /// Returns Some(&MiniPet) if the item is a mini pet, None otherwise.
-    pub fn mini_pet(&self) -> Option<&MiniPet> {
-        self.mini_pet.as_ref()
-    }
-
-    /// Returns Some(&Tool) if the item is a tool, None otherwise.
-    pub fn tool(&self) -> Option<&Tool> {
-        self.tool.as_ref()
-    }
-
-    /// Returns Some(&Trinket) if the item is a trinket, None otherwise.
-    pub fn trinket(&self) -> Option<&Trinket> {
-        self.trinket.as_ref()
-    }
-
-    /// Returns Some(&Trophy) if the item is a trophy, None otherwise.
-    pub fn trophy(&self) -> Option<&Trophy> {
-        self.trophy.as_ref()
-    }
-
-    /// Returns Some(&UpgradeComponent) if the item is an upgrade component, None otherwise.
-    pub fn upgrade_component(&self) -> Option<&UpgradeComponent> {
-        self.upgrade_component.as_ref()
-    }
-
-    /// Returns Some(&Weapon) if the item is a weapon, None otherwise.
-    pub fn weapon(&self) -> Option<&Weapon> {
-        self.weapon.as_ref()
-    }
 }
 
-impl Armor {
-    /// Returns the armor piece type.
-    pub fn armor_type(&self) -> &ArmorType {
-        &self.armor_type
-    }
+impl Armor {}
 
-    /// Returns the the armor's weight class.
-    pub fn weight_class(&self) -> &WeightClass {
-        &self.weight_class
-    }
+impl InfusionSlot {}
 
-    /// Returns the defense value.
-    pub fn defense(&self) -> &String {
-        &self.defense
-    }
+impl InfixUpgrade {}
 
-    /// Returns the number and type of infusion slots.
-    pub fn infusion_slots(&self) -> &Vec<InfusionSlot> {
-        &self.infusion_slots
-    }
+impl Stat {}
 
-    /// Returns the potential bonus given by the object. Optional property.
-    pub fn infix_upgrade(&self) -> Option<&InfixUpgrade> {
-        self.infix_upgrade.as_ref()
-    }
+impl Buff {}
 
-    /// Returns the item id of an already applied upgrade component. Can be empty.
-    pub fn suffix_item_id(&self) -> Option<&String> {
-        self.suffix_item_id.as_ref()
-    }
+impl Back {}
 
-    /// Returns the potential secondary upgrade component. Always empty.
-    pub fn secondary_suffix_item_id(&self) -> Option<&String> {
-        self.secondary_suffix_item_id.as_ref()
-    }
+impl Bag {}
 
-    /// Returns the list of ids of stat choices that can be made with the item.
-    pub fn stat_choices(&self) -> &Vec<u32> {
-        &self.stat_choices
-    }
-}
+impl Consumable {}
 
-impl InfusionSlot {
-    /// Returns the Optional id of the infusion slot, only used by Back, the only known value is 49428
-    /// (+5 Agony_Infusion).
-    pub fn id(&self) -> Option<&String> {
-        self.id.as_ref()
-    }
-
-    /// Returns the types of infusions allowed in this slot.
-    pub fn flags(&self) -> &Vec<InfusionType> {
-        &self.flags
-    }
-}
-
-impl InfixUpgrade {
-    /// Returns the id of the infix upgrade.
-    pub fn id(&self) -> u32 {
-        self.id
-    }
-
-    /// Returns the buff applied by the item. Seemingly only exists a Boon Duration buff.
-    pub fn buff(&self) -> Option<&Buff> {
-        self.buff.as_ref()
-    }
-
-    /// Returns the map of stat bonuses given by the item.
-    pub fn attributes(&self) -> &Vec<Stat> {
-        &self.attributes
-    }
-}
-
-impl Stat {
-    /// Returns the attribute type.
-    pub fn attribute(&self) -> &Attribute {
-        &self.attribute
-    }
-
-    /// Returns how much the attribute is modified by.
-    pub fn modifier(&self) -> u32 {
-        self.modifier
-    }
-}
-
-impl Buff {
-    /// Returns the id of the skill applied by the item. Only known values are: "16517" and "10521".
-    pub fn skill_id(&self) -> &str {
-        &self.skill_id
-    }
-
-    /// Returns the description of the effect of the skill. Only known description is "+1% Boon Duration".
-    pub fn description(&self) -> &str {
-        &self.description
-    }
-}
-
-impl Back {
-    /// Returns the list of infusion slot types.
-    pub fn infusion_slots(&self) -> &Vec<InfusionSlot> {
-        &self.infusion_slots
-    }
-
-    /// Returns the potential bonus given by the object. Optional property.
-    pub fn infix_upgrade(&self) -> Option<&InfixUpgrade> {
-        self.infix_upgrade.as_ref()
-    }
-
-    /// Returns the item id of an already applied upgrade component. Can be empty.
-    pub fn suffix_item_id(&self) -> Option<&String> {
-        self.suffix_item_id.as_ref()
-    }
-
-    /// Returns the potential secondary upgrade component. Always empty.
-    pub fn secondary_suffix_item_id(&self) -> Option<&String> {
-        self.secondary_suffix_item_id.as_ref()
-    }
-
-    /// Returns the list of ids of stat choices that can be made with the item.
-    pub fn stat_choices(&self) -> &Vec<u32> {
-        &self.stat_choices
-    }
-}
-
-impl Bag {
-    /// Returns whether or not the bag is a special one.
-    pub fn no_sell_or_sort(&self) -> Option<&String> {
-        self.no_sell_or_sort.as_ref()
-    }
-
-    /// Returns the size of the bag.
-    pub fn size(&self) -> Option<&String> {
-        self.size.as_ref()
-    }
-}
-
-impl Consumable {
-    /// Returns the consumable type
-    pub fn consumable_type(&self) -> &ConsumableType {
-        &self.consumable_type
-    }
-
-    /// Returns the potential effect duration in milliseconds (may exist if consumable type
-    /// is "Generic", "Food" or "Utility").
-    pub fn duration_ms(&self) -> Option<&String> {
-        self.duration_ms.as_ref()
-    }
-
-    /// Returns the description of the effect (may exist if consumable type is "Generic", "Food" or
-    /// "Utility").
-    pub fn description(&self) -> Option<&String> {
-        self.description.as_ref()
-    }
-
-    /// Returns the type of unlock (if consumable type is "Unlock").
-    pub fn unlock_type(&self) -> Option<&UnlockType> {
-        self.unlock_type.as_ref()
-    }
-
-    /// Returns the id of the recipe unlocked by the consumable (if unlock type is "CraftingRecipe").
-    pub fn recipe_id(&self) -> Option<&String> {
-        self.recipe_id.as_ref()
-    }
-
-    /// Returns the id of the dye unlocked by the consumable (if unlock type is "Dye").
-    pub fn color_id(&self) -> Option<&String> {
-        self.color_id.as_ref()
-    }
-}
-
-impl Container {
-    /// Returns the container type.
-    pub fn container_type(&self) -> &ContainerType {
-        &self.container_type
-    }
-}
+impl Container {}
 
 impl CraftingMaterial {}
 
-impl Gathering {
-    /// Returns the gathering type.
-    pub fn gathering_type(&self) -> &GatheringType {
-        &self.gathering_type
-    }
-}
+impl Gathering {}
 
-impl Gizmo {
-    /// Returns the gizmo type.
-    pub fn gizmo_type(&self) -> &GizmoType {
-        &self.gizmo_type
-    }
-}
+impl Gizmo {}
 
 impl MiniPet {}
 
-impl Tool {
-    /// Returns the tool type.
-    pub fn tool_type(&self) -> &ToolType {
-        &self.tool_type
-    }
+impl Tool {}
 
-    /// Returns the number of charges of the tool.
-    pub fn charges(&self) -> i32 {
-        self.charges
-    }
-}
-
-impl Trinket {
-    /// Returns the trinket type.
-    pub fn trinket_type(&self) -> &TrinketType {
-        &self.trinket_type
-    }
-
-    /// Returns the list of infusion slot types.
-    pub fn infusion_slots(&self) -> &Vec<InfusionSlot> {
-        &self.infusion_slots
-    }
-
-    /// Returns the potential bonus given by the object. Optional property.
-    pub fn infix_upgrade(&self) -> Option<&InfixUpgrade> {
-        self.infix_upgrade.as_ref()
-    }
-
-    /// Returns the item id of an already applied upgrade component. Can be empty.
-    pub fn suffix_item_id(&self) -> Option<&String> {
-        self.suffix_item_id.as_ref()
-    }
-
-    /// Returns the potential secondary upgrade component. Always empty.
-    pub fn secondary_suffix_item_id(&self) -> Option<&String> {
-        self.secondary_suffix_item_id.as_ref()
-    }
-
-    /// Returns the list of ids of stat choices that can be made with the item.
-    pub fn stat_choices(&self) -> &Vec<u32> {
-        &self.stat_choices
-    }
-}
+impl Trinket {}
 
 impl Trophy {}
 
-impl UpgradeComponent {
-    /// Returns the upgrade component type.
-    pub fn upgrade_type(&self) -> &UpgradeType {
-        &self.upgrade_type
-    }
+impl UpgradeComponent {}
 
-    /// Returns the list of items which the upgrade component can be applied to.
-    pub fn flags(&self) -> &Vec<UpgradeFlag> {
-        &self.flags
-    }
-
-    /// Returns the list of infusion slots the upgrade component can be applied to.
-    pub fn infusion_upgrade_flags(&self) -> &Vec<InfusionType> {
-        &self.infusion_upgrade_flags
-    }
-
-    /// Returns the list of rune bonuses, only exits for the upgrade type "Rune"
-    pub fn bonuses(&self) -> Option<&UpgradeType> {
-        self.bonuses.as_ref()
-    }
-
-    /// Returns the potential bonus given by the object. Optional property.
-    pub fn infix_upgrade(&self) -> Option<&InfixUpgrade> {
-        self.infix_upgrade.as_ref()
-    }
-
-    /// Returns the suffix added to the item when it is applied.
-    pub fn suffix(&self) -> &str {
-        &self.suffix
-    }
-}
-
-impl Weapon {
-    /// Returns the weapon type.
-    pub fn weapon_type(&self) -> &WeaponType {
-        &self.weapon_type
-    }
-
-    /// Returns the damage type.
-    pub fn damage_type(&self) -> &DamageType {
-        &self.damage_type
-    }
-
-    /// Returns the weapon's minimal power rating.
-    pub fn min_power(&self) -> &str {
-        &self.min_power
-    }
-
-    /// Returns the weapon's maximum power rating.
-    pub fn max_power(&self) -> &str {
-        &self.max_power
-    }
-
-    /// Returns the the weapon's defense rating.
-    pub fn defense(&self) -> &str {
-        &self.defense
-    }
-
-    /// Returns the list of infusion slots the upgrade component can be applied to.
-    pub fn infusion_slots(&self) -> &Vec<InfusionSlot> {
-        &self.infusion_slots
-    }
-
-    /// Returns the potential bonus given by the object. Optional property.
-    pub fn infix_upgrade(&self) -> Option<&InfixUpgrade> {
-        self.infix_upgrade.as_ref()
-    }
-
-    /// Returns the item id of an already applied upgrade component. Can be empty.
-    pub fn suffix_item_id(&self) -> Option<&String> {
-        self.suffix_item_id.as_ref()
-    }
-
-    /// Returns the potential secondary upgrade component. Always empty.
-    pub fn secondary_suffix_item_id(&self) -> Option<&String> {
-        self.secondary_suffix_item_id.as_ref()
-    }
-}
+impl Weapon {}
 
 #[cfg(test)]
 mod tests {

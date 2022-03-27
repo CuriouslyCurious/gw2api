@@ -1,7 +1,9 @@
-use crate::client::Client;
-use crate::error::ApiError;
+use serde::Deserialize;
 
 use std::collections::HashMap;
+
+use crate::client::Client;
+use crate::error::ApiError;
 
 const ENDPOINT_URL: &str = "/v1/event_details";
 
@@ -28,15 +30,15 @@ pub enum Flag {
 #[derive(Debug, Deserialize, PartialEq)]
 pub struct Event {
     /// Name of the event.
-    name: String,
+    pub name: String,
     /// Level of the event.
-    level: u32,
+    pub level: u32,
     /// The map id of the map where the event takes place.
-    map_id: u32,
+    pub map_id: u32,
     /// A list of additional flags.
-    flags: Vec<Flag>,
+    pub flags: Vec<Flag>,
     /// The location of the event.
-    location: Location,
+    pub location: Location,
 }
 
 /// Possible shapes of the event area.
@@ -54,24 +56,24 @@ pub enum Shape {
 pub struct Location {
     /// Shape of the event area (sphere, cylinder, poly).
     #[serde(rename = "type")]
-    shape: Shape,
+    pub shape: Shape,
     /// Coordinates for the center of the event.
-    center: Vec<f32>,
+    pub center: Vec<f32>,
     /// Height of a non-sphere.
     #[serde(default)]
-    height: f32,
+    pub height: f32,
     /// Radius of a sphere/cylinder.
     #[serde(default)]
-    radius: f32,
+    pub radius: f32,
     /// Rotation of a sphere/cylinder.
     #[serde(default)]
-    rotation: f32,
+    pub rotation: f32,
     /// Range of the polygon.
     #[serde(default)]
-    z_range: Vec<f32>,
+    pub z_range: Vec<f32>,
     /// Points of the polygon.
     #[serde(default)]
-    points: Vec<(f32, f32)>,
+    pub points: Vec<(f32, f32)>,
 }
 
 impl Events {
@@ -85,76 +87,11 @@ impl Events {
     pub fn get_all_events(client: &Client) -> Result<Events, ApiError> {
         client.request(ENDPOINT_URL)
     }
-
-    /// Returns the hashmap containing all the events.
-    pub fn events(&self) -> &HashMap<String, Event> {
-        &self.events
-    }
 }
 
-impl Event {
-    /// Returns the name of the continent.
-    pub fn name(&self) -> &str {
-        &self.name
-    }
+impl Event {}
 
-    /// Returns the level of the continent.
-    pub fn level(&self) -> u32 {
-        self.level
-    }
-
-    /// Returns the map id of the map where the event takes place.
-    pub fn map_id(&self) -> u32 {
-        self.map_id
-    }
-
-    /// Returns the flags describing the type of event it is (can be empty).
-    pub fn flags(&self) -> &Vec<Flag> {
-        &self.flags
-    }
-
-    /// Returns location & shape of the event.
-    pub fn location(&self) -> &Location {
-        &self.location
-    }
-}
-
-impl Location {
-    /// Returns the shape of the event.
-    pub fn shape(&self) -> &Shape {
-        &self.shape
-    }
-
-    /// Returns the coordinates for the center of the event.
-    pub fn center(&self) -> &Vec<f32> {
-        &self.center
-    }
-
-    /// Returns the height of a non-sphere event zone.
-    pub fn height(&self) -> f32 {
-        self.height
-    }
-
-    /// Returns the radius of a sphere/cylinder event zone.
-    pub fn radius(&self) -> f32 {
-        self.radius
-    }
-
-    /// Returns the rotation of a sphere/cylinder event zone.
-    pub fn rotation(&self) -> f32 {
-        self.rotation
-    }
-
-    /// Returns the range of the polygon.
-    pub fn z_range(&self) -> &Vec<f32> {
-        &self.z_range
-    }
-
-    /// Returns the points of a polygon.
-    pub fn points(&self) -> &Vec<(f32, f32)> {
-        &self.points
-    }
-}
+impl Location  {}
 
 #[cfg(test)]
 mod tests {
@@ -177,15 +114,12 @@ mod tests {
 
     #[test]
     fn create_event() {
-        match serde_json::from_str::<Event>(JSON_EVENT) {
-            Ok(_) => assert!(true),
-            Err(e) => panic!(e.to_string()),
-        }
+        serde_json::from_str::<Event>(JSON_EVENT).unwrap();
     }
 
     #[test]
     fn get_all_events() {
         let client = Client::new();
-        assert!(Events::get_all_events(&client).unwrap().events().len() >= 1000)
+        assert!(Events::get_all_events(&client).unwrap().events.len() >= 1000)
     }
 }

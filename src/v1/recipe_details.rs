@@ -1,3 +1,5 @@
+use serde::Deserialize;
+
 use crate::client::Client;
 use crate::error::ApiError;
 use crate::utils::Discipline;
@@ -9,30 +11,30 @@ const ENDPOINT_URL: &str = "/v1/recipe_details";
 pub struct Recipe {
     /// id of the recipe.
     #[serde(rename = "recipe_id")]
-    id: String,
+    pub id: String,
     /// Type of the recipe.
     #[serde(rename = "type")]
-    recipe_type: RecipeType,
+    pub recipe_type: RecipeType,
     /// The id of the produced item.
-    output_item_id: String,
+    pub output_item_id: String,
     /// The number of the produced.
-    output_item_count: String,
+    pub output_item_count: String,
     /// Minimum rating of the recipe.
-    min_rating: String,
+    pub min_rating: String,
     /// Time it takes to craft the item in ms.
-    time_to_craft_ms: String,
+    pub time_to_craft_ms: String,
     /// Potential value in coins when selling to a vendor.
     #[serde(default)]
-    vendor_value: String,
+    pub vendor_value: String,
     /// Crafting disciplines that can use the recipe.
     #[serde(default)]
-    disciplines: Vec<Discipline>,
+    pub disciplines: Vec<Discipline>,
     /// Additional recipe flags.
     #[serde(default)]
-    flags: Vec<RecipeFlags>,
+    pub flags: Vec<RecipeFlags>,
     /// List of objects describing the ingredients used for this recipe.
     #[serde(default)]
-    ingredients: Vec<Ingredient>,
+    pub ingredients: Vec<Ingredient>,
 }
 
 /// Possible recipe types.
@@ -102,9 +104,9 @@ pub enum RecipeFlags {
 pub struct Ingredient {
     /// id of the ingredient.
     #[serde(rename = "item_id")]
-    id: String,
+    pub id: String,
     /// Amount of ingredients required.
-    count: String,
+    pub count: String,
 }
 
 impl Recipe {
@@ -113,70 +115,9 @@ impl Recipe {
         let url = format!("{}?recipe_id={}", ENDPOINT_URL, id);
         client.request(&url)
     }
-
-    /// Returns the id of the recipe.
-    pub fn id(&self) -> &str {
-        &self.id
-    }
-
-    /// Returns the type of the recipe.
-    pub fn recipe_type(&self) -> &RecipeType {
-        &self.recipe_type
-    }
-
-    /// Returns the id of the produced item.
-    pub fn output_item_id(&self) -> &str {
-        &self.output_item_id
-    }
-
-    /// Returns the amount of items produced.
-    pub fn output_item_count(&self) -> &str {
-        &self.output_item_count
-    }
-
-    /// Returns the minimum rating of the recipe.
-    pub fn min_rating(&self) -> &str {
-        &self.min_rating
-    }
-
-    /// Returns the time it takes to craft the item in ms.
-    pub fn time_to_craft_ms(&self) -> &str {
-        &self.time_to_craft_ms
-    }
-
-    /// Returns the potential value in coins received when selling the item to a vendor.
-    pub fn vendor_value(&self) -> &str {
-        &self.vendor_value
-    }
-
-    /// Returns the list of crafting disciplines that can use the recipe.
-    pub fn disciplines(&self) -> &Vec<Discipline> {
-        &self.disciplines
-    }
-
-    /// Returns additional flags for the recipe.
-    pub fn flags(&self) -> &Vec<RecipeFlags> {
-        &self.flags
-    }
-
-    /// Returns a list of objects describing the ingredients for this recipe.
-    pub fn ingredients(&self) -> &Vec<Ingredient> {
-        &self.ingredients
-    }
 }
 
-impl Ingredient {
-    /// Returns the item id of the ingredient.
-    pub fn id(&self) -> &str {
-        &self.id
-    }
-
-    /// Returns the amount of this specific ingredient that is required.
-    pub fn count(&self) -> &str {
-        &self.count
-    }
-
-}
+impl Ingredient {}
 
 #[cfg(test)]
 mod tests {
@@ -202,10 +143,7 @@ mod tests {
 
     #[test]
     fn create_recipe() {
-        match serde_json::from_str::<Recipe>(JSON_RECIPE) {
-            Ok(_) => assert!(true),
-            Err(e) => panic!(e.to_string()),
-        }
+        serde_json::from_str::<Recipe>(JSON_RECIPE).unwrap();
     }
 
     #[test]

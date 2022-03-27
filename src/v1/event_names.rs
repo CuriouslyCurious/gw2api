@@ -1,3 +1,5 @@
+use serde::Deserialize;
+
 use crate::client::Client;
 use crate::error::ApiError;
 
@@ -8,25 +10,15 @@ const ENDPOINT_URL: &str = "/v1/event_names";
 #[derive(Debug, Deserialize, PartialEq)]
 pub struct Event {
     /// Event id. First digit indicates the event's region: 1 = North America, 2 = Europe.
-    id: String,
+    pub id: String,
     /// Localized name of the event.
-    name: String,
+    pub name: String,
 }
 
 impl Event {
     /// Retrieve all event names that are in the game.
     pub fn get_all(client: &Client) -> Result<Vec<Event>, ApiError> {
         client.request(ENDPOINT_URL)
-    }
-
-    /// Returns the id of the event.
-    pub fn id(&self) -> &str {
-        &self.id
-    }
-
-    /// Returns the localized name of the event.
-    pub fn name(&self) -> &str {
-        &self.name
     }
 }
 
@@ -43,13 +35,9 @@ mod tests {
 
     #[test]
     fn create_event() {
-        match serde_json::from_str::<Event>(JSON_EVENT) {
-            Ok(_) => assert!(true),
-            Err(e) => panic!(e.to_string()),
-        }
+        serde_json::from_str::<Event>(JSON_EVENT).unwrap();
     }
 
-    // TODO: Fix this
     //#[test]
     //fn get_all_events() {
     //    let client = Client::new();

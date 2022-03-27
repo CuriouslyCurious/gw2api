@@ -1,6 +1,7 @@
+use serde::Deserialize;
+
 use crate::client::Client;
 use crate::error::ApiError;
-
 
 const ENDPOINT_URL: &str = "/v1/guild_details";
 
@@ -9,15 +10,15 @@ const ENDPOINT_URL: &str = "/v1/guild_details";
 pub struct Guild {
     /// id of the guild.
     #[serde(rename = "guild_id")]
-    id: String,
+    pub id: String,
     /// Name of the guild.
     #[serde(rename = "guild_name")]
-    name: String,
+    pub name: String,
     /// Tag (abbreviation or shortened name) of the guild.
-    tag: String,
+    pub tag: String,
     /// Potential object containing information about the emblem design of the guild.
     #[serde(default)]
-    emblem: Option<Emblem>,
+    pub emblem: Option<Emblem>,
 }
 
 /// Possible flags describing the orientation of the background and/or foreground of the emblem.
@@ -33,17 +34,17 @@ pub enum Flag {
 #[derive(Debug, Deserialize, PartialEq)]
 pub struct Emblem {
     /// id of the background image.
-    background_id: u32,
+    pub background_id: u32,
     /// id of the foreground image.
-    foreground_id: u32,
+    pub foreground_id: u32,
     /// List of flags describing orientation of background/foreground elements of the emblem.
-    flags: Vec<Flag>,
+    pub flags: Vec<Flag>,
     /// id of the background color (see v1/colors).
-    background_color_id: u32,
+    pub background_color_id: u32,
     /// id of the primary foreground color (see v1/colors).
-    foreground_primary_color_id: u32,
+    pub foreground_primary_color_id: u32,
     /// id of the secondary foreground color (see v1/colors).
-    foreground_secondary_color_id: u32,
+    pub foreground_secondary_color_id: u32,
 }
 
 impl Guild {
@@ -58,59 +59,9 @@ impl Guild {
         let url = format!("{}?guild_name={}", ENDPOINT_URL, name);
         client.request(&url)
     }
-
-    /// Returns the id of the guild.
-    pub fn id(&self) -> &str {
-        &self.id
-    }
-
-    /// Returns the name of the guild.
-    pub fn name(&self) -> &str {
-        &self.name
-    }
-
-    /// Returns the tag of the guild.
-    pub fn tag(&self) -> &str {
-        &self.tag
-    }
-
-    /// Returns the emblem object.
-    pub fn emblem(&self) -> &Option<Emblem> {
-        &self.emblem
-    }
 }
 
-impl Emblem {
-    /// Returns the id of the background image.
-    pub fn background_id(&self) -> u32 {
-        self.background_id
-    }
-
-    /// Returns the id of the foreground image.
-    pub fn foreground_id(&self) -> u32 {
-        self.background_id
-    }
-
-    /// Returns a list for flags for the emblem.
-    pub fn flags(&self) -> &Vec<Flag> {
-        &self.flags
-    }
-
-    /// Returns the id of the background color.
-    pub fn background_color_id(&self) -> u32 {
-        self.background_color_id
-    }
-
-    /// Returns the id of the primary foreground color.
-    pub fn foreground_primary_color_id(&self) -> u32 {
-        self.foreground_primary_color_id
-    }
-
-    /// Returns the id of the secondary foreground color.
-    pub fn background_primary_color_id(&self) -> u32 {
-        self.foreground_secondary_color_id
-    }
-}
+impl Emblem {}
 
 #[cfg(test)]
 mod tests {
@@ -134,23 +85,20 @@ mod tests {
 
     #[test]
     fn create_guild() {
-        match serde_json::from_str::<Guild>(JSON_GUILD) {
-            Ok(_) => assert!(true),
-            Err(e) => panic!(e.to_string()),
-        }
+        serde_json::from_str::<Guild>(JSON_GUILD).unwrap();
     }
 
     #[test]
     fn get_guild_by_id() {
         let client = Client::new();
         let id = "1C4EE62A-E76D-48E0-A205-D56CCC4FED2D"; // id of the lovely guild TD
-        assert_eq!(Guild::get_by_id(&client, id.to_string()).unwrap().id(), id)
+        assert_eq!(Guild::get_by_id(&client, id.to_string()).unwrap().id, id)
     }
 
     #[test]
     fn get_guild_by_name() {
         let client = Client::new();
         let name = "The Doppelgangers";
-        assert_eq!(Guild::get_by_name(&client, name.to_string()).unwrap().name(), name)
+        assert_eq!(Guild::get_by_name(&client, name.to_string()).unwrap().name, name)
     }
 }

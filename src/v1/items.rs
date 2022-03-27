@@ -1,3 +1,5 @@
+use serde::Deserialize;
+
 use crate::client::Client;
 use crate::error::ApiError;
 
@@ -8,18 +10,13 @@ const ENDPOINT_URL: &str = "/v1/items";
 #[derive(Debug, Deserialize, PartialEq)]
 pub struct Items {
     /// List of ids of all discovered items.
-    items: Vec<u32>,
+    pub items: Vec<u32>,
 }
 
 impl Items {
     /// Retrieve all discovered items' ids.
     pub fn get_all(client: &Client) -> Result<Items, ApiError> {
         client.request(ENDPOINT_URL)
-    }
-
-    /// Returns the list of all player discovered item ids.
-    pub fn items(&self) -> &Vec<u32> {
-        &self.items
     }
 }
 
@@ -39,15 +36,12 @@ mod tests {
 
     #[test]
     fn create_items() {
-        match serde_json::from_str::<Items>(JSON_ITEMS) {
-            Ok(_) => assert!(true),
-            Err(e) => panic!(e.to_string()),
-        }
+        serde_json::from_str::<Items>(JSON_ITEMS).unwrap();
     }
 
     #[test]
     fn get_all_items() {
         let client = Client::new();
-        assert!(Items::get_all(&client).unwrap().items().len() >= 2000)
+        assert!(Items::get_all(&client).unwrap().items.len() >= 2000)
     }
 }

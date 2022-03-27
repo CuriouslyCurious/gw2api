@@ -1,6 +1,7 @@
+use serde::Deserialize;
+
 use crate::client::Client;
 use crate::error::ApiError;
-
 
 const ENDPOINT_URL: &str = "/v1/map_names";
 
@@ -8,25 +9,15 @@ const ENDPOINT_URL: &str = "/v1/map_names";
 #[derive(Debug, Deserialize, PartialEq)]
 pub struct Map {
     /// Map id. First digit indicates the map's region: 1 = North America, 2 = Europe.
-    id: String,
+    pub id: String,
     /// Localized name of the map.
-    name: String,
+    pub name: String,
 }
 
 impl Map {
     /// Retrieve all map names that are in the game.
     pub fn get_all(client: &Client) -> Result<Vec<Map>, ApiError> {
         client.request(ENDPOINT_URL)
-    }
-
-    /// Returns the id of the map.
-    pub fn id(&self) -> &str {
-        &self.id
-    }
-
-    /// Returns the localized name of the map.
-    pub fn name(&self) -> &str {
-        &self.name
     }
 }
 
@@ -43,10 +34,7 @@ mod tests {
 
     #[test]
     fn create_map() {
-        match serde_json::from_str::<Map>(JSON_MAP) {
-            Ok(_) => assert!(true),
-            Err(e) => panic!(e.to_string()),
-        }
+        serde_json::from_str::<Map>(JSON_MAP).unwrap();
     }
 
     #[test]

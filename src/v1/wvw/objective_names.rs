@@ -1,6 +1,7 @@
+use serde::Deserialize;
+
 use crate::client::Client;
 use crate::error::ApiError;
-
 
 const ENDPOINT_URL: &str = "/v1/wvw/objective_names";
 
@@ -8,25 +9,15 @@ const ENDPOINT_URL: &str = "/v1/wvw/objective_names";
 #[derive(Debug, Deserialize, PartialEq)]
 pub struct Objective {
     /// Objective id.
-    id: String,
+    pub id: String,
     /// Localized name of the objective.
-    name: String,
+    pub name: String,
 }
 
 impl Objective {
     /// Retrieve all objective names that are in the game.
     pub fn get_all(client: &Client) -> Result<Vec<Objective>, ApiError> {
         client.request(ENDPOINT_URL)
-    }
-
-    /// Returns the id of the objective.
-    pub fn id(&self) -> &str {
-        &self.id
-    }
-
-    /// Returns the localized name of the objective.
-    pub fn name(&self) -> &str {
-        &self.name
     }
 }
 
@@ -43,10 +34,7 @@ mod tests {
 
     #[test]
     fn create_objective() {
-        match serde_json::from_str::<Objective>(JSON_OBJECTIVE) {
-            Ok(_) => assert!(true),
-            Err(e) => panic!(e.to_string()),
-        }
+        serde_json::from_str::<Objective>(JSON_OBJECTIVE).unwrap();
     }
 
     #[test]

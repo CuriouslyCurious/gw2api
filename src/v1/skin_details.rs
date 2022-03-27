@@ -1,3 +1,5 @@
+use serde::Deserialize;
+
 use crate::client::Client;
 use crate::error::ApiError;
 use crate::utils::Race;
@@ -9,25 +11,25 @@ const ENDPOINT_URL: &str = "/v1/skin_details";
 pub struct Skin {
     /// id of the skin.
     #[serde(rename = "skin_id")]
-    id: String,
+    pub id: String,
     /// Name of the skin.
-    name: String,
+    pub name: String,
     /// Type of the skin.
     #[serde(rename = "type")]
-    skin_type: SkinType,
+    pub skin_type: SkinType,
     /// Additional flags for a skin.
     #[serde(default)]
-    flags: Vec<SkinFlags>,
+    pub flags: Vec<SkinFlags>,
     /// Race restrictions that apply to a skin.
     #[serde(default)]
-    restrictions: Vec<Race>,
+    pub restrictions: Vec<Race>,
     /// File icon id to be used with the render service.
-    icon_file_id: String,
+    pub icon_file_id: String,
     /// File signature to be used with the render service.
-    icon_file_signature: String,
+    pub icon_file_signature: String,
     /// Optional skin description.
     #[serde(default)]
-    description: String,
+    pub description: String,
 }
 
 /// Possible skin types.
@@ -51,46 +53,6 @@ impl Skin {
     pub fn get_id(client: &Client, id: String) -> Result<Skin, ApiError> {
         let url = format!("{}?skin_id={}", ENDPOINT_URL, id);
         client.request(&url)
-    }
-
-    /// Returns the id of the skin.
-    pub fn id(&self) -> &str {
-        &self.id
-    }
-
-    /// Returns the name of the skin.
-    pub fn name(&self) -> &str {
-        &self.name
-    }
-
-    /// Returns the type of the skin.
-    pub fn skin_type(&self) -> &SkinType {
-        &self.skin_type
-    }
-
-    /// Returns additional flags for the skin.
-    pub fn flags(&self) -> &Vec<SkinFlags> {
-        &self.flags
-    }
-
-    /// Returns potential race restrictions for the skin.
-    pub fn restrictions(&self) -> &Vec<Race> {
-        &self.restrictions
-    }
-
-    /// Returns icon file id used with the render service.
-    pub fn icon_file_id(&self) -> &str {
-        &self.icon_file_id
-    }
-
-    /// Returns icon file signature used with the render service.
-    pub fn icon_file_signature(&self) -> &str {
-        &self.icon_file_signature
-    }
-
-    /// Returns the potential description for the skin.
-    pub fn description(&self) -> &str {
-        &self.description
     }
 }
 
@@ -118,10 +80,7 @@ mod tests {
 
     #[test]
     fn create_skin() {
-        match serde_json::from_str::<Skin>(JSON_SKIN) {
-            Ok(_) => assert!(true),
-            Err(e) => panic!(e.to_string()),
-        }
+        serde_json::from_str::<Skin>(JSON_SKIN).unwrap();
     }
 
     #[test]

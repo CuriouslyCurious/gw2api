@@ -1,6 +1,7 @@
+use serde::Deserialize;
+
 use crate::client::Client;
 use crate::error::ApiError;
-
 
 const ENDPOINT_URL: &str = "/v1/world_names";
 
@@ -8,25 +9,15 @@ const ENDPOINT_URL: &str = "/v1/world_names";
 #[derive(Debug, Deserialize, PartialEq)]
 pub struct World {
     /// World id. First digit indicates the world's region: 1 = North America, 2 = Europe.
-    id: String,
+    pub id: String,
     /// Localized name of the world.
-    name: String,
+    pub name: String,
 }
 
 impl World {
     /// Retrieve all world names that are in the game.
     pub fn get_all(client: &Client) -> Result<Vec<World>, ApiError> {
         client.request(ENDPOINT_URL)
-    }
-
-    /// Returns the id of the world.
-    pub fn id(&self) -> &str {
-        &self.id
-    }
-
-    /// Returns the localized name of the world.
-    pub fn name(&self) -> &str {
-        &self.name
     }
 }
 
@@ -43,10 +34,7 @@ mod tests {
 
     #[test]
     fn create_world() {
-        match serde_json::from_str::<World>(JSON_WORLD) {
-            Ok(_) => assert!(true),
-            Err(e) => panic!(e.to_string()),
-        }
+        serde_json::from_str::<World>(JSON_WORLD).unwrap();
     }
 
     #[test]

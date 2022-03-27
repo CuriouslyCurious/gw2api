@@ -1,3 +1,5 @@
+use serde::Deserialize;
+
 use crate::client::Client;
 use crate::error::ApiError;
 
@@ -9,26 +11,26 @@ const ENDPOINT_URL: &str = "/v1/map_floor";
 #[derive(Debug, Deserialize, PartialEq)]
 pub struct Floor {
     /// Tuple describing the dimensions of the texture for the map floor.
-    texture_dims: Vec<f32>,
+    pub texture_dims: Vec<f32>,
     /// If present, it represents a rectangle of downloadable textures. Every tile coordinate outside this rectangle is not available on the tile server.
-    clamped_view: Vec<Vec<f32>>,
+    pub clamped_view: Vec<Vec<f32>>,
     /// A map of the regions of a map, where the region id is the key and the region object is the
     /// value.
-    regions: BTreeMap<u32, Region>,
+    pub regions: BTreeMap<u32, Region>,
 }
 
 /// Struct containing information about a region of a map.
 #[derive(Debug, Deserialize, PartialEq)]
 pub struct Region {
     /// Region name.
-    name: String,
+    pub name: String,
     /// The coordinates of the region label.
-    label_coord: Vec<f32>,
+    pub label_coord: Vec<f32>,
     /// Dimensions of the region, given as the coordinates of the lower-left (SW) and upper-right (NE)
     /// corners.
-    continent_rect: Vec<Vec<i32>>,
+    pub continent_rect: Vec<Vec<i32>>,
     /// Mapping from the map id to an object.
-    maps: BTreeMap<u32, Map>
+    pub maps: BTreeMap<u32, Map>
 }
 
 /// Struct containing information about a maps in the game, including information about floor and
@@ -36,48 +38,48 @@ pub struct Region {
 #[derive(Debug, Deserialize, PartialEq)]
 pub struct Map {
     /// Name of the map.
-    name: String,
+    pub name: String,
     /// Minimum level (height) of the map.
-    min_level: i32,
+    pub min_level: i32,
     /// Maximum level of the map.
-    max_level: i32,
+    pub max_level: i32,
     /// Default floor for the map.
-    default_floor: i32,
+    pub default_floor: i32,
     /// List of available floors.
     #[serde(default)]
-    floors: Vec<i32>,
+    pub floors: Vec<i32>,
     /// The coordinates of the map label.
     #[serde(default)]
-    label_coord: Vec<f32>,
+    pub label_coord: Vec<f32>,
     /// Dimensions of the map, given as the coordinates of the lower-left (SW) and upper-right (NE)
     /// corners.
     #[serde(default)]
-    map_rect: Vec<Vec<i32>>,
+    pub map_rect: Vec<Vec<i32>>,
     /// Dimensions of the map within the continent coordinate system,
     /// given as the coordinates of the lower-left (SW) and upper-right (NE) corners.
     #[serde(default)]
-    continent_rect: Vec<Vec<i32>>,
+    pub continent_rect: Vec<Vec<i32>>,
     /// List of points of interests in the map (landmarks, waypoints and vistas)
     #[serde(default)]
-    points_of_interest: Vec<Poi>,
+    pub points_of_interest: Vec<Poi>,
     /// List of god shrines (usually empty with the exception of Orr maps).
     #[serde(default)]
-    god_shrines: Vec<GodShrine>,
+    pub god_shrines: Vec<GodShrine>,
     /// List of renown hearts.
     #[serde(default)]
-    tasks: Vec<Task>,
+    pub tasks: Vec<Task>,
     /// List of skill challenges.
     #[serde(default)]
-    skill_challenges: Vec<SkillChallenge>,
+    pub skill_challenges: Vec<SkillChallenge>,
     /// List of sectors/sub-regions in the map.
     #[serde(default)]
-    sectors: Vec<Sector>,
+    pub sectors: Vec<Sector>,
     /// List of training points.
     #[serde(default)]
-    training_points: Vec<TrainingPoint>,
+    pub training_points: Vec<TrainingPoint>,
     /// List of adventures.
     #[serde(default)]
-    adventures: Vec<Adventure>,
+    pub adventures: Vec<Adventure>,
 }
 
 /// Possible types a point of interest can be.
@@ -102,16 +104,16 @@ pub enum PoiType {
 pub struct Poi {
     /// id of the point of interest.
     #[serde(rename = "poi_id")]
-    id: u32,
+    pub id: u32,
     /// Name of the point of interest.
-    name: String,
+    pub name: String,
     /// The kind of point of interest this particular one is.
     #[serde(rename = "type")]
-    poi_type: PoiType,
+    pub poi_type: PoiType,
     /// The floor number of this object.
-    floor: i32,
+    pub floor: i32,
     /// The coordinates of this object.
-    coord: Vec<f32>,
+    pub coord: Vec<f32>,
 }
 
 /// Struct containing information about an icon (used for the shrines of the gods).
@@ -119,28 +121,28 @@ pub struct Poi {
 pub struct Icon {
     /// File id of the icon.
     #[serde(rename = "file_id")]
-    id: u32,
+    pub id: u32,
     /// File signature of the icon.
-    signature: String,
+    pub signature: String,
 }
 
 /// Struct containing information about a god shrine (found in Straits of Devestation)
 #[derive(Debug, Deserialize, PartialEq)]
 pub struct GodShrine {
     /// id of the god shrine.
-    id: u32,
+    pub id: u32,
     /// Uncontested name of the god shrine.
-    name: String,
+    pub name: String,
     /// Contested name of the god shrine.
-    name_contested: String,
+    pub name_contested: String,
     /// Coordinates where the god shrine is.
-    coord: Vec<f32>,
+    pub coord: Vec<f32>,
     /// id of the point of interest for the shrine.
-    poi_id: u32,
+    pub poi_id: u32,
     /// Icon for the uncontested shrine.
-    icon: Icon,
+    pub icon: Icon,
     /// Icon for the contested version of the shrine.
-    icon_contested: Icon,
+    pub icon_contested: Icon,
 }
 
 /// Struct containing information about a task (renown heart).
@@ -148,15 +150,15 @@ pub struct GodShrine {
 pub struct Task {
     /// id of the renown heart.
     #[serde(rename = "task_id")]
-    id: u32,
+    pub id: u32,
     /// Objective or name of the heart.
-    objective: String,
+    pub objective: String,
     /// The level of the the heart.
-    level: u16,
+    pub level: u16,
     /// Coordinates where the task takes place.
-    coord: Vec<f32>,
+    pub coord: Vec<f32>,
     /// Boundaries of the task.
-    bounds: Vec<Vec<f32>>,
+    pub bounds: Vec<Vec<f32>>,
 }
 
 /// Struct containing information about a skill challenge.
@@ -164,12 +166,12 @@ pub struct Task {
 pub struct SkillChallenge {
     // TODO: Check if these fields are accurate
     /// The expansion required for the skill challenge.
-    expac: u32,
+    pub expac: u32,
     /// id of the skill challenge
     #[serde(rename = "idx")]
-    id: u32,
+    pub id: u32,
     /// Coordinates where the skill challenge is.
-    coord: Vec<f32>,
+    pub coord: Vec<f32>,
 }
 
 /// Possible types of a training point, Tyrian ones give less hero points than Maguuman or ones
@@ -187,16 +189,16 @@ pub enum PointType {
 #[derive(Debug, Deserialize, PartialEq)]
 pub struct TrainingPoint {
     /// id of the training point.
-    id: u32,
+    pub id: u32,
     /// Name of the training point.
-    name: String,
+    pub name: String,
     /// Description of the training point.
-    description: String,
+    pub description: String,
     /// Coordinates where the training point is.
-    coord: Vec<f32>,
+    pub coord: Vec<f32>,
     /// Type of training point (either Maguuma or Tyria)
     #[serde(rename = "type")]
-    point_type: PointType,
+    pub point_type: PointType,
 }
 
 /// Struct containing information about an adventure. Seemingly only used in a few maps in the
@@ -205,13 +207,13 @@ pub struct TrainingPoint {
 pub struct Adventure {
     /// id of the adventure.
     #[serde(rename = "guid")]
-    id: String,
+    pub id: String,
     /// Coordinates where the adventure is.
-    coord: Vec<f32>,
+    pub coord: Vec<f32>,
     /// Name of the adventure.
-    name: String,
+    pub name: String,
     /// Further information about the leaderboard and description of the adventure.
-    leaderboard: Leaderboard,
+    pub leaderboard: Leaderboard,
 }
 
 /// Struct containing information about a leaderboard for an adventure.
@@ -219,11 +221,11 @@ pub struct Adventure {
 pub struct Leaderboard {
     /// id of the leaderboard.
     #[serde(rename = "guid")]
-    id: String,
+    pub id: String,
     /// Name of the adventure the leaderboard belongs to.
-    title: String,
+    pub title: String,
     /// Description of the adventure.
-    description: String,
+    pub description: String,
 }
 
 /// Struct containing information about a sector (area) of a map.
@@ -231,15 +233,15 @@ pub struct Leaderboard {
 pub struct Sector {
     /// id of the area.
     #[serde(rename = "sector_id")]
-    id: u32,
+    pub id: u32,
     /// Name of the area.
-    name: String,
+    pub name: String,
     /// Level of the area.
-    level: u32,
+    pub level: u32,
     /// Coordinates of this area.
-    coord: Vec<f32>,
+    pub coord: Vec<f32>,
     /// Bounds of the area.
-    bounds: Vec<Vec<f32>>,
+    pub bounds: Vec<Vec<f32>>,
 }
 
 impl Floor {
@@ -248,339 +250,29 @@ impl Floor {
         let url = format!("{}?continent_id={}&floor={}", ENDPOINT_URL, continent_id, floor);
         client.request(&url)
     }
-
-    /// Returns a tuple describing the dimension of the texture for the map floor.
-    pub fn texture_dims(&self) -> &Vec<f32> {
-        &self.texture_dims
-    }
-
-    /// If present, it represents a rectangle of downloadable textures. Every tile coordinate outside this rectangle is not available on the tile server.
-    /// Returns the name of the map.
-    pub fn clamped_view(&self) -> &Vec<Vec<f32>> {
-        &self.clamped_view
-    }
-
-    /// Returns a map of the regions of a map, where the region id is key and the region object is the
-    /// value.
-    pub fn regions(&self) -> &BTreeMap<u32, Region> {
-        &self.regions
-    }
 }
 
-impl Region {
-    /// Returns the region name.
-    pub fn name(&self) -> &str {
-        &self.name
-    }
+impl Region {}
 
-    /// Returns the coordinates of the region label.
-    pub fn label_coord(&self) -> &Vec<f32> {
-        self.label_coord.as_ref()
-    }
+impl Map {}
 
-    /// Returns a reference to a Vec object that contains the dimensions of the region, using the
-    /// continent coordinate system.
-    pub fn continent_rect(&self) -> &Vec<Vec<i32>> {
-        self.continent_rect.as_ref()
-    }
+impl Poi {}
 
-    /// Returns a reference to a map of maps.
-    pub fn maps(&self) -> &BTreeMap<u32, Map> {
-        &self.maps
-    }
-}
+impl Icon {}
 
-impl Map {
-    /// Returns the name of the map.
-    pub fn name(&self) -> &str {
-        &self.name
-    }
+impl GodShrine {}
 
-    /// Returns the minimum level (height) of the map.
-    pub fn min_level(&self) -> i32 {
-        self.min_level
-    }
+impl Task {}
 
-    /// Returns the maximum level (height) of the map.
-    pub fn max_level(&self) -> i32 {
-        self.max_level
-    }
+impl SkillChallenge {}
 
-    /// Returns the default floor.
-    pub fn default_floor(&self) -> i32 {
-        self.default_floor
-    }
+impl TrainingPoint {}
 
-    /// Returns a reference to a list of floors for the map.
-    pub fn floors(&self) -> &Vec<i32> {
-        self.floors.as_ref()
-    }
+impl Adventure {}
 
-    /// Returns a reference to a list of lists that contains the dimensions of the map, using the
-    /// maps local coordinates.
-    pub fn map_rect(&self) -> &Vec<Vec<i32>> {
-        &self.map_rect
-    }
+impl Leaderboard {}
 
-    /// Returns a reference to a list of lists that contains the dimensions of the map, using the
-    /// continent coordinate system.
-    pub fn continent_rect(&self) -> &Vec<Vec<i32>> {
-        self.continent_rect.as_ref()
-    }
-
-    /// Returns a reference to a list of points of interests in the map.
-    pub fn points_of_interest(&self) -> &Vec<Poi> {
-        &self.points_of_interest
-    }
-
-    /// Returns a reference to a list of god shrines in the map. Only relevant in Orr, should
-    /// otherwise be empty.
-    pub fn god_shrines(&self) -> &Vec<Task> {
-        &self.tasks
-    }
-
-    /// Returns a reference to a list of tasks (renown hearts) in the map.
-    pub fn tasks(&self) -> &Vec<Task> {
-        &self.tasks
-    }
-
-    /// Returns a reference to a list of skill challenges in the map.
-    pub fn skill_challenges(&self) -> &Vec<SkillChallenge> {
-        &self.skill_challenges
-    }
-
-    /// Returns a reference to a list of sectors/sub-regions in the map.
-    pub fn sectors(&self) -> &Vec<Sector> {
-        &self.sectors
-    }
-
-    // TODO: Check if this is accurate.
-    /// Returns a reference to a list of training points (probably meaning channelable hero points) in the map.
-    pub fn training_points(&self) -> &Vec<TrainingPoint> {
-        &self.training_points
-    }
-
-    /// Returns a reference to a list of adventures in the map. Only used in Verdant Brink & Tangled Depths.
-    pub fn adventures(&self) -> &Vec<Adventure> {
-        &self.adventures
-    }
-}
-
-impl Poi {
-    /// Returns the id of the point of interest.
-    pub fn id(&self) -> u32 {
-        self.id
-    }
-
-    /// Returns the name of the point of interest.
-    pub fn name(&self) -> &str {
-        &self.name
-    }
-
-    /// Returns what type of point of interest this is. Possible types are: Landmark, Waypoint,
-    /// Vista and Unlock.
-    pub fn poi_type(&self) -> &PoiType {
-        &self.poi_type
-    }
-
-    /// Returns the floor number of the point of interest.
-    pub fn floor(&self) -> i32 {
-        self.floor
-    }
-
-    /// Returns the coordinates for the point of interest.
-    pub fn coord(&self) -> &Vec<f32> {
-        &self.coord
-    }
-}
-
-impl Icon {
-    /// Returns the file id of the icon.
-    pub fn id(&self) -> u32 {
-        self.id
-    }
-
-    /// Returns the file signature of the icon.
-    pub fn signature(&self) -> &str {
-        &self.signature
-    }
-}
-
-impl GodShrine {
-    /// Returns the id of the god shrine.
-    pub fn id(&self) -> u32 {
-        self.id
-    }
-
-    /// Returns the regular name of the god shrine.
-    pub fn name(&self) -> &str {
-        &self.name
-    }
-
-    /// Returns the contested name of the god shrine.
-    pub fn name_contested(&self) -> &str {
-        &self.name_contested
-    }
-
-    /// Returns the coordinates for the god shrine.
-    pub fn coord(&self) -> &Vec<f32> {
-        &self.coord
-    }
-
-    /// Returns the id of point of interest of the shrine.
-    pub fn poi_id(&self) -> u32 {
-        self.poi_id
-    }
-
-    /// Returns the icon information for the regular shrine.
-    pub fn icon(&self) -> &Icon {
-        &self.icon
-    }
-
-    /// Returns the icon information for the contested shrine.
-    pub fn icon_contested(&self) -> &Icon {
-        &self.icon_contested
-    }
-}
-
-impl Task {
-    /// Returns the id of the renown heart.
-    pub fn id(&self) -> u32 {
-        self.id
-    }
-
-    /// Returns the objective or the name of the heart.
-    pub fn objective(&self) -> &str {
-        &self.objective
-    }
-
-    /// Returns the recommended character level of the heart.
-    pub fn level(&self) -> u16 {
-        self.level
-    }
-
-    /// Returns the coordinates where the task takes place.
-    pub fn coord(&self) -> &Vec<f32> {
-        &self.coord
-    }
-
-    /// Returns the boundaries of the task's area.
-    pub fn bounds(&self) -> &Vec<Vec<f32>> {
-        &self.bounds
-    }
-}
-
-impl SkillChallenge {
-    /// Returns the expansion required for the skill challenge.
-    pub fn expac(&self) -> u32 {
-        self.expac
-    }
-
-    /// Returns the id of the skill challenge.
-    pub fn id(&self) -> u32 {
-        self.id
-    }
-
-    /// Returns the coordinates where the skill challenge is.
-    pub fn coord(&self) -> &Vec<f32> {
-        &self.coord
-    }
-}
-
-impl TrainingPoint {
-    /// Returns the id of the training point.
-    pub fn id(&self) -> u32 {
-        self.id
-    }
-
-    /// Returns the name of the training point.
-    pub fn name(&self) -> &str {
-        &self.name
-    }
-
-    /// Returns the description of the training point.
-    pub fn description(&self) -> &str {
-        &self.description
-    }
-
-    /// Returns the coordinates of where the training point is.
-    pub fn coord(&self) -> &Vec<f32> {
-        &self.coord
-    }
-
-    /// Returns the type of training point it is (either Tyria, Maguuma, Desert or Unknown).
-    pub fn point_type(&self) -> &PointType {
-        &self.point_type
-    }
-}
-
-impl Adventure {
-    /// Returns the id of the adventure.
-    pub fn id(&self) -> &str {
-        &self.id
-    }
-
-    /// Returns the coordinates where the adventure is.
-    pub fn coord(&self) -> &Vec<f32> {
-        &self.coord
-    }
-
-    /// Returns the name of the adventure.
-    pub fn name(&self) -> &str {
-        &self.name
-    }
-
-    /// Returns a Leaderboard object containing further information and description about an
-    /// adventure.
-    pub fn leaderboard(&self) -> &Leaderboard {
-        &self.leaderboard
-    }
-}
-
-impl Leaderboard {
-    /// Returns the id of the leaderboard.
-    pub fn id(&self) -> &str {
-        &self.id
-    }
-
-    /// Returns the title of the adventure the leaderboard belongs to.
-    pub fn title(&self) -> &str {
-        &self.title
-    }
-
-    /// Returns the description of the adventure the leaderboard belongs to.
-    pub fn description(&self) -> &str {
-        &self.description
-    }
-
-}
-
-impl Sector {
-    /// Returns the id of the area.
-    pub fn id(&self) -> u32 {
-        self.id
-    }
-
-    /// Returns the name of the area.
-    pub fn name(&self) -> &str {
-        &self.name
-    }
-
-    /// Returns the level of the area.
-    pub fn level(&self) -> u32 {
-        self.level
-    }
-
-    /// Returns the coordinates of the area.
-    pub fn coord(&self) -> &Vec<f32> {
-        &self.coord
-    }
-
-    /// Returns the boundaries of the task's area.
-    pub fn bounds(&self) -> &Vec<Vec<f32>> {
-        &self.bounds
-    }
-}
+impl Sector {}
 
 #[cfg(test)]
 mod tests {
@@ -807,15 +499,12 @@ mod tests {
 
     #[test]
     fn create_floor() {
-        match serde_json::from_str::<Floor>(JSON_FLOOR) {
-            Ok(_) => assert!(true),
-            Err(e) => panic!(e.to_string()),
-        }
+        serde_json::from_str::<Floor>(JSON_FLOOR).unwrap();
     }
 
     #[test]
     fn get_map_floor() {
         let client = Client::new();
-        assert!(Floor::get_map_floor(&client, 1, 1).unwrap().regions().len() > 0)
+        assert!(Floor::get_map_floor(&client, 1, 1).unwrap().regions.len() > 0)
     }
 }
