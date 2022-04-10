@@ -6,7 +6,7 @@ use crate::error::ApiError;
 const ENDPOINT_URL: &str = "/v1/build";
 
 /// Contains a Guild Wars 2 build version id
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, PartialEq)]
 pub struct Build {
     /// The current build version id
     #[serde(rename = "build_id")]
@@ -22,11 +22,12 @@ impl Build {
 
 #[cfg(test)]
 mod tests {
-    use crate::client::Client;
     use crate::v1::build::Build;
+    use similar_asserts::assert_eq;
+
     #[test]
-    fn get_build() {
-        let client = Client::new();
-        assert_ne!(Build::get_build(&client).unwrap().id, 0)
+    fn create_builds() {
+        let build = Build { id: 115267 };
+        assert_eq!(build.id, 115267);
     }
 }

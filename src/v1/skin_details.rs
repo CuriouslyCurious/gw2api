@@ -59,34 +59,13 @@ impl Skin {
 #[cfg(test)]
 mod tests {
     use crate::v1::skin_details::*;
-    use crate::client::Client;
+    use std::fs::read_to_string;
 
-    const JSON_SKIN: &str = r#"
-    {
-      "skin_id": "1350",
-      "name": "Zodiac Light Vest",
-      "type": "Armor",
-      "flags": [
-        "ShowInWardrobe"
-      ],
-      "restrictions": [],
-      "icon_file_id": "740312",
-      "icon_file_signature": "021048C317DFFFB6727E0955A2D6C7EFFBE9425B",
-      "armor": {
-        "type": "Coat",
-        "weight_class": "Light"
-      }
-    }"#;
+    const JSON_SKIN_PATH: &str = "./tests/json/v1/skin_details.json";
 
     #[test]
     fn create_skin() {
-        serde_json::from_str::<Skin>(JSON_SKIN).unwrap();
-    }
-
-    #[test]
-    fn get_skin() {
-        let client = Client::new();
-        let skin = serde_json::from_str::<Skin>(JSON_SKIN).unwrap();
-        assert_eq!(Skin::get_id(&client, "1350".to_string()).unwrap(), skin)
+        let json = read_to_string(JSON_SKIN_PATH).unwrap();
+        serde_json::from_str::<Skin>(&json).unwrap();
     }
 }

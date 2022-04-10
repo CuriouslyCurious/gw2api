@@ -23,7 +23,6 @@ impl Items {
 #[cfg(test)]
 mod tests {
     use crate::v1::items::*;
-    use crate::client::Client;
 
     const JSON_ITEMS: &str = r#"
     {
@@ -37,11 +36,5 @@ mod tests {
     #[test]
     fn create_items() {
         serde_json::from_str::<Items>(JSON_ITEMS).unwrap();
-    }
-
-    #[test]
-    fn get_all_items() {
-        let client = Client::new();
-        assert!(Items::get_all(&client).unwrap().items.len() >= 2000)
     }
 }

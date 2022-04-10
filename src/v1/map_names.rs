@@ -24,7 +24,6 @@ impl MapName {
 #[cfg(test)]
 mod tests {
     use crate::v1::map_names::*;
-    use crate::client::Client;
 
     const JSON_MAP: &str = r#"
     {
@@ -34,13 +33,6 @@ mod tests {
 
     #[test]
     fn create_map() {
-        serde_json::from_str::<Map>(JSON_MAP).unwrap();
-    }
-
-    #[test]
-    fn get_all_maps() {
-        let client = Client::new();
-        let map = serde_json::from_str::<Map>(JSON_MAP).unwrap();
-        assert!(Map::get_all(&client).unwrap().contains(&map))
+        serde_json::from_str::<MapName>(JSON_MAP).unwrap();
     }
 }

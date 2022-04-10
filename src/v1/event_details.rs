@@ -96,7 +96,6 @@ impl Location  {}
 #[cfg(test)]
 mod tests {
     use crate::v1::event_details::*;
-    use crate::client::Client;
 
     const JSON_EVENT: &str = r#"
     {
@@ -117,9 +116,4 @@ mod tests {
         serde_json::from_str::<Event>(JSON_EVENT).unwrap();
     }
 
-    #[test]
-    fn get_all_events() {
-        let client = Client::new();
-        assert!(Events::get_all_events(&client).unwrap().events.len() >= 1000)
-    }
 }

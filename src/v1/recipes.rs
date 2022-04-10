@@ -20,27 +20,3 @@ impl Recipes {
     }
 }
 
-#[cfg(test)]
-mod tests {
-    use crate::v1::recipes::*;
-    use crate::client::Client;
-
-    const JSON_RECIPES: &str = r#"
-    {
-      "recipes": [
-        1275,
-        3147
-      ]
-    }"#;
-
-    #[test]
-    fn create_recipes() {
-        serde_json::from_str::<Recipes>(JSON_RECIPES).unwrap();
-    }
-
-    #[test]
-    fn get_all_recipes() {
-        let client = Client::new();
-        assert!(Recipes::get_all(&client).unwrap().recipes.len() >= 2000)
-    }
-}

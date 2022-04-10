@@ -82,8 +82,7 @@ impl Map {}
 
 #[cfg(test)]
 mod tests {
-    use crate::v1::maps::*;
-    use crate::client::Client;
+    use crate::v1::maps::Map;
 
     const JSON_MAP: &str = r#"
     {
@@ -110,19 +109,5 @@ mod tests {
     #[test]
     fn create_map() {
         serde_json::from_str::<Map>(JSON_MAP).unwrap();
-    }
-
-    #[test]
-    fn get_map() {
-        let client = Client::new();
-        let id = 15;
-        let map = serde_json::from_str::<Map>(JSON_MAP).unwrap();
-        assert_eq!(Maps::get_id(&client, id.to_string()).unwrap().maps[&id], map)
-    }
-
-    #[test]
-    fn get_all_maps() {
-        let client = Client::new();
-        assert!(Maps::get_all(&client).unwrap().maps.len() >= 50)
     }
 }

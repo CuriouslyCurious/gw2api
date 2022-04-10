@@ -36,11 +36,4 @@ mod tests {
     fn create_objective() {
         serde_json::from_str::<Objective>(JSON_OBJECTIVE).unwrap();
     }
-
-    #[test]
-    fn get_all_objectives() {
-        let client = Client::new();
-        let objective = serde_json::from_str::<Objective>(JSON_OBJECTIVE).unwrap();
-        assert!(Objective::get_all(&client).unwrap().contains(&objective))
-    }
 }

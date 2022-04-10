@@ -2,6 +2,7 @@ pub mod build;
 pub mod colors;
 pub mod continents;
 pub mod event_details;
+#[deprecated = "No longer responds to requests, use v2::events instead"]
 pub mod event_names;
 pub mod files;
 pub mod guild_details;

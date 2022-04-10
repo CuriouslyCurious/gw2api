@@ -148,7 +148,6 @@ impl File {}
 #[cfg(test)]
 mod tests {
     use crate::v1::files::*;
-    use crate::client::Client;
 
     // map_stairs_up
     const JSON_FILE: &str = r#"
@@ -160,12 +159,5 @@ mod tests {
     #[test]
     fn create_event() {
         serde_json::from_str::<File>(JSON_FILE).unwrap();
-    }
-
-    #[test]
-    fn get_all_files() {
-        let client = Client::new();
-        let file = serde_json::from_str::<File>(JSON_FILE).unwrap();
-        assert_eq!(Files::get_all_files(&client).unwrap().map_stairs_up, file)
     }
 }

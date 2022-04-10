@@ -141,13 +141,4 @@ mod tests {
     fn create_dye() {
         serde_json::from_str::<Dye>(JSON_DYE).unwrap();
     }
-
-    #[test]
-    fn get_all_dyes() {
-        let client = Client::new();
-        let dye_num = 2; // Black dye
-        let dye = serde_json::from_str::<Dye>(JSON_DYE).unwrap();
-        let colors = Colors::get_all_dyes(&client).unwrap();
-        assert_eq!(colors.colors.get(&dye_num).unwrap(), &dye)
-    }
 }

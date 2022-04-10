@@ -24,7 +24,6 @@ impl World {
 #[cfg(test)]
 mod tests {
     use crate::v1::world_names::*;
-    use crate::client::Client;
 
     const JSON_WORLD: &str = r#"
     {
@@ -35,12 +34,5 @@ mod tests {
     #[test]
     fn create_world() {
         serde_json::from_str::<World>(JSON_WORLD).unwrap();
-    }
-
-    #[test]
-    fn get_all_worlds() {
-        let client = Client::new();
-        let world = serde_json::from_str::<World>(JSON_WORLD).unwrap(); // The best world?
-        assert!(World::get_all(&client).unwrap().contains(&world))
     }
 }

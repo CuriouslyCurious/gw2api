@@ -43,7 +43,6 @@ impl Continent {}
 #[cfg(test)]
 mod tests {
     use crate::v1::continents::*;
-    use crate::client::Client;
 
     const JSON_CONTINENT: &str = r#"
     {
@@ -59,12 +58,5 @@ mod tests {
     #[test]
     fn create_continent() {
         serde_json::from_str::<Continent>(JSON_CONTINENT).unwrap();
-    }
-
-    #[test]
-    fn get_all_continents() {
-        let client = Client::new();
-        // Currently only 2 continents in the game
-        assert!(Continents::get_all_continents(&client).unwrap().continents.len() >= 2)
     }
 }

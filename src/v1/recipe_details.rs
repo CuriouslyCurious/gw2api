@@ -122,7 +122,6 @@ impl Ingredient {}
 #[cfg(test)]
 mod tests {
     use crate::v1::recipe_details::*;
-    use crate::client::Client;
 
     const JSON_RECIPE: &str = r#"
     {
@@ -144,12 +143,5 @@ mod tests {
     #[test]
     fn create_recipe() {
         serde_json::from_str::<Recipe>(JSON_RECIPE).unwrap();
-    }
-
-    #[test]
-    fn get_recipe() {
-        let client = Client::new();
-        let recipe = serde_json::from_str::<Recipe>(JSON_RECIPE).unwrap();
-        assert_eq!(Recipe::get_id(&client, "1275".to_string()).unwrap(), recipe)
     }
 }

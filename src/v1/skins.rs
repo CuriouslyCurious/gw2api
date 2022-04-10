@@ -19,30 +19,3 @@ impl Skins {
         client.request(ENDPOINT_URL)
     }
 }
-
-#[cfg(test)]
-mod tests {
-    use crate::v1::skins::*;
-    use crate::client::Client;
-
-    const JSON_SKINS: &str = r#"
-    {
-      "skins": [
-        1343,
-        1344,
-        1345,
-        1346
-      ]
-    }"#;
-
-    #[test]
-    fn create_skins() {
-        serde_json::from_str::<Skins>(JSON_SKINS).unwrap();
-    }
-
-    #[test]
-    fn get_all_skins() {
-        let client = Client::new();
-        assert!(Skins::get_all(&client).unwrap().skins.len() >= 2000)
-    }
-}

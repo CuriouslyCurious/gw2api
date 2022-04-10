@@ -66,7 +66,6 @@ impl Emblem {}
 #[cfg(test)]
 mod tests {
     use crate::v1::guild_details::*;
-    use crate::client::Client;
 
     const JSON_GUILD: &str = r#"
     {
@@ -86,19 +85,5 @@ mod tests {
     #[test]
     fn create_guild() {
         serde_json::from_str::<Guild>(JSON_GUILD).unwrap();
-    }
-
-    #[test]
-    fn get_guild_by_id() {
-        let client = Client::new();
-        let id = "1C4EE62A-E76D-48E0-A205-D56CCC4FED2D"; // id of the lovely guild TD
-        assert_eq!(Guild::get_by_id(&client, id.to_string()).unwrap().id, id)
-    }
-
-    #[test]
-    fn get_guild_by_name() {
-        let client = Client::new();
-        let name = "The Doppelgangers";
-        assert_eq!(Guild::get_by_name(&client, name.to_string()).unwrap().name, name)
     }
 }
