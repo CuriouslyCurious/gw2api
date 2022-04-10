@@ -2,6 +2,7 @@ use minreq::Response;
 use serde::de::DeserializeOwned;
 
 use std::fmt::{self, Display};
+use std::borrow::Cow::{self, Borrowed, Owned};
 
 use crate::error::{ApiError, ApiErrorKind};
 
@@ -41,58 +42,52 @@ impl Default for Localisation {
 
 /// Client that performs requests to the API
 #[derive(Default)]
-pub struct Client {
+pub struct Client<'a> {
     /// The API key used for endpoints that require authentication.
     api_key: Option<String>,
     /// The language that the response will be in. Defaults to English if left empty as per the
     /// official Guild Wars 2 API behvaiour.
     lang: Localisation,
+    /// Base url of the API.
+    base_url: Cow<'a, str>,
+
 }
 
-impl Client {
+impl<'a> Client<'a> {
     /// Creates a new `Client` to interface with the Guild Wars 2 API.
-    pub fn new() -> Client {
+    pub fn new() -> Client<'a> {
         Client {
             api_key: None,
             lang: Localisation::default(),
+            base_url: Borrowed(BASE_URL),
         }
     }
 
     /// Sets the API key of the client with a valid Guild Wars 2 API key.
-    pub fn set_api_key(mut self, api_key: String) -> Client {
+    pub fn set_api_key(mut self, api_key: String) -> Client<'a> {
         self.api_key = Some(api_key);
         self
     }
 
     /// Sets the language to be used in responses, applies to item names and what not.
-        pub fn set_lang(mut self, lang: Localisation) -> Client {
+    pub fn set_lang(mut self, lang: Localisation) -> Client<'a> {
         self.lang = lang;
         self
     }
 
-    // /// Creates a language HTTP header from the client's given language, if no language is given it
-    // /// will default to English.
-    // fn create_lang_header(&self) -> Header {
-    //     let lang = self.lang().unwrap_or(&Localisation::English).to_string();
-    //     Header::new("Accept-Language", &lang)
-    // }
-    //
-    // /// Creates a HTTP authorization header from the client's given API key, if no key is set it
-    // /// will panic.
-    // fn create_auth_header(&self) -> Header {
-    //     let api_key = self.api_key().expect("Guild Wars 2 API key is not set").to_owned();
-    //     Header::new("Authorization", &format!("Bearer {}", api_key))
-    // }
+    /// Sets the base url for the API.
+    pub fn set_base_url(mut self, base_url: String) -> Client<'a>{
+        self.base_url = Owned(base_url);
+        self
+    }
 
     /// Make a request to the Guild Wars 2 API with the given url (which has to include version)
     /// as endpoint.
     pub fn request<T>(&self, url: &str) -> Result<T, ApiError>
     where T: DeserializeOwned {
-        let full_url = format!("{base_url}/{url}", base_url=BASE_URL, url=url);
-        //let lang_header = self.create_lang_header();
+        let full_url = format!("{base_url}/{url}", base_url=self.base_url, url=url);
         let response = minreq::get(&full_url)
             .with_header("Accept-Language", self.lang.to_string())
-            //.set(lang_header.name(), lang_header.value())
             .with_timeout(TIMEOUT)
             .send()?;
         Client::handle_response(response)
@@ -107,12 +102,16 @@ impl Client {
     /// an error.
     pub fn authenticated_request<T>(&self, url: &str) -> Result<T, ApiError>
     where T: DeserializeOwned {
-        let full_url = format!("{base_url}/{url}", base_url=BASE_URL, url=url);
+        let full_url = format!("{base_url}/{url}", base_url=self.base_url, url=url);
+
+        let authorization_msg = match self.api_key.as_ref() {
+            Some(key) => format!("Bearer {}", key),
+            None => return Err(ApiError::new(ApiErrorKind::ApiKeyNotSet)),
+        };
 
         let response = minreq::get(&full_url)
             .with_header("Accept-Language", self.lang.to_string())
-            // TODO: Make this into an error
-            .with_header("Authorization", format!("Bearer {}", self.api_key.as_ref().expect("Guild Wars 2 API key is not set")))
+            .with_header("Authorization", authorization_msg)
             .with_timeout(TIMEOUT)
             .send()?;
         Client::handle_response(response)
@@ -125,7 +124,7 @@ impl Client {
     where T: DeserializeOwned {
         match response.status_code {
             // Ok
-            200 => Ok(response.json::<T>().unwrap()),
+            200 => Ok(response.json::<T>()?),
             // Forbidden
             403 => Err(ApiError::new(ApiErrorKind::Forbidden)),
             // Not Found
@@ -139,16 +138,18 @@ impl Client {
 
     /// Returns an `Option` containing a string slice of the Guild Wars 2 API key for the
     /// Client object if it exists, otherwise None is returned in the Option.
-    pub fn api_key(&self) -> Option<&str> {
-        match &self.api_key {
-            Some(key) => Some(&key),
-            None => None,
-        }
+    pub fn api_key(&self) -> Option<&String> {
+        self.api_key.as_ref()
     }
 
     /// Returns a reference to the `Localisation` enum object.
     pub fn lang(&self) -> &Localisation {
         &self.lang
+    }
+
+    /// Returns the base url.
+    pub fn base_url(&self) -> &str {
+        &self.base_url
     }
 }
 
