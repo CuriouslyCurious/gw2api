@@ -7,16 +7,16 @@ const ENDPOINT_URL: &str = "/v1/map_names";
 
 /// Struct containing an unorded list of (localized) map names.
 #[derive(Debug, Deserialize, PartialEq)]
-pub struct Map {
+pub struct MapName {
     /// Map id. First digit indicates the map's region: 1 = North America, 2 = Europe.
     pub id: String,
     /// Localized name of the map.
     pub name: String,
 }
 
-impl Map {
+impl MapName {
     /// Retrieve all map names that are in the game.
-    pub fn get_all(client: &Client) -> Result<Vec<Map>, ApiError> {
+    pub fn get_all(client: &Client) -> Result<Vec<MapName>, ApiError> {
         client.request(ENDPOINT_URL)
     }
 }
