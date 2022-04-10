@@ -1,0 +1,31 @@
+{
+    "item_id": "8472",
+    "name": "Transmutation Splitter",
+    "description": "Double-click to consume for transmutation charges.",
+    "type": "Consumable",
+    "level": "0",
+    "rarity": "Masterwork",
+    "vendor_value": "0",
+    "icon_file_id": "631525",
+    "icon_file_signature": "F3E0F168BCC054462BF068643F5992525C7D52EE",
+    "upgrade_recipes": [],
+    "game_types": [
+        "Pvp",
+        "PvpLobby",
+        "Wvw",
+        "Dungeon",
+        "Pve"
+    ],
+    "flags": [
+        "AccountBound",
+        "NoMysticForge",
+        "NoSalvage",
+        "NoSell",
+        "DeleteWarning",
+        "AccountBindOnUse"
+    ],
+    "restrictions": [],
+    "consumable": {
+        "type": "Generic"
+    }
+}

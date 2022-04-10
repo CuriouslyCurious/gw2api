@@ -1,0 +1,68 @@
+{
+    "item_id": "49424",
+    "name": "+1 Agony Infusion",
+    "description": "Double-click to apply to an unused infusion slot. Used by artificers to craft more powerful agony infusions.",
+    "type": "UpgradeComponent",
+    "level": "0",
+    "rarity": "Ascended",
+    "vendor_value": "330",
+    "icon_file_id": "511839",
+    "icon_file_signature": "C605E2EF280B5E4CF9A249E80AB3053843C5EBE3",
+    "upgrade_recipes": [],
+    "game_types": [
+        "Activity",
+        "Wvw",
+        "Dungeon",
+        "Pve"
+    ],
+    "flags": [
+        "NoSalvage",
+        "NoSell"
+    ],
+    "restrictions": [],
+    "upgrade_component": {
+        "type": "Default",
+        "flags": [
+            "ShortBow",
+            "HeavyArmor",
+            "LightArmor",
+            "Dagger",
+            "MediumArmor",
+            "Focus",
+            "Greatsword",
+            "Hammer",
+            "Trinket",
+            "Harpoon",
+            "Mace",
+            "Pistol",
+            "Rifle",
+            "Scepter",
+            "Shield",
+            "Speargun",
+            "Axe",
+            "Staff",
+            "Sword",
+            "Torch",
+            "Trident",
+            "Warhorn",
+            "LongBow"
+        ],
+        "infusion_upgrade_flags": [
+            "Infusion"
+        ],
+        "infix_upgrade": {
+            "id": 764,
+            "buff": {
+                "skill_id": "22100",
+                "description": "+1 Agony Resistance"
+            },
+            "attributes": [
+                {
+                    "attribute": "AgonyResistance",
+                    "modifier": 1
+                }
+            ]
+        },
+        "suffix": ""
+    }
+}

@@ -1,0 +1,32 @@
+{
+    "item_id": "78806",
+    "name": "Unbreakable Logging Axe",
+    "description": "Extremely efficient at gathering resources despite its unremarkable appearance, this Black Lion tool will never break or require replacing.",
+    "type": "Gathering",
+    "level": "0",
+    "rarity": "Rare",
+    "vendor_value": "0",
+    "icon_file_id": "1459294",
+    "icon_file_signature": "E80A16DD259FD93E0E0F5B2AE09C60F60E07F8C4",
+    "default_skin": "2388",
+    "upgrade_recipes": [],
+    "game_types": [
+        "PvpLobby",
+        "Activity",
+        "Wvw",
+        "Dungeon",
+        "Pve"
+    ],
+    "flags": [
+        "HideSuffix",
+        "AccountBound",
+        "NoSalvage",
+        "NoSell",
+        "DeleteWarning",
+        "AccountBindOnUse"
+    ],
+    "restrictions": [],
+    "gathering": {
+        "type": "Logging"
+    }
+}

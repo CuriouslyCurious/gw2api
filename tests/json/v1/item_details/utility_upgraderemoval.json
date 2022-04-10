@@ -1,0 +1,29 @@
+{
+    "item_id": "20349",
+    "name": "Upgrade Extractor",
+    "description": "This tool will remove the upgrades from any item, without destroying either the upgrade or the item.",
+    "type": "Consumable",
+    "level": "0",
+    "rarity": "Fine",
+    "vendor_value": "0",
+    "icon_file_id": "674829",
+    "icon_file_signature": "0E92A458B335144232EB357A3C96DB273B09AD3B",
+    "upgrade_recipes": [],
+    "game_types": [
+        "PvpLobby",
+        "Wvw",
+        "Dungeon",
+        "Pve"
+    ],
+    "flags": [
+        "AccountBound",
+        "NoMysticForge",
+        "NoSell",
+        "DeleteWarning",
+        "AccountBindOnUse"
+    ],
+    "restrictions": [],
+    "consumable": {
+        "type": "UpgradeRemoval"
+    }
+}

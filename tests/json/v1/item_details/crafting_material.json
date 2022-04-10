@@ -1,0 +1,20 @@
+{
+    "item_id": "13000",
+    "name": "Bronze Trident Head",
+    "description": "Used to craft Tridents.",
+    "type": "CraftingMaterial",
+    "level": "0",
+    "rarity": "Basic",
+    "vendor_value": "2",
+    "icon_file_id": "63494",
+    "icon_file_signature": "9498D20ACAD065EA9848264A42CDCDF4271D0B62",
+    "upgrade_recipes": [],
+    "game_types": [
+        "Activity",
+        "Wvw",
+        "Dungeon",
+        "Pve"
+    ],
+    "flags": [],
+    "restrictions": []
+}

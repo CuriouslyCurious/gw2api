@@ -1,0 +1,31 @@
+{
+    "item_id": "12549",
+    "name": "Chili Pepper Popper",
+    "type": "Consumable",
+    "level": "10",
+    "rarity": "Fine",
+    "vendor_value": "10",
+    "icon_file_id": "219493",
+    "icon_file_signature": "54B71F6FBFFF193168C0B2B86C436EA3AE09AB7E",
+    "upgrade_recipes": [],
+    "game_types": [
+        "Wvw",
+        "Dungeon",
+        "Pve"
+    ],
+    "flags": [
+        "NoSell"
+    ],
+    "restrictions": [],
+    "consumable": {
+        "type": "Food",
+        "duration_ms": "1800000",
+        "apply_count": 1,
+        "name": "Nourishment",
+        "icon": {
+            "file_id": 436367,
+            "signature": "779D3F0ABE5B46C09CFC57374DA8CC3A495F291C"
+        },
+        "description": "8% Chance to Gain Might on Critical Hit during the Day\n+10% Experience from Kills"
+    }
+}

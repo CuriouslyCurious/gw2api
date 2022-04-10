@@ -1,0 +1,85 @@
+{
+    "item_id": "81908",
+    "name": "Aurora",
+    "type": "Trinket",
+    "level": "80",
+    "rarity": "Legendary",
+    "vendor_value": "825",
+    "icon_file_id": "1729332",
+    "icon_file_signature": "2E5391DBF100D5A4413A07C3A13FC3513F29C394",
+    "upgrade_recipes": [],
+    "game_types": [
+        "Activity",
+        "Wvw",
+        "Dungeon",
+        "Pve"
+    ],
+    "flags": [
+        "HideSuffix",
+        "AccountBound",
+        "NoMysticForge",
+        "NoSalvage",
+        "NoSell",
+        "NotUpgradeable",
+        "Unique",
+        "AccountBindOnUse",
+        "DeleteWarning"
+    ],
+    "restrictions": [],
+    "trinket": {
+        "type": "Accessory",
+        "infusion_slots": [
+            {
+                "flags": [
+                    "Infusion"
+                ]
+            }
+        ],
+        "suffix_item_id": "",
+        "secondary_suffix_item_id": "",
+        "stat_choices": [
+            584,
+            656,
+            658,
+            1119,
+            657,
+            1038,
+            1097,
+            659,
+            690,
+            583,
+            585,
+            1037,
+            586,
+            1035,
+            588,
+            1114,
+            1128,
+            1163,
+            1066,
+            1064,
+            660,
+            1430,
+            1436,
+            591,
+            581,
+            592,
+            1145,
+            1098,
+            1134,
+            1162,
+            1115,
+            1130,
+            1139,
+            1125,
+            1220,
+            1329,
+            1345,
+            1337,
+            1486,
+            1538
+        ]
+    }
+}
+
+

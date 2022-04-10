@@ -1,0 +1,30 @@
+{
+    "item_id": "8471",
+    "name": "Transmutation Crystal",
+    "description": "Double-click to consume 1 transmutation crystal for 1 transmutation charge.",
+    "type": "Consumable",
+    "level": "0",
+    "rarity": "Masterwork",
+    "vendor_value": "64",
+    "icon_file_id": "63056",
+    "icon_file_signature": "B50BF7D22026382EEE702714761DB87901EF710E",
+    "upgrade_recipes": [],
+    "game_types": [
+        "Pvp",
+        "PvpLobby",
+        "Wvw",
+        "Dungeon",
+        "Pve"
+    ],
+    "flags": [
+        "AccountBound",
+        "NoSalvage",
+        "NoSell",
+        "DeleteWarning",
+        "AccountBindOnUse"
+    ],
+    "restrictions": [],
+    "consumable": {
+        "type": "Generic"
+    }
+}

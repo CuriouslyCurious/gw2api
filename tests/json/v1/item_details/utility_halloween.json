@@ -1,0 +1,27 @@
+{
+    "item_id": "20010",
+    "name": "Rejuvenation Booster",
+    "description": "Double-click to gain a boon that regenerates health for one hour. Does not work in PvP, WvW, or raids.",
+    "type": "Consumable",
+    "level": "0",
+    "rarity": "Masterwork",
+    "vendor_value": "0",
+    "icon_file_id": "434412",
+    "icon_file_signature": "0439C04FE14D6AEC802A47139F78DD6729EC63A0",
+    "upgrade_recipes": [],
+    "game_types": [
+        "Dungeon",
+        "Pve"
+    ],
+    "flags": [
+        "AccountBound",
+        "NoSalvage",
+        "NoSell",
+        "DeleteWarning",
+        "AccountBindOnUse"
+    ],
+    "restrictions": [],
+    "consumable": {
+        "type": "Halloween"
+    }
+}

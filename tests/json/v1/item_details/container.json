@@ -1,0 +1,29 @@
+{
+    "item_id": "36520",
+    "name": "Bag of Coins",
+    "description": "Double-click to open.",
+    "type": "Container",
+    "level": "0",
+    "rarity": "Fine",
+    "vendor_value": "0",
+    "icon_file_id": "62857",
+    "icon_file_signature": "3BF274D1A323C002CDCFE80724912CDB7C78ABEE",
+    "upgrade_recipes": [],
+    "game_types": [
+        "Pvp",
+        "PvpLobby",
+        "Activity",
+        "Wvw",
+        "Dungeon",
+        "Pve"
+    ],
+    "flags": [
+        "NoSell",
+        "SoulbindOnAcquire",
+        "SoulBindOnUse"
+    ],
+    "restrictions": [],
+    "container": {
+        "type": "Default"
+    }
+}

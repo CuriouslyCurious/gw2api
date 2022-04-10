@@ -1,0 +1,31 @@
+{
+    "item_id": "36284",
+    "name": "Self-Style Hair Kit",
+    "description": "Double-click to modify your appearance settings for hair style, hair color, horns, and facial hair. This kit is consumed on accepting a new appearance.",
+    "type": "Consumable",
+    "level": "0",
+    "rarity": "Masterwork",
+    "vendor_value": "8",
+    "icon_file_id": "495499",
+    "icon_file_signature": "575DAC7F994037D4740E5067277B63B90DDE0FCE",
+    "upgrade_recipes": [],
+    "game_types": [
+        "PvpLobby",
+        "Wvw",
+        "Dungeon",
+        "Pve"
+    ],
+    "flags": [
+        "AccountBound",
+        "NoMysticForge",
+        "NoSalvage",
+        "NoSell",
+        "SoulbindOnAcquire",
+        "DeleteWarning",
+        "AccountBindOnUse"
+    ],
+    "restrictions": [],
+    "consumable": {
+        "type": "AppearanceChange"
+    }
+}

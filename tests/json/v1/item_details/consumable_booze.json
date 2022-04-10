@@ -1,0 +1,24 @@
+{
+    "item_id": "8553",
+    "name": "Bottle of Red Wine",
+    "type": "Consumable",
+    "level": "0",
+    "rarity": "Basic",
+    "vendor_value": "4",
+    "icon_file_id": "63083",
+    "icon_file_signature": "E745C51C0D067B030A6629C80A9B08A4B0146556",
+    "upgrade_recipes": [],
+    "game_types": [
+        "Wvw",
+        "Dungeon",
+        "Pve"
+    ],
+    "flags": [
+        "BulkConsume"
+    ],
+    "restrictions": [],
+    "consumable": {
+        "type": "Booze"
+    }
+}
+

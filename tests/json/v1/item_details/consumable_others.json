@@ -1,0 +1,33 @@
+{
+    "item_id": "19988",
+    "name": "Limited-Use Cow Finisher",
+    "description": "Crush your opponents with this falling cow finishing move in PvP and WvW.",
+    "type": "Consumable",
+    "level": "0",
+    "rarity": "Basic",
+    "vendor_value": "0",
+    "icon_file_id": "340513",
+    "icon_file_signature": "BD32DB030170FA01A03E77BB4313DEC2D8BC20E8",
+    "upgrade_recipes": [],
+    "game_types": [
+        "Pvp",
+        "PvpLobby",
+        "Wvw",
+        "Dungeon",
+        "Pve"
+    ],
+    "flags": [
+        "AccountBound",
+        "NoMysticForge",
+        "NoSalvage",
+        "NoSell",
+        "DeleteWarning",
+        "AccountBindOnUse"
+    ],
+    "restrictions": [],
+    "consumable": {
+        "type": "Unlock",
+        "unlock_type": "Content"
+    }
+}
+

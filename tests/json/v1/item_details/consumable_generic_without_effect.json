@@ -1,0 +1,24 @@
+{
+    "item_id": "24",
+    "name": "Sealed Package of Snowballs",
+    "description": "Open this package to create several snowballs that can hit anyone else holding a snowball.",
+    "type": "Consumable",
+    "level": "0",
+    "rarity": "Basic",
+    "vendor_value": "0",
+    "icon_file_id": "219347",
+    "icon_file_signature": "1D05D1EE04E16E69710E1EAB11AC466BBF105778",
+    "upgrade_recipes": [],
+    "game_types": [
+        "Wvw",
+        "Dungeon",
+        "Pve"
+    ],
+    "flags": [],
+    "restrictions": [],
+    "consumable": {
+        "type": "Generic"
+    }
+}
+
+

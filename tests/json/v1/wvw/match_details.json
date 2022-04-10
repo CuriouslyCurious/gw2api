@@ -1,0 +1,42 @@
+{
+    "match_id": "1-4",
+    "scores": [ 155502, 137176, 189824 ],
+    "maps": [
+        {
+            "type": "RedHome",
+            "scores": [ 80148, 7022, 18582 ],
+            "objectives": [
+                { "id": 32, "owner": "Red", "owner_guild": "277CCE76-6254-4CF2-8A2D-15A30B7110BD" },
+                { "id": 35, "owner": "Green" }
+            ],
+            "bonuses": [
+                { "type": "bloodlust", "owner": "Blue" }
+            ]
+        },
+        {
+            "type": "GreenHome",
+            "scores": [ 13285, 7465, 82817 ],
+            "objectives": [
+            ],
+            "bonuses": [
+                { "type": "bloodlust", "owner": "Green" }
+            ]
+        },
+        {
+            "type": "BlueHome",
+            "scores": [ 18592, 54837, 29013 ],
+            "objectives": [
+            ],
+            "bonuses": [
+            ]
+        },
+        {
+            "type": "Center",
+            "scores": [ 43477, 67852, 59412 ],
+            "objectives": [
+            ],
+            "bonuses": [
+            ]
+        }
+    ]
+}

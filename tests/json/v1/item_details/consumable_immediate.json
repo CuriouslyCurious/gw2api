@@ -1,0 +1,25 @@
+{
+    "item_id": "8473",
+    "name": "Supply Package",
+    "description": "Supply can be used to build various siege engines and repair structures in WvW.",
+    "type": "Consumable",
+    "level": "0",
+    "rarity": "Fine",
+    "vendor_value": "0",
+    "icon_file_id": "62264",
+    "icon_file_signature": "A64CDE12565E07F00470D710377A5EAB5E953816",
+    "upgrade_recipes": [],
+    "game_types": [
+        "Wvw",
+        "Dungeon",
+        "Pve"
+    ],
+    "flags": [
+        "SoulbindOnAcquire",
+        "SoulBindOnUse"
+    ],
+    "restrictions": [],
+    "consumable": {
+        "type": "Immediate"
+    }
+}

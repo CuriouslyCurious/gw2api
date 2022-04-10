@@ -1,0 +1,26 @@
+{
+    "item_id": "22335",
+    "name": "Commander's Compendium",
+    "description": "Double-click to use. Unlock the ability to become a Commander.",
+    "type": "Gizmo",
+    "level": "11",
+    "rarity": "Fine",
+    "vendor_value": "125000",
+    "icon_file_id": "66753",
+    "icon_file_signature": "1F64A2799FC8666FFC66FE56DAA75C02E7E9BA6F",
+    "upgrade_recipes": [],
+    "game_types": [
+        "Wvw",
+        "Dungeon",
+        "Pve"
+    ],
+    "flags": [
+        "AccountBound",
+        "NoSell",
+        "AccountBindOnUse"
+    ],
+    "restrictions": [],
+    "gizmo": {
+        "type": "Default"
+    }
+}

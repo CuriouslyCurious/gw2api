@@ -1,0 +1,32 @@
+{
+    "item_id": "50082",
+    "name": "Powerful Potion of Slaying Scarlet's Armies",
+    "type": "Consumable",
+    "level": "80",
+    "rarity": "Fine",
+    "vendor_value": "100",
+    "icon_file_id": "222720",
+    "icon_file_signature": "7A9EA9E0C702F8BA595973FED3A853646B2E07F8",
+    "upgrade_recipes": [],
+    "game_types": [
+        "Wvw",
+        "Dungeon",
+        "Pve"
+    ],
+    "flags": [
+        "NoSell"
+    ],
+    "restrictions": [],
+    "consumable": {
+        "type": "Utility",
+        "duration_ms": "3600000",
+        "apply_count": 1,
+        "name": "Enhancement",
+        "icon": {
+            "file_id": 436368,
+            "signature": "64976F59BF060718C9109D36C27AD0F40F06BB32"
+        },
+        "description": "+10% damage vs. Toxic Alliance, Watchwork, Aetherblade, and Molten Alliance\n-10% damage from Toxic Alliance, Watchwork, Aetherblade, and Molten Alliance\n+15% Experience from kills"
+    }
+}
+
