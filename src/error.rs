@@ -9,16 +9,6 @@ use std::error::Error;
 /// use by ArenaNet.
 #[derive(Debug)]
 pub struct ApiError {
-    ///// Error code.
-    //code: Option<u32>,
-    ///// Product where the error concerns.
-    //product: Option<u32>,
-    ///// Which module the error occurred in.
-    //module: Option<u32>,
-    ///// At what line the error occurred.
-    //line: Option<u32>,
-    /// Text describing the error retrieved from the API.
-    //text: String,
     /// Errorkind
     err: Box<ApiErrorKind>,
 }
