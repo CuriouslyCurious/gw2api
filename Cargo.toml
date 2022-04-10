@@ -20,6 +20,5 @@ serde_json = { version = "1.0.79", default-features = false }
 minreq = { version = "2.6.0", default-features = false, features = ["https", "json-using-serde"]}
 
 [dev-dependencies]
-#stubr = "0.4.14"
-#wiremock = "0.5.11"
+httpmock = { version = "0.6.6", default-features = false, features = ["colored"]}
 similar-asserts = "1.2.0"
