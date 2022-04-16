@@ -1,8 +1,8 @@
 use serde::Deserialize;
 
+use crate::attributes::Attribute;
 use crate::client::Client;
 use crate::error::ApiError;
-use crate::attributes::Attribute;
 use crate::utils::Rarity;
 
 const ENDPOINT_URL: &str = "/v1/item_details";
@@ -539,7 +539,6 @@ pub struct Weapon {
     pub secondary_suffix_item_id: Option<String>,
 }
 
-
 impl Item {
     /// Retrieve an item by its id.
     pub fn get_id(client: &Client, id: u32) -> Result<Item, ApiError> {
@@ -583,4 +582,3 @@ impl Trophy {}
 impl UpgradeComponent {}
 
 impl Weapon {}
-

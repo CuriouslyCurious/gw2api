@@ -43,8 +43,8 @@ impl Match {}
 
 #[cfg(test)]
 mod tests {
-    use crate::v1::wvw::matches::*;
     use crate::client::Client;
+    use crate::v1::wvw::matches::*;
 
     const JSON_MATCHES: &str = r#"
     {
@@ -76,7 +76,7 @@ mod tests {
     #[test]
     fn get_all_matches() {
         let client = Client::new();
-         // Currently 8 matches are running simultaneously, so 4 should be a sufficient check.
+        // Currently 8 matches are running simultaneously, so 4 should be a sufficient check.
         assert!(Matches::get_all(&client).unwrap().matches.len() >= 4)
     }
 }

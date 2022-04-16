@@ -19,4 +19,3 @@ impl Recipes {
         client.request(ENDPOINT_URL)
     }
 }
-

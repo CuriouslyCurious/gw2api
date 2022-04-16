@@ -85,8 +85,8 @@ impl Map {}
 
 #[cfg(test)]
 mod tests {
-    use crate::v1::wvw::match_details::*;
     use crate::client::Client;
+    use crate::v1::wvw::match_details::*;
 
     const JSON_MATCH: &str = r#"
     {

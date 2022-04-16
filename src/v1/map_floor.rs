@@ -30,7 +30,7 @@ pub struct Region {
     /// corners.
     pub continent_rect: Vec<Vec<i32>>,
     /// Mapping from the map id to an object.
-    pub maps: BTreeMap<u32, Map>
+    pub maps: BTreeMap<u32, Map>,
 }
 
 /// Struct containing information about a map in the game, including information about floor and
@@ -246,8 +246,15 @@ pub struct Sector {
 
 impl Floor {
     /// Retrieve a map floor by its continent id and floor number.
-    pub fn get_map_floor(client: &Client, continent_id: u32, floor: i32) -> Result<Floor, ApiError> {
-        let url = format!("{}?continent_id={}&floor={}", ENDPOINT_URL, continent_id, floor);
+    pub fn get_map_floor(
+        client: &Client,
+        continent_id: u32,
+        floor: i32,
+    ) -> Result<Floor, ApiError> {
+        let url = format!(
+            "{}?continent_id={}&floor={}",
+            ENDPOINT_URL, continent_id, floor
+        );
         client.request(&url)
     }
 }
@@ -281,7 +288,7 @@ mod tests {
 
     const JSON_FLOOR_PATH: &str = "./tests/json/v1/map_floor.json";
 
-   #[test]
+    #[test]
     fn create_floor() {
         let json = read_to_string(JSON_FLOOR_PATH).unwrap();
         serde_json::from_str::<Floor>(&json).unwrap();

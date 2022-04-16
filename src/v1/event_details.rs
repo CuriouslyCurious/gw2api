@@ -91,7 +91,7 @@ impl Events {
 
 impl Event {}
 
-impl Location  {}
+impl Location {}
 
 #[cfg(test)]
 mod tests {
@@ -115,5 +115,4 @@ mod tests {
     fn create_event() {
         serde_json::from_str::<Event>(JSON_EVENT).unwrap();
     }
-
 }

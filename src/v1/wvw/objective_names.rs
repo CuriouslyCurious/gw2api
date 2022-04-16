@@ -23,8 +23,8 @@ impl Objective {
 
 #[cfg(test)]
 mod tests {
-    use crate::v1::wvw::objective_names::*;
     use crate::client::Client;
+    use crate::v1::wvw::objective_names::*;
 
     const JSON_OBJECTIVE: &str = r#"
     {

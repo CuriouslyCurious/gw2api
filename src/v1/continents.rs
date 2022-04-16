@@ -28,7 +28,7 @@ pub struct Continent {
     /// Maximum zoom level.
     pub max_zoom: u8,
     /// A list of floors available.
-    pub floors: Vec<i8>
+    pub floors: Vec<i8>,
 }
 
 impl Continents {
