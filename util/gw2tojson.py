@@ -4,12 +4,13 @@
 import requests
 import json
 import pathlib
+import os
 import sys
 from multiprocessing.dummy import Pool as ThreadPool
 
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-NC='\033[0m' # No Color
+RED = '\033[0;31m'
+GREEN = '\033[0;32m'
+NC = '\033[0m'  # No Color
 
 BASE_URL = "https://api.guildwars2.com"
 
@@ -85,16 +86,16 @@ endpoints = [
     "/v2/finishers",
     "/v2/gliders",
 
-    #"/v2/guild (returns 404/503 errors if requested, directly request the sub-endpoints below)",
-    #"/v2/guild/:id",
-    #"/v2/guild/:id/log",
-    #"/v2/guild/:id/members",
-    #"/v2/guild/:id/ranks",
-    #"/v2/guild/:id/stash",
-    #"/v2/guild/:id/storage",
-    #"/v2/guild/:id/teams",
-    #"/v2/guild/:id/treasury",
-    #"/v2/guild/:id/upgrades",
+    # "/v2/guild (returns 404/503 errors if requested, directly request the sub-endpoints below)",
+    # "/v2/guild/:id",
+    # "/v2/guild/:id/log",
+    # "/v2/guild/:id/members",
+    # "/v2/guild/:id/ranks",
+    # "/v2/guild/:id/stash",
+    # "/v2/guild/:id/storage",
+    # "/v2/guild/:id/teams",
+    # "/v2/guild/:id/treasury",
+    # "/v2/guild/:id/upgrades",
     "/v2/guild/permissions",
     "/v2/guild/search",
     "/v2/guild/upgrades",
@@ -163,15 +164,18 @@ endpoints = [
     "/v1/colors.json",
     "/v1/continents.json",
     "/v1/event_details.json",
+    "/v1/event_details?event_id=22",
     "/v1/files.json",
     "/v1/guild_details.json",
+    "/v1/guild_details?guild_id=75FD83CF-0C45-4834-BC4C-097F93A487AF",
     "/v1/item_details.json",
     "/v1/items.json",
     "/v1/map_floor.json",
     "/v1/map_names.json",
     "/v1/maps.json",
-    #"/v1/recipe_details.json",
-    #"/v1/recipes.json",
+    "/v1/maps.json?map_id=15",
+    # "/v1/recipe_details.json",
+    # "/v1/recipes.json",
     "/v1/skin_details.json",
     "/v1/skins.json",
     "/v1/world_names.json",
@@ -179,20 +183,22 @@ endpoints = [
     "/v1/wvw/matches.json",
     "/v1/wvw/objective_names.json",
 
-    # Disabled
-    #"/v1/event_names.json",
-    #"/v1/events.json",
+    #  Disabled
+    # "/v1/event_names.json",
+    # "/v1/events.json",
     ]
 
 endpoints = [BASE_URL + endpoint for endpoint in endpoints]
 
 if __name__ == "__main__":
+    key = os.environ.get("GW2_API_KEY")
+    header = {"Authorization": f"Bearer {key}"}
     pool = ThreadPool(8)
-    responses = pool.map(requests.get, endpoints)
+    responses = pool.map(requests.get, endpoints, headers=header)
     pool.close()
     pool.join()
 
-    good_status_codes = [200, 400, 401]
+    good_status_codes = [200]
 
     responding = 0
     for response in responses:
@@ -217,4 +223,3 @@ if __name__ == "__main__":
             print(f"[{RED}{response.status_code}{NC}] {response.url} is... {RED}not responding{NC}.")
 
     print("Endpoints responding: %d/%d = %d%%" % (responding, len(endpoints), responding/len(endpoints)*100))
-
