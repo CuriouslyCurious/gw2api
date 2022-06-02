@@ -50,7 +50,6 @@ pub struct Client<'a> {
     lang: Localisation,
     /// Base url of the API.
     base_url: Cow<'a, str>,
-
 }
 
 impl<'a> Client<'a> {
@@ -64,29 +63,33 @@ impl<'a> Client<'a> {
     }
 
     /// Sets the API key of the client with a valid Guild Wars 2 API key.
-    pub fn set_api_key(mut self, api_key: String) -> Client<'a> {
+    pub fn set_api_key(&mut self, api_key: String) -> &mut Self {
         self.api_key = Some(api_key);
         self
     }
 
     /// Sets the language to be used in responses, applies to item names and what not.
-    pub fn set_lang(mut self, lang: Localisation) -> Client<'a> {
+    pub fn set_lang(&mut self, lang: Localisation) -> &mut Self {
         self.lang = lang;
         self
     }
 
     /// Sets the base url for the API.
-    pub fn set_base_url(mut self, base_url: String) -> Client<'a>{
+    pub fn set_base_url(&mut self, base_url: String) -> &mut Self {
         self.base_url = Owned(base_url);
         self
     }
 
     /// Make a request to the Guild Wars 2 API with the given url (which has to include version)
     /// as endpoint.
+    #[allow(unused_variables)]
     pub fn request<T>(&self, url: &str) -> Result<T, ApiError>
-    where T: DeserializeOwned {
-        let full_url = format!("{base_url}/{url}", base_url=self.base_url, url=url);
-        let response = minreq::get(&full_url)
+    where
+        T: DeserializeOwned,
+    {
+        let full_url = format!("{base_url}/{url}", base_url = self.base_url);
+
+        let response = minreq::get(full_url)
             .with_header("Accept-Language", self.lang.to_string())
             .with_timeout(TIMEOUT)
             .send()?;
@@ -101,17 +104,19 @@ impl<'a> Client<'a> {
     /// can limit what resources a certain key may access. In that case the function will return
     /// an error.
     pub fn authenticated_request<T>(&self, url: &str) -> Result<T, ApiError>
-    where T: DeserializeOwned {
-        let full_url = format!("{base_url}/{url}", base_url=self.base_url, url=url);
+    where
+        T: DeserializeOwned,
+    {
+        let full_url = format!("{base_url}/{url}", base_url = self.base_url);
 
-        let authorization_msg = match self.api_key.as_ref() {
+        let authorization_value = match self.api_key.as_ref() {
             Some(key) => format!("Bearer {}", key),
             None => return Err(ApiError::new(ApiErrorKind::ApiKeyNotSet)),
         };
 
         let response = minreq::get(&full_url)
             .with_header("Accept-Language", self.lang.to_string())
-            .with_header("Authorization", authorization_msg)
+            .with_header("Authorization", authorization_value)
             .with_timeout(TIMEOUT)
             .send()?;
         Client::handle_response(response)
@@ -121,7 +126,9 @@ impl<'a> Client<'a> {
     /// timed out. Returns the deserialized type or raises an `ApiError` upon a receiving an error,
     /// respectively.
     fn handle_response<T>(response: Response) -> Result<T, ApiError>
-    where T: DeserializeOwned {
+    where
+        T: DeserializeOwned,
+    {
         match response.status_code {
             // Ok
             200 => Ok(response.json::<T>()?),
@@ -130,8 +137,7 @@ impl<'a> Client<'a> {
             // Not Found
             404 => Err(ApiError::new(ApiErrorKind::NotFound)),
             // Timeout
-            408 =>
-            Err(ApiError::new(ApiErrorKind::ApiTimeout)),
+            408 => Err(ApiError::new(ApiErrorKind::ApiTimeout)),
             _ => Err(ApiError::new(ApiErrorKind::Custom(String::new()))),
         }
     }
@@ -163,9 +169,12 @@ mod tests {
 
     #[test]
     fn create_client() {
-        let api_key = "ABCDEFGH-1324-5678-9012-IJKLMNOPQRSTUVXYZABC-1234-5678-9012-ABCDEFGHIJKL"
-            .to_string();
-        let client = Client::new().set_api_key(api_key.clone()).set_lang(Localisation::French);
+        let api_key =
+            "ABCDEFGH-1324-5678-9012-IJKLMNOPQRSTUVXYZABC-1234-5678-9012-ABCDEFGHIJKL".to_string();
+        let mut client = Client::new();
+        client
+            .set_api_key(api_key.clone())
+            .set_lang(Localisation::French);
         assert_eq!(&api_key, client.api_key().unwrap());
         assert_eq!(&Localisation::French, client.lang());
     }
