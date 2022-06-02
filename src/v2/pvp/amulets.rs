@@ -52,11 +52,8 @@ impl Amulet {
 
 #[cfg(test)]
 mod tests {
-    use std::collections::HashMap;
-
-    use crate::v2::pvp::amulets::*;
-    use crate::attributes::Attribute;
     use crate::client::Client;
+    use crate::v2::pvp::amulets::*;
 
     const JSON_AMULET: &str = r#"
     {

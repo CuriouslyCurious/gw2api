@@ -70,7 +70,6 @@ impl Material {}
 
 #[cfg(test)]
 mod tests {
-    use crate::client::Client;
     use crate::v1::colors::*;
 
     const JSON_DYE: &str = r#"

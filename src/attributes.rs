@@ -47,7 +47,8 @@ mod tests {
         attributes.insert(Attribute::Precision, 460);
         attributes.insert(Attribute::Vitality, 460);
 
-        let json_attributes: HashMap<Attribute, i32> = serde_json::from_str(json_attributes).unwrap();
+        let json_attributes: HashMap<Attribute, i32> =
+            serde_json::from_str(json_attributes).unwrap();
         assert_eq!(attributes, json_attributes);
     }
 }

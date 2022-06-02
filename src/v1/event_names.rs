@@ -17,6 +17,7 @@ pub struct Event {
 
 impl Event {
     /// Retrieve all event names that are in the game.
+    #[allow(deprecated)]
     pub fn get_all(client: &Client) -> Result<Vec<Event>, ApiError> {
         client.request(ENDPOINT_URL)
     }
@@ -24,8 +25,7 @@ impl Event {
 
 #[cfg(test)]
 mod tests {
-    use crate::v1::event_names::*;
-    //use crate::client::Client;
+    use crate::v1::event_names::Event;
 
     const JSON_EVENT: &str = r#"
     {

@@ -1,4 +1,3 @@
-#![warn(clippy::all)]
 //! gw2api is a fairly simple wrapper over the Guild Wars 2 API.
 //!
 //! ```
@@ -10,6 +9,11 @@
 //! println!("Current build id: {}", build.id());
 //! ```
 //!
+
+#![warn(clippy::all)]
+//#![warn(missing_docs)]
+//#![deny(warnings)]
+#![forbid(unsafe_code)]
 
 pub use serde::{Deserialize, Serialize};
 
@@ -24,4 +28,3 @@ pub mod attributes;
 // Endpoints
 pub mod v1;
 pub mod v2;
-

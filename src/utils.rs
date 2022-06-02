@@ -74,11 +74,12 @@ pub enum WeightClass {
     Medium,
 }
 
-
 /// Convert a `Vec<T>` to a comma-separated `String`
 pub fn ids_to_string(ids: Vec<impl ToString>) -> String {
-    let mut ids: String = ids.iter().map(|id| format!("{},", id.to_string())).collect();
+    let mut ids: String = ids
+        .iter()
+        .map(|id| format!("{},", id.to_string()))
+        .collect();
     ids.pop(); // Remove the last comma
     ids
 }
-

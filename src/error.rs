@@ -1,5 +1,5 @@
-use std::fmt::{self, Display};
 use std::error::Error;
+use std::fmt::{self, Display};
 
 /// This error is raised whenever an error occurs when calling the Guild Wars 2 API, for example by
 /// trying to access a resource that requires authentication without a valid API key, or trying to
@@ -36,7 +36,7 @@ impl Error for ApiError {
 impl From<minreq::Error> for ApiError {
     fn from(err: minreq::Error) -> Self {
         Self {
-            err: Box::new(ApiErrorKind::ClientError(err))
+            err: Box::new(ApiErrorKind::ClientError(err)),
         }
     }
 }
@@ -44,9 +44,7 @@ impl From<minreq::Error> for ApiError {
 impl ApiError {
     /// Create a new ApiError from any type T that implements the Display trait.
     pub fn new(err: ApiErrorKind) -> ApiError {
-        Self {
-            err: Box::new(err),
-        }
+        Self { err: Box::new(err) }
     }
 }
 

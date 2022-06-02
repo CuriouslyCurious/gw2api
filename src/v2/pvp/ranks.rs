@@ -93,4 +93,3 @@ mod tests {
         serde_json::from_str::<Rank>(json_rank).unwrap();
     }
 }
-

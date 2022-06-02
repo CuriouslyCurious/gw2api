@@ -1,6 +1,7 @@
 pub mod build;
 pub mod colors;
 pub mod continents;
+#[deprecated = "No longer responds to requests, use v2::event_details instead"]
 pub mod event_details;
 #[deprecated = "No longer responds to requests, use v2::events instead"]
 pub mod event_names;

@@ -8,8 +8,10 @@ use crate::error::ApiError;
 pub struct TokenInfo {
     /// The API key that was requested.
     pub id: String,
-    /// Name of the given API key. **Warning**: The value of this field is not escaped and may contain
-    /// valid HTML, JavaScript, other code. Handle with care.
+    /// Name of the given API key.
+    ///
+    /// **Warning**: The value of this field is not escaped and may contain
+    /// valid HTML, JavaScript and other code. Handle with care.
     pub name: String,
     /// Permissions that the API key has.
     pub permissions: Permissions,
@@ -42,7 +44,9 @@ impl<'de> Deserialize<'de> for Permissions {
     /// Custom deserialization, since the API returns an array of Strings that serde cannot
     /// automatically deserialize into a bunch of booleans.
     fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-    where D: Deserializer<'de> {
+    where
+        D: Deserializer<'de>,
+    {
         let mut permissions = Permissions {
             account: false,
             builds: false,
@@ -72,21 +76,23 @@ impl<'de> Deserialize<'de> for Permissions {
                 &_ => (),
             }
         }
-
         Ok(permissions)
     }
 }
 
 #[cfg(test)]
 mod tests {
-    use crate::client::Client;
-    use crate::v2::tokeninfo::{TokenInfo, Permissions};
     use std::env;
+
+    use crate::client::Client;
+    use crate::v2::tokeninfo::{Permissions, TokenInfo};
 
     #[test]
     fn get_tokeninfo() {
-        let api_key = env::var("GW2_TEST_KEY").expect("GW2_TEST_KEY environment variable is not set.");
-        let client = Client::new().set_api_key(api_key);
+        let api_key =
+            env::var("GW2_TEST_KEY").expect("GW2_TEST_KEY environment variable is not set.");
+        let mut client = Client::new();
+        client.set_api_key(api_key);
         let ti = TokenInfo::get_tokeninfo(&client).unwrap();
 
         let permissions = Permissions {

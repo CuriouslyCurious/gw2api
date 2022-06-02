@@ -86,8 +86,8 @@ impl Skin {}
 
 #[cfg(test)]
 mod tests {
-    use crate::v2::pvp::heroes::*;
     use crate::client::Client;
+    use crate::v2::pvp::heroes::*;
 
     const JSON_HERO: &str = r#"
     {
@@ -194,35 +194,34 @@ mod tests {
     #[test]
     fn get_all_ids() {
         let client = Client::new();
-        let ids = vec!(
+        let ids = vec![
             "115C140F-C2F5-40EB-8EA2-C3773F2AE468",
             "B7EA9889-5F16-4636-9705-4FCAF8B39ECD",
             "BEA79596-CA8B-4D46-9B9C-EA1B606BCF42",
             "CF977AE5-C605-4586-A802-3E25F0F35772",
-        );
+        ];
         assert_eq!(ids, Hero::get_all_ids(&client).unwrap());
     }
 
     #[test]
     fn get_all_heroes() {
         let client = Client::new();
-        let ids = vec!(
+        let ids = vec![
             "115C140F-C2F5-40EB-8EA2-C3773F2AE468",
             "B7EA9889-5F16-4636-9705-4FCAF8B39ECD",
             "BEA79596-CA8B-4D46-9B9C-EA1B606BCF42",
             "CF977AE5-C605-4586-A802-3E25F0F35772",
-        );
+        ];
         assert!(Hero::get_all_heroes(&client).unwrap().len() == ids.len());
     }
 
     #[test]
     fn get_heroes_by_ids() {
         let client = Client::new();
-        let ids = vec!(
+        let ids = vec![
             "115C140F-C2F5-40EB-8EA2-C3773F2AE468".to_string(),
             "B7EA9889-5F16-4636-9705-4FCAF8B39ECD".to_string(),
-        );
+        ];
         assert!(Hero::get_heroes_by_ids(&client, ids.clone()).unwrap().len() == ids.len());
     }
 }
-

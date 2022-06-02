@@ -1,8 +1,8 @@
 use minreq::Response;
 use serde::de::DeserializeOwned;
 
-use std::fmt::{self, Display};
 use std::borrow::Cow::{self, Borrowed, Owned};
+use std::fmt::{self, Display};
 
 use crate::error::{ApiError, ApiErrorKind};
 
