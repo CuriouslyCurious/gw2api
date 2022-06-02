@@ -1,3 +1,16 @@
 {
-    "text": "Invalid access token"
+  "id": "11FDB552-34CC-B746-8F96-7C41C3F66AA6",
+  "name": "GW2_TEST_KEY",
+  "permissions": [
+    "tradingpost",
+    "characters",
+    "pvp",
+    "progression",
+    "wallet",
+    "guilds",
+    "builds",
+    "account",
+    "inventories",
+    "unlocks"
+  ]
 }
