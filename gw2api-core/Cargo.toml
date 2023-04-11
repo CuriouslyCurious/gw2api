@@ -1,0 +1,14 @@
+[package]
+name = "gw2api-core"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+serde = { version = "1.0.136", default-features = false, features = ["derive"] }
+serde_json = { version = "1.0.79", default-features = false }
+minreq = { version = "2.6.0", default-features = false, features = ["https", "json-using-serde"]}
+
+[dev-dependencies]
+similar-asserts = "1.4.2"

@@ -1,24 +1,2 @@
-[package]
-name = "gw2api"
-version = "0.3.0"
-authors = ["CuriouslyCurious <thecuriouslycurious@protonmail.com>"]
-edition = "2021"
-publish = true
-
-description = "A sort-of well-documented and WIP wrapper over the Guild Wars 2 API"
-documentation = "https://docs.rs/gw2api"
-readme = "README.md"
-repository = "https://github.com/CuriouslyCurious/gw2api"
-keywords = ["gw2", "wrapper", "api"]
-categories = ["api-bindings"]
-
-license = "Apache-2.0 OR MIT"
-
-[dependencies]
-serde = { version = "1.0.136", default-features = false, features = ["derive"] }
-serde_json = { version = "1.0.79", default-features = false }
-minreq = { version = "2.6.0", default-features = false, features = ["https", "json-using-serde"]}
-
-[dev-dependencies]
-httpmock = { version = "0.6.6", default-features = false, features = ["colored"]}
-similar-asserts = "1.2.0"
+[workspace]
+members = ["gw2api", "gw2api-derive", "gw2api-core"]

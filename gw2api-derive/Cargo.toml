@@ -1,0 +1,23 @@
+[package]
+name = "gw2api-derive"
+description = "Procedural macros for gw2api crate"
+version = "1.0.0"
+edition = "2021"
+readme = "README.md"
+publish = false
+
+[lib]
+proc-macro = true
+
+[dependencies]
+syn = { version = "1.0.98", features = ["parsing", "printing"] }
+proc-macro2 = "1.0.40"
+quote = "1.0.20"
+
+serde = { version = "1.0.143", default-features = false, features = ["derive"] }
+
+gw2api-core = { path = "../gw2api-core" }
+
+[dev-dependencies]
+#trybuild = { version = "1.0.61", features = ["diff"] }
+
